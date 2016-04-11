@@ -1,20 +1,28 @@
 import React, {PropTypes} from 'react';
+import {Col, Row, Well} from 'react-bootstrap';
+
 import {connect} from 'react-redux';
 import rest from './rest';
+
+import Filters from './filters';
 
 class Orders extends React.Component {
   componentDidMount() {
     this.props.dispatch(rest.actions.orders.sync());
+    this.props.dispatch(rest.actions.categories.sync());
   }
 
   render() {
     return (
-      <ul>
-        <li>Hi there!</li>
-        {this.props.orders.data.map((order, i) => (
-          <li key={i}>{order.name}</li>
-        ))}
-      </ul>
+      <Row>
+        <Col sm={3}>
+          <Well>
+            <Filters categories={this.props.categories} orders={this.props.orders} />
+          </Well>
+        </Col>
+        <Col sm={9}>
+        </Col>
+      </Row>
     );
   }
 };
@@ -28,5 +36,5 @@ Orders.propTypes = {
 };
 
 export default connect((state) => {
-  return {orders: state.orders}
+  return {orders: state.orders, categories: state.categories}
 })(Orders);

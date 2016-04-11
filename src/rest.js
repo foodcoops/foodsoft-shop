@@ -25,6 +25,11 @@ export default reduxApi({
     url: '/api/v1/orders',
     transformer: transformers.array,
     options: options
+  },
+  categories: {
+    url: '/api/v1/article_categories',
+    transformer: transformers.array,
+    options: options
   }
 }).use('fetch', adapterFetch(fetch))
   .use('rootUrl', 'http://localhost:3000/f'); // default development url
