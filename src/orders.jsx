@@ -15,12 +15,10 @@ class Orders extends React.Component {
   render() {
     return (
       <Row>
-        <Col sm={3}>
-          <Well>
-            <Filters categories={this.props.categories} orders={this.props.orders} />
-          </Well>
+        <Col md={3}>
+          <Filters categories={this.props.categories} orders={this.props.orders} />
         </Col>
-        <Col sm={9}>
+        <Col md={9}>
         </Col>
       </Row>
     );

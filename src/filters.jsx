@@ -1,28 +1,28 @@
 import React, {PropTypes} from 'react';
-import {Nav, NavItem, Tab, Tabs} from 'react-bootstrap';
+import {Accordion, ListGroup, ListGroupItem, Panel} from 'react-bootstrap';
 
 class Filters extends React.Component {
   render() {
     let i = 0;
     return (
-      <Tabs defaultActiveKey={1}>
-        {this.hasOrders() ? 
-            this.renderTab(i += 1, "Suppliers", this.props.orders.data) : null}
+      <Accordion defaultActiveKey={1}>
         {this.hasCategories() ?
-            this.renderTab(i += 1, "Categories", this.props.categories.data) : null}
-      </Tabs>
+            this._renderPanel(i += 1, "Categories", this.props.categories.data) : null}
+        {this.hasOrders() ?
+            this._renderPanel(i += 1, "Suppliers", this.props.orders.data) : null}
+      </Accordion>
     );
   }
 
-  renderTab(key, title, items) {
+  _renderPanel(key, title, items) {
     return (
-      <Tab eventKey={key} title={title}>
-        <Nav bsStyle="pills" stacked>
+      <Panel eventKey={key} header={title}>
+        <ListGroup fill>
           {items.map((item) => (
-            <NavItem key={item.id}>{item.name}</NavItem>
+            <ListGroupItem key={item.id} href='#'>{item.name}</ListGroupItem>
           ))}
-        </Nav>
-      </Tab>
+        </ListGroup>
+      </Panel>
     );
   }
 
