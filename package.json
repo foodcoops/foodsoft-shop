@@ -4,13 +4,14 @@
   "description": "Shopping cart component for Foodsoft: web-based software to manage a non-profit food coop.",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server -w -d",
-    "build": "NODE_ENV=production webpack -p && cp node_modules/bootstrap/dist/css/bootstrap.min.css build/ && sed 's/node_modules.*bootstrap/bootstrap/' index.html > build/index.html",
+    "build": "NODE_ENV=production webpack -p && mkdir -p build/css && cp node_modules/bootstrap/dist/css/bootstrap.min.css node_modules/flag-icon-css/css/flag-icon.min.css build/css/ && cp -R node_modules/flag-icon-css/flags build/ && sed 's/node_modules[^\"]*\\/\\([^\"]*\\)\"/css\\/\\1\"/' index.html > build/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "wvengen <dev-voko@willem.engen.nl>",
   "license": "GPL-3.0+",
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "flag-icon-css": "^1.3.0",
     "react": "^15.0.1",
     "react-bootstrap": "^0.28.5",
     "react-dom": "^15.0.1",
