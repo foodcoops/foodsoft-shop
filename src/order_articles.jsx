@@ -28,15 +28,16 @@ class OrderArticles extends React.Component {
         <tbody>
           {this.props.order_articles.data.map((oa) => {
             const hasTolerance = oa.unit_quantity > 1;
+            const goa = (this.props.group_order_articles.data||[]).find((goa) => goa.order_article_id == oa.id);
             return (
               <tr key={oa.id}>
                 <td style={styles.name}>{oa.article.name}</td>
                 <td style={styles.country}><CountryIcon code={oa.article.origin} /></td>
                 <td style={styles.unit}>{oa.article.unit}</td>
                 <td style={styles.priceWithSep}><Price value={oa.price} /></td>
-                <td style={styles.amount}>{oa.quantity}</td>
-                <td style={styles.amount}>{hasTolerance ? oa.tolerance : null}</td>
-                <td style={styles.priceWithSep}><Price value={oa.price * oa.quantity} /></td>
+                <td style={styles.amount}>{goa ? goa.quantity : null}</td>
+                <td style={styles.amount}>{goa && hasTolerance ? goa.tolerance : null}</td>
+                <td style={styles.priceWithSep}>{goa ? <Price value={oa.price * goa.quantity} /> : null}</td>
                 <td></td>
                 <td>{hasTolerance ? 'x' : null }</td>
               </tr>
@@ -50,6 +51,7 @@ class OrderArticles extends React.Component {
 
 OrderArticles.propTypes = {
   order_articles: PropTypes.object.isRequired,
+  group_order_articles: PropTypes.object.isRequired
 };
 
 const styles = {

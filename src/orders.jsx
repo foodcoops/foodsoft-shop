@@ -12,6 +12,7 @@ class Orders extends React.Component {
     this.props.dispatch(rest.actions.orders.sync());
     this.props.dispatch(rest.actions.categories.sync());
     this.props.dispatch(rest.actions.order_articles.sync());
+    this.props.dispatch(rest.actions.group_order_articles.sync());
   }
 
   render() {
@@ -21,7 +22,7 @@ class Orders extends React.Component {
           <Filters categories={this.props.categories} orders={this.props.orders} onChange={this._onFilterChange.bind(this)} />
         </Col>
         <Col md={9}>
-          <OrderArticles order_articles={this.props.order_articles} />
+          <OrderArticles order_articles={this.props.order_articles} group_order_articles={this.props.group_order_articles} />
         </Col>
       </Row>
     );
@@ -42,5 +43,5 @@ Orders.propTypes = {
 };
 
 export default connect((state) => {
-  return {orders: state.orders, categories: state.categories, order_articles: state.order_articles}
+  return {orders: state.orders, categories: state.categories, order_articles: state.order_articles, group_order_articles: state.group_order_articles}
 })(Orders);
