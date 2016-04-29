@@ -7,19 +7,20 @@ class Filters extends React.Component {
     return (
       <Accordion defaultActiveKey={1}>
         {this.hasCategories() ?
-            this._renderPanel(i += 1, "Categories", this.props.categories.data) : null}
+            // @todo move knowledge of search param key to rest.js
+            this._renderPanel('article_article_category_id', i += 1, "Categories", this.props.categories.data) : null}
         {this.hasOrders() ?
-            this._renderPanel(i += 1, "Suppliers", this.props.orders.data) : null}
+            this._renderPanel('order_id', i += 1, "Suppliers", this.props.orders.data) : null}
       </Accordion>
     );
   }
 
-  _renderPanel(key, title, items) {
+  _renderPanel(id, key, title, items) {
     return (
       <Panel eventKey={key} header={title}>
         <ListGroup fill>
           {items.map((item) => (
-            <ListGroupItem key={item.id} href='#'>{item.name}</ListGroupItem>
+            <ListGroupItem key={item.id} href='#' onClick={this._onClick.bind(this, id, item.id)}>{item.name}</ListGroupItem>
           ))}
         </ListGroup>
       </Panel>
@@ -32,11 +33,18 @@ class Filters extends React.Component {
   hasCategories() {
     return !this.props.categories.loading && this.props.categories.data.length > 1;
   }
+
+  _onClick(key, value) {
+    if (this.props.onChange) {
+      this.props.onChange(key, value);
+    }
+  }
 }
 
 Filters.propTypes = {
   categories: PropTypes.object.isRequired,
-  orders: PropTypes.object.isRequired
+  orders: PropTypes.object.isRequired,
+  onChange: PropTypes.func
 };
 
 export default Filters;

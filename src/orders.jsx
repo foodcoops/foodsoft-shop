@@ -18,13 +18,18 @@ class Orders extends React.Component {
     return (
       <Row>
         <Col md={3}>
-          <Filters categories={this.props.categories} orders={this.props.orders} />
+          <Filters categories={this.props.categories} orders={this.props.orders} onChange={this._onFilterChange.bind(this)} />
         </Col>
         <Col md={9}>
           <OrderArticles order_articles={this.props.order_articles} />
         </Col>
       </Row>
     );
+  }
+
+  _onFilterChange(key, value) {
+    this.props.order_articles.sync = false; // @todo fix this hack to force sync with changed args https://github.com/lexich/redux-api/issues/70
+    this.props.dispatch(rest.actions.order_articles.sync({[`q[${key}_eq]`]: value}));
   }
 };
 
