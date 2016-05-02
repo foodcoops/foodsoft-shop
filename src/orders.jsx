@@ -29,7 +29,7 @@ class Orders extends React.Component {
   }
 
   _onFilterChange(key, value) {
-    this.props.order_articles.sync = false; // @todo fix this hack to force sync with changed args https://github.com/lexich/redux-api/issues/70
+    this.props.dispatch(rest.actions.order_articles.reset('sync'));
     this.props.dispatch(rest.actions.order_articles.sync({[`q[${key}_eq]`]: value}));
   }
 };
