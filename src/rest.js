@@ -1,17 +1,19 @@
 import reduxApi, {transformers} from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 
-// @todo get from parameter or using OAuth2
-const access_token = null;
+// default development url
+// @todo get from some config
+export const rootUrl = 'http://localhost:3002/f';
 
 // @see https://github.com/lexich/redux-api/issues/25
-function options() {
+function options(url, params, getState) {
+  const {user: {accessToken}} = getState();
   let headers = {
     'User-Agent': 'foodsoft-shop', // @todo add version
     'Accept': 'application/json'
   };
-  if (access_token) {
-    headers['Authorization'] = 'Bearer ' + access_token;
+  if (accessToken) {
+    headers['Authorization'] = 'Bearer ' + accessToken;
   }
   return {headers: headers};
 };
@@ -38,4 +40,4 @@ export default reduxApi({
   }
 }).use('fetch', adapterFetch(fetch))
   .use('options', options)
-  .use('rootUrl', 'http://localhost:3000/f'); // default development url
+  .use('rootUrl', rootUrl);
