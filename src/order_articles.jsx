@@ -12,6 +12,7 @@ import UnitBar from './unit_bar';
 class OrderArticles extends React.Component {
   render() {
     if (!this.props.order_articles.data) { return <div />; }
+    const anyTolerance = !!this.props.order_articles.data.find((oa) => oa.article.unit_quantity > 1);
     return (
       <Table hover>
         <thead>
@@ -21,9 +22,11 @@ class OrderArticles extends React.Component {
             <th style={styles.unit}>Unit</th>
             <th style={styles.priceWithSep}>Price</th>
             <th style={styles.amount}>Amount</th>
-            <th style={styles.amount}>Extra</th>
+            {anyTolerance ? <th style={styles.amount}>Extra</th> : null}
             <th style={styles.priceWithSep}>Total</th>
-            <th style={styles.boxesHeading} colSpan={2}>Everyone</th>
+            {anyTolerance ?
+              <th style={styles.boxesHeading} colSpan={2}>Everyone</th> :
+              <th style={styles.boxesHeading}>All</th>}
           </tr>
         </thead>
         <tbody>
@@ -40,17 +43,19 @@ class OrderArticles extends React.Component {
                   <DeltaInput value={goa ? goa.quantity : 0} min={0}
                               onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
                 </td>
-                <td style={styles.amount}>{hasTolerance ?
-                    <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
-                                onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
-                </td>
+                {anyTolerance ?
+                  <td style={styles.amount}>{hasTolerance ?
+                      <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
+                                  onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
+                  </td> : null }
                 <td style={styles.priceWithSep}>{goa ? <Price value={oa.price * goa.quantity} /> : null}</td>
-                <td style={styles.unitBar}>{hasTolerance ?
-                    <UnitBar unit_quantity={oa.article.unit_quantity}
-                             result={oa.units_to_order * oa.article.unit_quantity}
-                             quantity={oa.quantity} tolerance={oa.tolerance} /> : null }
-                </td>
-                <td style={styles.boxes}>
+                {anyTolerance ?
+                  <td style={styles.unitBar}>{hasTolerance ?
+                      <UnitBar unit_quantity={oa.article.unit_quantity}
+                               result={oa.units_to_order * oa.article.unit_quantity}
+                               quantity={oa.quantity} tolerance={oa.tolerance} /> : null }
+                  </td> : null }
+                <td style={Object.assign(styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
                   {hasTolerance ? <span>+ </span> : null}
                   <span>{oa.units_to_order}</span>
                 </td>
@@ -115,8 +120,6 @@ const styles = {
   boxes: {
     verticalAlign: 'middle',
     paddingLeft: 0,
-    textAlign: 'right',
-    verticalAlign: 'middle',
     fontSize: '90%',
     color: '#7a7a7a'
   }
