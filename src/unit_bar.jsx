@@ -7,7 +7,7 @@ function UnitBar({unit_quantity, quantity, tolerance, result}) {
   const rTolerance = tolerance - Math.max(0, result - quantity);
   const rMissing = Math.max(0, unit_quantity - rQuantity - rTolerance);
 
-  const reverse = rMissing == 0;
+  const reverse = rQuantity == 0;
   const pf = 100 / unit_quantity; // amount to percentage
 
   const rToleranceClip = Math.min(unit_quantity, rTolerance);
