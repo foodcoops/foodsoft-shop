@@ -11,6 +11,9 @@ It functions together with Foodsoft's future API from
 work-in-progress as well.
 
 
-The hope is that this bring [foodcoop-adam/foodsoft#163](https://github.com/foodcoop-adam/foodsoft/issues/163)'s
+The hope is that this brings [foodcoop-adam/foodsoft#163](https://github.com/foodcoop-adam/foodsoft/issues/163)'s
 _Revamped member ordering pages_ to the main Foodsoft repository in a clean way.
+
+
+![screenshot](screenshot.png)
 
