@@ -18,6 +18,12 @@ function options(url, params, getState) {
   return {headers: headers};
 };
 
+// use upper-case method names to avoid CORS problems
+function restFetch(url, options) {
+  if (options.method) { options.method = options.method.toUpperCase(); }
+  return fetch(url, options);
+}
+
 export default reduxApi({
   user: {
     url: '/api/v1/user'
@@ -35,9 +41,10 @@ export default reduxApi({
     transformer: transformers.array
   },
   group_order_articles: {
-    url: '/api/v1/group_order_articles',
+    url: '/api/v1/group_order_articles/(:id)',
+    crud: true,
     transformer: transformers.array
   }
-}).use('fetch', adapterFetch(fetch))
+}).use('fetch', adapterFetch(restFetch))
   .use('options', options)
   .use('rootUrl', rootUrl);
