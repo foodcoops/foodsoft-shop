@@ -68,13 +68,16 @@ class OrderArticles extends React.Component {
   }
 
   _onChangeAmount(oa, goa, what, value) {
-    console.log('update', oa, goa, what, value);
+    if (this.props.onChangeAmount) {
+      this.props.onChangeAmount(oa, goa, what, value);
+    }
   }
 }
 
 OrderArticles.propTypes = {
   order_articles: PropTypes.object.isRequired,
-  group_order_articles: PropTypes.object.isRequired
+  group_order_articles: PropTypes.object.isRequired,
+  onChangeAmount: PropTypes.func
 };
 
 const styles = {

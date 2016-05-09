@@ -19,18 +19,37 @@ class Orders extends React.Component {
     return (
       <Row>
         <Col md={3}>
-          <Filters categories={this.props.categories} orders={this.props.orders} onChange={this._onFilterChange.bind(this)} />
+          <Filters
+            orders={this.props.orders}
+            categories={this.props.categories}
+            onChange={this._onChangeFilter.bind(this)} />
         </Col>
         <Col md={9}>
-          <OrderArticles order_articles={this.props.order_articles} group_order_articles={this.props.group_order_articles} />
+          <OrderArticles
+            order_articles={this.props.order_articles}
+            group_order_articles={this.props.group_order_articles}
+            onChangeAmount={this._onChangeAmount.bind(this)} />
         </Col>
       </Row>
     );
   }
 
-  _onFilterChange(key, value) {
+  _onChangeFilter(key, value) {
     this.props.dispatch(rest.actions.order_articles.reset('sync'));
     this.props.dispatch(rest.actions.order_articles.sync({[`q[${key}_eq]`]: value}));
+  }
+
+  _onChangeAmount(oa, goa, what, value) {
+    // @todo move order_articles.get() to rest (not sure how yet)
+    if (goa) {
+      this.props.dispatch(rest.actions.group_order_articles.update(goa.id, {[what]: value}, () => {
+        this.props.dispatch(rest.actions.order_articles.get(goa.order_article_id));
+      }));
+    } else {
+      this.props.dispatch(rest.actions.group_order_articles.create({order_article_id: oa.id, [what]: value}, () => {
+        this.props.dispatch(rest.actions.order_articles.get(oa.id));
+      }));
+    }
   }
 };
 

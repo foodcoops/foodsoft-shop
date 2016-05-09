@@ -10,7 +10,8 @@ function options(url, params, getState) {
   const {user: {accessToken}} = getState();
   let headers = {
     'User-Agent': 'foodsoft-shop', // @todo add version
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json;charset=UTF-8'
   };
   if (accessToken) {
     headers['Authorization'] = 'Bearer ' + accessToken;
@@ -23,6 +24,36 @@ function restFetch(url, options) {
   if (options.method) { options.method = options.method.toUpperCase(); }
   return fetch(url, options);
 }
+
+function icrudTransformer(data, prevData, action) {
+  if (/* @todo check success && */ action && action.request) {
+    const method = action.request.params && action.request.params.method;
+    const id = action.request.pathvars && action.request.pathvars.id;
+    if (method === 'POST') {
+      return prevData.concat(data);
+    } else if (method === 'PATCH' || ((!method || method === 'GET') && id)) {
+      return prevData.map((o) => o.id === id ? data : o);
+    } else if (method === 'DELETE') {
+      return prevData.filter((o) => o.id !== id);
+    }
+  }
+  return transformers.array(data, prevData, action);
+}
+
+const crudHelpers = {
+  get: function(id, cb) {
+    return [{id: id}, cb];
+  },
+  create: function(attrs, cb) {
+    return [{}, {body: JSON.stringify(attrs), method: 'POST'}, cb];
+  },
+  update: function(id, attrs, cb) {
+    return [{id: id}, {body: JSON.stringify(attrs), method: 'PATCH'}, cb];
+  },
+  destroy: function(id, cb) {
+    return [{id: id}, {method: 'DELETE'}, cb];
+  }
+};
 
 export default reduxApi({
   user: {
@@ -37,13 +68,16 @@ export default reduxApi({
     transformer: transformers.array
   },
   order_articles: {
-    url: '/api/v1/order_articles',
-    transformer: transformers.array
+    url: '/api/v1/order_articles/(:id)',
+    transformer: icrudTransformer,
+    helpers: {
+      get: crudHelpers.get
+    }
   },
   group_order_articles: {
     url: '/api/v1/group_order_articles/(:id)',
-    crud: true,
-    transformer: transformers.array
+    transformer: icrudTransformer,
+    helpers: crudHelpers
   }
 }).use('fetch', adapterFetch(restFetch))
   .use('options', options)
