@@ -1,5 +1,4 @@
 import reduxApi, {transformers} from 'redux-api';
-import adapterFetch from 'redux-api/lib/adapters/fetch';
 
 // default development url
 // @todo get from some config
@@ -19,10 +18,18 @@ function options(url, params, getState) {
   return {headers: headers};
 };
 
-// use upper-case method names to avoid CORS problems
-function restFetch(url, options) {
-  if (options.method) { options.method = options.method.toUpperCase(); }
-  return fetch(url, options);
+function restFetch(fetch) {
+  return function(url, options) {
+    // workaround: use upper-case method names to avoid CORS problems
+    if (options.method) { options.method = options.method.toUpperCase(); }
+    // workaround: allow api to return 204 - https://github.com/lexich/redux-api/issues/63
+    return fetch(url, options).then((resp) => {
+      if (resp.status !== 204) {
+        return resp.json();
+      }
+      // @todo handle errors
+    });
+  }
 }
 
 function icrudTransformer(data, prevData, action) {
@@ -79,6 +86,6 @@ export default reduxApi({
     transformer: icrudTransformer,
     helpers: crudHelpers
   }
-}).use('fetch', adapterFetch(restFetch))
+}).use('fetch', restFetch(fetch))
   .use('options', options)
   .use('rootUrl', rootUrl);

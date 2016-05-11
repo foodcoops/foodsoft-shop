@@ -40,12 +40,25 @@ class Orders extends React.Component {
   }
 
   _onChangeAmount(oa, goa, what, value) {
-    // @todo move order_articles.get() to rest (not sure how yet)
+    // @todo move order_articles.get() call to rest.js (not sure how yet)
+    // @todo perhaps change api to only work with order_article_id and get rid of group_order_articles
     if (goa) {
-      this.props.dispatch(rest.actions.group_order_articles.update(goa.id, {[what]: value}, () => {
-        this.props.dispatch(rest.actions.order_articles.get(goa.order_article_id));
-      }));
-    } else {
+      const goa_q = what === 'quantity' ? Number(value) : goa.quantity;
+      const goa_t = what === 'tolerance' ? Number(value) : goa.tolerance;
+      if (goa_q === 0 && goa_t === 0) {
+        // amounts are zero, destroy it
+        // (we could update it too, but the response would be that it's deleted, we can't understand that response from update)
+        this.props.dispatch(rest.actions.group_order_articles.destroy(goa.id, () => {
+          this.props.dispatch(rest.actions.order_articles.get(goa.order_article_id));
+        }));
+      } else {
+        // update existing group_order_article
+        this.props.dispatch(rest.actions.group_order_articles.update(goa.id, {[what]: value}, () => {
+          this.props.dispatch(rest.actions.order_articles.get(goa.order_article_id));
+        }));
+      }
+    } else if (value && value !== 0) {
+      // no existing group_order_article, create one
       this.props.dispatch(rest.actions.group_order_articles.create({order_article_id: oa.id, [what]: value}, () => {
         this.props.dispatch(rest.actions.order_articles.get(oa.id));
       }));
