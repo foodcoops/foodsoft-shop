@@ -3,11 +3,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
-import {rootUrl} from './rest';
-import rest from './rest';
+import rest, {rootUrl} from './rest';
 import store from './store';
-import Layout from './layout';
-import Orders from './orders';
+
+import Layout from './containers/layout';
+import Orders from './containers/orders';
 
 class App extends React.Component {
   render() {

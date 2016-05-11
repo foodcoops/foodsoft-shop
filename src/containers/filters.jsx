@@ -1,7 +1,15 @@
 import React, {PropTypes} from 'react';
 import {Accordion, ListGroup, ListGroupItem, Panel} from 'react-bootstrap';
 
+import {connect} from 'react-redux';
+import rest from '../rest';
+
 class Filters extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(rest.actions.categories.sync({q: {orders_state_eq: 'open'}}));
+    this.props.dispatch(rest.actions.orders.sync());
+  }
+
   render() {
     let i = 0;
     return (
@@ -27,24 +35,25 @@ class Filters extends React.Component {
     );
   }
 
-  hasOrders() {
-    return !this.props.orders.loading && this.props.orders.data.length > 1;
-  }
   hasCategories() {
     return !this.props.categories.loading && this.props.categories.data.length > 1;
   }
+  hasOrders() {
+    return !this.props.orders.loading && this.props.orders.data.length > 1;
+  }
 
   _onClick(key, value) {
-    if (this.props.onChange) {
-      this.props.onChange(key, value);
-    }
+    this.props.dispatch(rest.actions.order_articles.reset('sync'));
+    this.props.dispatch(rest.actions.order_articles.sync({q: {[`${key}_eq`]: value}}));
   }
 }
 
 Filters.propTypes = {
-  categories: PropTypes.object.isRequired,
   orders: PropTypes.object.isRequired,
-  onChange: PropTypes.func
+  categories: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired
 };
 
-export default Filters;
+export default connect((state) => {
+  return {orders: state.orders, categories: state.categories}
+})(Filters);

@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react';
 import {Glyphicon, Well} from 'react-bootstrap';
 
-import Price from './price';
+import {connect} from 'react-redux';
+
+import Price from '../components/price';
 
 const TotalsBox = ({group_order_articles}) => {
   const total = (group_order_articles.data || []).reduce((sum, goa) => sum + goa.total_price, 0);
@@ -16,10 +18,6 @@ const TotalsBox = ({group_order_articles}) => {
   );
 }
 
-TotalsBox.propTypes = {
-  group_order_articles: PropTypes.object.isRequired,
-};
-
 const styles = {
   container: {
   },
@@ -29,4 +27,10 @@ const styles = {
   }
 }
 
-export default TotalsBox;
+TotalsBox.propTypes = {
+  group_order_articles: PropTypes.object.isRequired,
+};
+
+export default connect((state) => {
+  return {group_order_articles: state.group_order_articles}
+})(TotalsBox);

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import rest from './rest';
+import rest from '../rest';
 import {Navbar, NavbarBrand, Nav, NavItem} from 'react-bootstrap';
 
 class Layout extends React.Component {
@@ -32,7 +32,6 @@ Layout.propTypes = {
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
   }).isRequired,
-  dispatch: PropTypes.func.isRequired
 };
 
 export default connect((state) => {
