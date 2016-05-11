@@ -18,7 +18,7 @@ function UnitBar({unit_quantity, quantity, tolerance, result}) {
       <ProgressBar style={styles.container}>
         <ProgressBar key={1} now={rQuantity * pf} label={rQuantity> 0 ? rQuantity : null} style={styles.normal} />
         <ProgressBar key={2} now={rToleranceClip * pf} label={rToleranceLabel} style={reverse ? styles.lightReverse : styles.light} />
-        <ProgressBar key={3} now={rMissing * pf} label={rMissing} style={styles.text} />
+        <ProgressBar key={3} now={rMissing * pf} label={rMissing > 0 ? rMissing : null} style={styles.text} />
       </ProgressBar>
     </div>
   );

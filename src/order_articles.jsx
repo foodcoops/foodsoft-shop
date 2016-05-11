@@ -124,7 +124,8 @@ const styles = {
     verticalAlign: 'middle',
     paddingLeft: 0,
     fontSize: '90%',
-    color: '#7a7a7a'
+    color: '#7a7a7a',
+    whiteSpace: 'nowrap'
   }
 };
 
