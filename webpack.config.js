@@ -1,3 +1,6 @@
+var webpack = require('webpack');
+var pkg = require('./package.json');
+
 module.exports = {
   entry: './src/index.jsx',
   module: {
@@ -18,5 +21,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'VERSION': JSON.stringify(pkg.version),
+      }
+    })
+  ]
 };

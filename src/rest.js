@@ -8,7 +8,7 @@ export const rootUrl = 'http://localhost:3002/f';
 function options(url, params, getState) {
   const {user: {accessToken}} = getState();
   let headers = {
-    'User-Agent': 'foodsoft-shop', // @todo add version
+    'User-Agent': `${navigator.userAgent} foodsoft-shop/${process.env.VERSION}`,
     'Accept': 'application/json',
     'Content-Type': 'application/json;charset=UTF-8'
   };

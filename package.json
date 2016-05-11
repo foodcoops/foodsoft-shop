@@ -4,7 +4,7 @@
   "description": "Shopping cart component for Foodsoft: web-based software to manage a non-profit food coop.",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server -w -d",
-    "build": "NODE_ENV=production webpack -p && mkdir -p build/css && cp node_modules/bootstrap/dist/css/bootstrap.min.css node_modules/flag-icon-css/css/flag-icon.min.css build/css/ && cp -R node_modules/flag-icon-css/flags build/ && sed 's/node_modules[^\"]*\\/\\([^\"]*\\)\"/css\\/\\1\"/' index.html > build/index.html",
+    "build": "NODE_ENV=production webpack -p --optimize-occurence-order --optimize-dedupe && mkdir -p build/css && cp node_modules/bootstrap/dist/css/bootstrap.min.css node_modules/flag-icon-css/css/flag-icon.min.css build/css/ && cp -R node_modules/flag-icon-css/flags build/ && sed 's/node_modules[^\"]*\\/\\([^\"]*\\)\"/css\\/\\1\"/' index.html > build/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "wvengen <dev-voko@willem.engen.nl>",
