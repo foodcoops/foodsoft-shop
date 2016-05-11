@@ -10,7 +10,7 @@ import OrderArticles from './order_articles';
 class Orders extends React.Component {
   componentDidMount() {
     this.props.dispatch(rest.actions.orders.sync());
-    this.props.dispatch(rest.actions.categories.sync());
+    this.props.dispatch(rest.actions.categories.sync({q: {orders_state_eq: 'open'}}));
     this.props.dispatch(rest.actions.order_articles.sync());
     this.props.dispatch(rest.actions.group_order_articles.sync());
   }
@@ -36,7 +36,7 @@ class Orders extends React.Component {
 
   _onChangeFilter(key, value) {
     this.props.dispatch(rest.actions.order_articles.reset('sync'));
-    this.props.dispatch(rest.actions.order_articles.sync({[`q[${key}_eq]`]: value}));
+    this.props.dispatch(rest.actions.order_articles.sync({q: {[`${key}_eq`]: value}}));
   }
 
   _onChangeAmount(oa, goa, what, value) {
