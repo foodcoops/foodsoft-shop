@@ -62,7 +62,7 @@ class OrderArticles extends React.Component {
                                result={oa.units_to_order * oa.article.unit_quantity}
                                quantity={oa.quantity} tolerance={oa.tolerance} /> : null }
                   </td> : null }
-                <td style={Object.assign(styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
+                <td style={Object.assign({}, styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
                   {hasTolerance ? <span>+ </span> : null}
                   <span>{oa.units_to_order}</span>
                 </td>
