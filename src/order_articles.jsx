@@ -48,7 +48,7 @@ class OrderArticles extends React.Component {
                       <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
                                   onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
                   </td> : null }
-                <td style={styles.priceWithSep}>{goa ? <Price value={oa.price * goa.quantity} /> : null}</td>
+                <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
                 {anyTolerance ?
                   <td style={styles.unitBar}>{hasTolerance ?
                       <UnitBar unit_quantity={oa.article.unit_quantity}

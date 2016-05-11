@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import rest from './rest';
 
 import Filters from './filters';
+import TotalsBox from './totals_box';
 import OrderArticles from './order_articles';
 
 class Orders extends React.Component {
@@ -19,6 +20,8 @@ class Orders extends React.Component {
     return (
       <Row>
         <Col md={3}>
+          <TotalsBox
+            group_order_articles={this.props.group_order_articles} />
           <Filters
             orders={this.props.orders}
             categories={this.props.categories}
