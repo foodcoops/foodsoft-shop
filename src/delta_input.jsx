@@ -20,7 +20,7 @@ function DeltaInput({value, min, max, delta, onChange}) {
       </InputGroup.Button>
       <FormControl type='text' value={value} onChange={(e) => onDelta(e.target.value, min, max, onChange, e)} style={styles.input} />
       <InputGroup.Button>
-        <Button onClick={(e) => onDelta((value||0)-delta, min, max, onChange, e)} disabled={min !== null && value >= max} style={styles.button}>
+        <Button onClick={(e) => onDelta((value||0)-delta, min, max, onChange, e)} disabled={min !== null && value <= min} style={styles.button}>
           <Glyphicon glyph='minus' style={styles.icon} />
         </Button>
       </InputGroup.Button>
