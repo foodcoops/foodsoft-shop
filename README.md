@@ -57,6 +57,7 @@ Though this software is not fully finished, you could try running it if you're i
 
    ```sh
    $ git clone https://github.com/foodcoops/foodsoft-shop.git
+   $ cd foodsoft-shop
    $ npm install
    ```
 
