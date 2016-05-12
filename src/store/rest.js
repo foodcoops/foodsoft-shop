@@ -1,6 +1,6 @@
 import reduxApi, {transformers} from 'redux-api';
-import OAuth from './oauth';
-import {appName, appVersion, foodsoftUrl} from './config';
+import OAuth from '../oauth';
+import {appName, appVersion, foodsoftUrl} from '../config';
 
 // @see https://github.com/lexich/redux-api/issues/25
 function options(url, params, getState) {

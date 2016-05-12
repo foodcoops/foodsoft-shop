@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 
 import OAuth from './oauth';
-import store from './store';
+import store from './store/store';
 
 import Layout from './containers/layout';
 import Orders from './containers/orders';

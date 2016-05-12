@@ -2,7 +2,8 @@ import React, {PropTypes} from 'react';
 import {Accordion, ListGroup, ListGroupItem, Panel} from 'react-bootstrap';
 
 import {connect} from 'react-redux';
-import rest from '../rest';
+import rest from '../store/rest';
+import filter from '../store/filter';
 
 class Filters extends React.Component {
   componentDidMount() {
@@ -28,7 +29,8 @@ class Filters extends React.Component {
       <Panel eventKey={key} header={title}>
         <ListGroup fill>
           {items.map((item) => (
-            <ListGroupItem key={item.id} href='#' onClick={this._onClick.bind(this, id, item.id)}>{item.name}</ListGroupItem>
+            <ListGroupItem key={item.id} href='#' active={this.props.filter[`${id}_eq`] === item.id}
+                           onClick={this._onClick.bind(this, id, item.id)}>{item.name}</ListGroupItem>
           ))}
         </ListGroup>
       </Panel>
@@ -43,8 +45,7 @@ class Filters extends React.Component {
   }
 
   _onClick(key, value) {
-    this.props.dispatch(rest.actions.order_articles.reset('sync'));
-    this.props.dispatch(rest.actions.order_articles.sync({q: {[`${key}_eq`]: value}}));
+    this.props.dispatch(filter.actions.replace({[`${key}_eq`]: value}));
   }
 }
 
@@ -55,5 +56,5 @@ Filters.propTypes = {
 };
 
 export default connect((state) => {
-  return {orders: state.orders, categories: state.categories}
+  return {filter: state.filter, orders: state.orders, categories: state.categories};
 })(Filters);

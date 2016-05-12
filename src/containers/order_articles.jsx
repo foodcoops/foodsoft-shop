@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {Table} from 'react-bootstrap';
 
 import {connect} from 'react-redux';
-import rest from '../rest';
+import rest from '../store/rest';
 
 import CountryIcon from '../components/country_icon';
 import Price from '../components/price';

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
-import rest from '../rest';
+import rest from '../store/rest';
 import {Navbar, NavbarBrand, Nav, NavItem} from 'react-bootstrap';
 
 class Layout extends React.Component {
