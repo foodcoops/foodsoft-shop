@@ -1,4 +1,5 @@
 import reduxApi, {transformers} from 'redux-api';
+import {request} from './oauth';
 
 // default development url
 // @todo get from some config
@@ -24,10 +25,17 @@ function restFetch(fetch) {
     if (options.method) { options.method = options.method.toUpperCase(); }
     // workaround: allow api to return 204 - https://github.com/lexich/redux-api/issues/63
     return fetch(url, options).then((resp) => {
-      if (resp.status !== 204) {
-        return resp.json();
+      if (resp.status >= 200 && resp.status < 300) {
+        if (resp.status !== 204) {
+          return resp.json();
+        }
+      } else if (resp.status === 401) {
+        // need (re-)authentication
+        request(); // todo add current route as argument
+        // unreachable code
+      } else {
+        // @todo handle errors
       }
-      // @todo handle errors
     });
   }
 }
