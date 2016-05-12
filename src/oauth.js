@@ -1,21 +1,20 @@
 import {Provider, Request} from 'oauth2-client-js';
-import rest, {rootUrl} from './rest';
+import {foodsoftUrl, foodsoftClientId} from './config';
 
 export default class OAuthProvider {
 
   constructor(rootUrl, clientId) {
     this._provider = new Provider({
       id: 'foodsoft',
-      authorization_url: rootUrl + '/oauth/authorize',
+      authorization_url: foodsoftUrl + '/oauth/authorize',
     });
-    this._clientId = clientId;
     this._metadata = null;
   }
 
   request(href = window.location.href) {
     const parts = href.split('#', 1);
     const request = new Request({
-      client_id: this._clientId,
+      client_id: foodsoftClientId,
       redirect_uri: parts[0],
       metadata: parts[1], // remember current location
     });
@@ -26,18 +25,16 @@ export default class OAuthProvider {
 
   respond(hash = window.location.hash) {
     if (!hash) { return; }
-    const response = this._provider.parse(hash);
-    if (!response) { return; }
-    this._metadata = response.metadata;
-    return response;
+    try {
+      const response = this._provider.parse(hash);
+      if (!response) { return; }
+      window.location.hash = response._metadata || ''; // restore current location
+      return response;
+    } catch(e) { /* it's ok if no access_token is found */ }
   }
 
   getAccessToken() {
     return this._provider.getAccessToken();
-  }
-
-  getMetadata() {
-    return this._metadata;
   }
 
 }

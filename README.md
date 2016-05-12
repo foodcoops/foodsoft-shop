@@ -17,3 +17,63 @@ _Revamped member ordering pages_ to the main Foodsoft repository in a clean way.
 
 ![screenshot](screenshot.png)
 
+
+## Getting started
+
+Though this software is not fully finished, you could try running it if you're interested.
+
+1. Install the [API-fork](https://github.com/wvengen/foodsoft/tree/feature/rest-for-shop) of Foodsoft for development.
+   For full instructions, see [the instructions](https://github.com/wvengen/foodsoft/blob/feature/rest-for-shop/doc/SETUP_DEVELOPMENT.md),
+   but if you already have MySQL and Ruby on Rails running, this may be enough:
+
+   ```sh
+   $ git clone https://github.com/wvengen/foodsoft -b feature/rest-for-shop
+   $ cd foodsoft
+   $ bundle install
+   $ rake foodsoft:setup-development
+   $ bundle exec rails s
+   ```
+
+   In case you have an existing Foodsoft installation, the following would be more suitable:
+
+   ```sh
+   $ git remote add wvengen https://github.com/wvengen/foodsoft.git
+   $ git fetch wvengen
+   $ git checkout feature/rest-for-shop
+   $ bundle install
+   $ rake db:migrate
+   $ bundle exec rails s
+   ```
+
+2. Obtain an application secret.
+
+  * Log into Foodsoft as an admin
+  * Go to _Administration_ &gt; _Configuration_ &gt; _Apps_ (right of screen)
+  * Press the button _New Application_
+  * Fill in any name, and put `http://localhost:8080/` in _Redirect URI_, then _Submit_.
+  * Click the application name, and take note of the _Application Id_, this is the OAuth client id.
+
+2. Install this app. You'll need [node.js](https://nodejs.org/), since this is a Javascript application:
+
+   ```sh
+   $ git clone https://github.com/foodcoops/foodsoft-shop.git
+   $ npm install
+   ```
+
+3. Create the file `local.js` in the foodsoft-shop directory with contents:
+
+   ```javascript
+   window.foodsoftClientId = '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
+   ```
+
+   Replace `12345...` with the OAuth client id you obtained before. And if you happen to run Foodsoft
+   on a different port or url, you can set `window.foodsoftUrl` to the url (incl. foodcoop scope).
+
+4. Start the app
+
+   ```sh
+   $ npm start
+   ```
+
+   and open http://localhost:8080/
+

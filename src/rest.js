@@ -1,15 +1,12 @@
 import reduxApi, {transformers} from 'redux-api';
-import {request} from './oauth';
-
-// default development url
-// @todo get from some config
-export const rootUrl = 'http://localhost:3002/f';
+import OAuth from './oauth';
+import {appName, appVersion, foodsoftUrl} from './config';
 
 // @see https://github.com/lexich/redux-api/issues/25
 function options(url, params, getState) {
   const {user: {accessToken}} = getState();
   let headers = {
-    'User-Agent': `${navigator.userAgent} foodsoft-shop/${process.env.VERSION}`,
+    'User-Agent': `${navigator.userAgent} ${appName}/${appVersion}`,
     'Accept': 'application/json',
     'Content-Type': 'application/json;charset=UTF-8'
   };
@@ -31,7 +28,7 @@ function restFetch(fetch) {
         }
       } else if (resp.status === 401) {
         // need (re-)authentication
-        request(); // todo add current route as argument
+        new OAuth().request();
         // unreachable code
       } else {
         // @todo handle errors
@@ -96,4 +93,4 @@ export default reduxApi({
   }
 }).use('fetch', restFetch(fetch))
   .use('options', options)
-  .use('rootUrl', rootUrl);
+  .use('rootUrl', foodsoftUrl);
