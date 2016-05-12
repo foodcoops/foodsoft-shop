@@ -5,10 +5,11 @@ import rest from './rest';
 /** Actions **/
 
 const syncOrderArticles = (dispatch, getState) => {
-  const filter = getState().filter;
+  const {page, ...filter} = getState().filter;
+  const params = page ? {q: filter, page} : {q: filter};
   // @todo something like window.location.hash = '?' + stringify(filter);
   dispatch(rest.actions.order_articles.reset('sync'));
-  dispatch(rest.actions.order_articles.sync({q: filter}));
+  dispatch(rest.actions.order_articles.sync(params));
 };
 
 const clear = () => replace({});
@@ -18,7 +19,7 @@ const replace = (filter) => (dispatch, getState) => {
   syncOrderArticles(dispatch, getState);
 };
 
-const update = (filter) => (dispatch, getState) => {
+const update = (filter = {}) => (dispatch, getState) => {
   dispatch({type: 'UPDATE_FILTER', data: filter});
   syncOrderArticles(dispatch, getState);
 };

@@ -1,8 +1,9 @@
 import React, {PropTypes} from 'react';
-import {Table} from 'react-bootstrap';
+import {Pagination, Table} from 'react-bootstrap';
 
 import {connect} from 'react-redux';
 import rest from '../store/rest';
+import filter from '../store/filter';
 
 import CountryIcon from '../components/country_icon';
 import Price from '../components/price';
@@ -13,7 +14,7 @@ import UnitBar from '../components/unit_bar';
 class OrderArticles extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(rest.actions.order_articles.sync());
+    this.props.dispatch(filter.actions.update());
     this.props.dispatch(rest.actions.group_order_articles.sync());
   }
 
@@ -21,56 +22,63 @@ class OrderArticles extends React.Component {
     if (!this.props.order_articles.data) { return <div />; }
     const anyTolerance = !!this.props.order_articles.data.find((oa) => oa.article.unit_quantity > 1);
     return (
-      <Table hover>
-        <thead>
-          <tr>
-            <th style={styles.name}>Name</th>
-            <th style={styles.country} />
-            <th style={styles.unit}>Unit</th>
-            <th style={styles.priceWithSep}>Price</th>
-            <th style={styles.amount}>Amount</th>
-            {anyTolerance ? <th style={styles.amount}>Extra</th> : null}
-            <th style={styles.priceWithSep}>Total</th>
-            {anyTolerance ?
-              <th style={styles.boxesHeading} colSpan={2}>Everyone</th> :
-              <th style={styles.boxesHeading}>All</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.order_articles.data.map((oa) => {
-            const hasTolerance = oa.article.unit_quantity > 1;
-            const goa = (this.props.group_order_articles.data||[]).find((goa) => goa.order_article_id == oa.id);
-            return (
-              <tr key={oa.id}>
-                <td style={styles.name}>{oa.article.name}</td>
-                <td style={styles.country}><CountryIcon code={oa.article.origin} /></td>
-                <td style={styles.unit}>{oa.article.unit}</td>
-                <td style={styles.priceWithSep}><Price value={oa.price} /></td>
-                <td style={styles.amount}>
-                  <DeltaInput value={goa ? goa.quantity : 0} min={0}
-                              onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
-                </td>
-                {anyTolerance ?
-                  <td style={styles.amount}>{hasTolerance ?
-                      <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
-                                  onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
-                  </td> : null }
-                <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
-                {anyTolerance ?
-                  <td style={styles.unitBar}>{hasTolerance ?
-                      <UnitBar unit_quantity={oa.article.unit_quantity}
-                               result={oa.units_to_order * oa.article.unit_quantity}
-                               quantity={oa.quantity} tolerance={oa.tolerance} /> : null }
-                  </td> : null }
-                <td style={Object.assign({}, styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
-                  {hasTolerance ? <span>+ </span> : null}
-                  <span>{oa.units_to_order}</span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+      <div style={styles.container}>
+        <Table hover>
+          <thead>
+            <tr>
+              <th style={styles.name}>Name</th>
+              <th style={styles.country} />
+              <th style={styles.unit}>Unit</th>
+              <th style={styles.priceWithSep}>Price</th>
+              <th style={styles.amount}>Amount</th>
+              {anyTolerance ? <th style={styles.amount}>Extra</th> : null}
+              <th style={styles.priceWithSep}>Total</th>
+              {anyTolerance ?
+                <th style={styles.boxesHeading} colSpan={2}>Everyone</th> :
+                <th style={styles.boxesHeading}>All</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.order_articles.data.map((oa) => {
+              const hasTolerance = oa.article.unit_quantity > 1;
+              const goa = (this.props.group_order_articles.data||[]).find((goa) => goa.order_article_id == oa.id);
+              return (
+                <tr key={oa.id}>
+                  <td style={styles.name}>{oa.article.name}</td>
+                  <td style={styles.country}><CountryIcon code={oa.article.origin} /></td>
+                  <td style={styles.unit}>{oa.article.unit}</td>
+                  <td style={styles.priceWithSep}><Price value={oa.price} /></td>
+                  <td style={styles.amount}>
+                    <DeltaInput value={goa ? goa.quantity : 0} min={0}
+                                onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
+                  </td>
+                  {anyTolerance ?
+                    <td style={styles.amount}>{hasTolerance ?
+                        <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
+                                    onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
+                    </td> : null }
+                  <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
+                  {anyTolerance ?
+                    <td style={styles.unitBar}>{hasTolerance ?
+                        <UnitBar unit_quantity={oa.article.unit_quantity}
+                                 result={oa.units_to_order * oa.article.unit_quantity}
+                                 quantity={oa.quantity} tolerance={oa.tolerance} /> : null }
+                    </td> : null }
+                  <td style={Object.assign({}, styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
+                    {hasTolerance ? <span>+ </span> : null}
+                    <span>{oa.units_to_order}</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+        {false /* @todo if number of pages > 1 */ ?
+          <div style={styles.pagination}>
+            <Pagination items={20} maxButtons={10} boundaryLinks
+                        activePage={this.props.filter.page || 1} onSelect={(page) => this._onChangePage(page)} />
+          </div> : null }
+      </div>
     );
   }
 
@@ -99,6 +107,11 @@ class OrderArticles extends React.Component {
       }));
     }
   }
+
+  _onChangePage(page) {
+    this.props.dispatch(filter.actions.update({page: page}));
+  }
+
 }
 
 const styles = {
@@ -147,6 +160,10 @@ const styles = {
     fontSize: '90%',
     color: '#7a7a7a',
     whiteSpace: 'nowrap'
+  },
+  pagination: {
+    width: '100%',
+    textAlign: 'center'
   }
 };
 
@@ -157,5 +174,5 @@ OrderArticles.propTypes = {
 };
 
 export default connect((state) => {
-  return {order_articles: state.order_articles, group_order_articles: state.group_order_articles}
+  return {filter: state.filter, order_articles: state.order_articles, group_order_articles: state.group_order_articles}
 })(OrderArticles);

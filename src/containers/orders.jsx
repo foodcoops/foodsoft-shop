@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import {Col, Row, Well} from 'react-bootstrap';
 
+import filter from '../store/filter';
+
 import Filters from './filters';
 import OrderArticles from './order_articles';
 import TotalsBox from './totals_box';
