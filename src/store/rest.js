@@ -18,8 +18,6 @@ function options(url, params, getState) {
 
 function restFetch(fetch) {
   return function(url, options) {
-    // workaround: use upper-case method names to avoid CORS problems
-    if (options.method) { options.method = options.method.toUpperCase(); }
     // workaround: allow api to return 204 - https://github.com/lexich/redux-api/issues/63
     return fetch(url, options).then((resp) => {
       if (resp.status >= 200 && resp.status < 300) {
