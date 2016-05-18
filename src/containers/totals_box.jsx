@@ -6,7 +6,8 @@ import {connect} from 'react-redux';
 import Price from '../components/price';
 
 const TotalsBox = ({group_order_articles}) => {
-  const total = (group_order_articles.data || []).reduce((sum, goa) => sum + goa.total_price, 0);
+  const goas = group_order_articles.data.data || [];
+  const total = goas.reduce((sum, goa) => sum + goa.total_price, 0);
   return (
     <a href='#'>
       <Well bsSize='sm' style={styles.container}>

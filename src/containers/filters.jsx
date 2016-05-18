@@ -17,9 +17,9 @@ class Filters extends React.Component {
       <Accordion defaultActiveKey={1}>
         {this.hasCategories() ?
             // @todo move knowledge of search param key to rest.js
-            this._renderPanel('article_article_category_id', i += 1, "Categories", this.props.categories.data) : null}
+            this._renderPanel('article_article_category_id', i += 1, "Categories", this.props.categories.data.data) : null}
         {this.hasOrders() ?
-            this._renderPanel('order_id', i += 1, "Suppliers", this.props.orders.data) : null}
+            this._renderPanel('order_id', i += 1, "Suppliers", this.props.orders.data.data) : null}
       </Accordion>
     );
   }
@@ -38,10 +38,10 @@ class Filters extends React.Component {
   }
 
   hasCategories() {
-    return !this.props.categories.loading && this.props.categories.data.length > 1;
+    return this.props.categories.data.data && this.props.categories.data.data.length > 1;
   }
   hasOrders() {
-    return !this.props.orders.loading && this.props.orders.data.length > 1;
+    return this.props.orders.data.data && this.props.orders.data.data.length > 1;
   }
 
   _onClick(key, value) {

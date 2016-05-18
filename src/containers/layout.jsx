@@ -14,8 +14,8 @@ class Layout extends React.Component {
         <Navbar>
           <NavbarBrand>Foodsoft shop</NavbarBrand>
           <Nav pullRight>
-            {this.props.user.data.id ?
-              <NavItem href="#">{this.props.user.data.name}</NavItem> :
+            {this.props.user.data.data ?
+              <NavItem href="#">{this.props.user.data.data.name}</NavItem> :
               <NavItem href="#">Login</NavItem>}
           </Nav>
         </Navbar>

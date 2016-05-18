@@ -19,8 +19,9 @@ class OrderArticles extends React.Component {
   }
 
   render() {
-    if (!this.props.order_articles.data) { return <div />; }
-    const anyTolerance = !!this.props.order_articles.data.find((oa) => oa.article.unit_quantity > 1);
+    if (!this.props.order_articles.data.data) { return <div />; }
+    const goas = this.props.group_order_articles.data.data || [];
+    const anyTolerance = !!this.props.order_articles.data.data.find((oa) => oa.article.unit_quantity > 1);
     return (
       <div style={styles.container}>
         <Table hover>
@@ -39,9 +40,9 @@ class OrderArticles extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.order_articles.data.map((oa) => {
+            {this.props.order_articles.data.data.map((oa) => {
               const hasTolerance = oa.article.unit_quantity > 1;
-              const goa = (this.props.group_order_articles.data||[]).find((goa) => goa.order_article_id == oa.id);
+              const goa = goas.find((goa) => goa.order_article_id == oa.id);
               return (
                 <tr key={oa.id}>
                   <td style={styles.name}>{oa.article.name}</td>
@@ -73,9 +74,10 @@ class OrderArticles extends React.Component {
             })}
           </tbody>
         </Table>
-        {false /* @todo if number of pages > 1 */ ?
+        {this.props.order_articles.data.meta && this.props.order_articles.data.meta.total_pages > 1 ?
           <div style={styles.pagination}>
-            <Pagination items={20} maxButtons={10} boundaryLinks
+            <Pagination items={this.props.order_articles.data.meta.total_pages} maxButtons={10} boundaryLinks
+                        prev={true} next={true}
                         activePage={this.props.filter.page || 1} onSelect={(page) => this._onChangePage(page)} />
           </div> : null }
       </div>
