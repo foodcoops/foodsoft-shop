@@ -4,6 +4,7 @@ import {Col, Row, Well} from 'react-bootstrap';
 import filter from '../store/filter';
 
 import Filters from './filters';
+import OrdersTitle from './orders_title';
 import OrderArticles from './order_articles';
 import TotalsBox from './totals_box';
 
@@ -17,6 +18,7 @@ class Orders extends React.Component {
           <Filters />
         </Col>
         <Col md={9}>
+          <OrdersTitle />
           <OrderArticles />
         </Col>
       </Row>

@@ -30,6 +30,8 @@ module.exports = {
         'APP_VERSION': JSON.stringify(pkg.version),
         'APP_NAME': JSON.stringify(pkg.name),
       }
-    })
+    }),
+    // save space by removing locales that Foodsoft doesn't support anyway - http://stackoverflow.com/a/25426019/2866660
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(en|de|nl|de|fr|es|hu)\./)
   ]
 };

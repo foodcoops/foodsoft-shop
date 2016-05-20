@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Button, FormGroup, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
 
-import _ from 'lodash';
+import {debounce} from 'lodash';
 
 class SearchBox extends React.Component {
 
@@ -13,7 +13,7 @@ class SearchBox extends React.Component {
       typing: false,
     };
 
-    this._onChangeDebounced = _.debounce(this._onChangeDebouncedHandler, 350);
+    this._onChangeDebounced = debounce(this._onChangeDebouncedHandler, 350);
   }
 
   render() {
