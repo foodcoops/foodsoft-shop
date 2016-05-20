@@ -18,9 +18,10 @@ class SearchBox extends React.Component {
 
   render() {
     const active = this.props.active === true;
+    const value = this.state.typing ? this.state.value : this.props.value
     return (
       <FormGroup onChange={this._onChange.bind(this)} className={this.props.className} style={this.props.style}>
-        <FormControl value={this.state.typing ? this.state.value : this.props.value} placeholder='Search ...'/>
+        <FormControl value={value || ''} placeholder='Search ...'/>
         <FormControl.Feedback>
           <Glyphicon glyph='search' className={active ? 'text-primary' : null} style={active ? styles.iconActive : styles.iconNormal}/>
         </FormControl.Feedback>
