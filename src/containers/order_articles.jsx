@@ -50,7 +50,7 @@ class OrderArticles extends React.Component {
                   <td style={styles.unit}>{oa.article.unit}</td>
                   <td style={styles.priceWithSep}><Price value={oa.price} /></td>
                   <td style={styles.amount}>
-                    <DeltaInput value={goa ? goa.quantity : 0} min={0}
+                    <DeltaInput value={goa ? goa.quantity : 0} min={0} max={oa.article.quantity_available}
                                 color={this._colorQuantity(goa)}
                                 onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
                   </td>
