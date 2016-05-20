@@ -51,11 +51,13 @@ class OrderArticles extends React.Component {
                   <td style={styles.priceWithSep}><Price value={oa.price} /></td>
                   <td style={styles.amount}>
                     <DeltaInput value={goa ? goa.quantity : 0} min={0}
+                                color={this._colorQuantity(goa)}
                                 onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
                   </td>
                   {anyTolerance ?
                     <td style={styles.amount}>{hasTolerance ?
                         <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
+                                    color={this._colorTolerance(goa)}
                                     onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
                     </td> : null }
                   <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
@@ -114,6 +116,18 @@ class OrderArticles extends React.Component {
     this.props.dispatch(filter.actions.update({page: page}));
   }
 
+  _colorQuantity(goa) {
+    if (goa && goa.order_article_id === 58) { console.log(goa); }
+    if (!goa || goa.quantity <= 0)  { return '#555'; }
+    if (goa.result === 0)           { return '#d50'; }
+    if (goa.result < goa.quantity)  { return '#933'; }
+    return '#080';
+  }
+
+  _colorTolerance(goa) {
+    if (!goa || goa.tolerance <= 0) { return '#555'; }
+    return null;
+  }
 }
 
 const styles = {

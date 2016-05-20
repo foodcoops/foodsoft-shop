@@ -10,7 +10,7 @@ function onDelta(value, min, max, onChange, event) {
   return true;
 }
 
-function DeltaInput({value, min, max, delta, onChange}) {
+function DeltaInput({value, min, max, delta, color, onChange}) {
   return (
     <InputGroup>
       <InputGroup.Button>
@@ -18,7 +18,7 @@ function DeltaInput({value, min, max, delta, onChange}) {
           <Glyphicon glyph='plus' style={styles.icon} />
         </Button>
       </InputGroup.Button>
-      <FormControl type='text' value={value} onChange={(e) => onDelta(e.target.value, min, max, onChange, e)} style={styles.input} />
+      <FormControl type='text' value={value} onChange={(e) => onDelta(e.target.value, min, max, onChange, e)} style={{color: color || 'black', ...styles.input}} />
       <InputGroup.Button>
         <Button onClick={(e) => onDelta((value||0)-delta, min, max, onChange, e)} disabled={min !== null && value <= min} style={styles.button}>
           <Glyphicon glyph='minus' style={styles.icon} />
@@ -33,11 +33,13 @@ DeltaInput.propTypes = {
   min: React.PropTypes.number,
   max: React.PropTypes.number,
   delta: React.PropTypes.number.isRequired,
+  color: React.PropTypes.string,
   onChange: React.PropTypes.func,
 };
 
 DeltaInput.defaultProps = {
   delta: 1,
+  color: null,
   min: null,
   max: null,
   onChange: null
