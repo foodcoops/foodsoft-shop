@@ -15,7 +15,7 @@ class OrderArticles extends React.Component {
 
   componentDidMount() {
     this.props.dispatch(filter.actions.update());
-    this.props.dispatch(rest.actions.group_order_articles.sync());
+    this.props.dispatch(rest.actions.group_order_articles.sync({per_page: -1})); // get all
   }
 
   render() {
