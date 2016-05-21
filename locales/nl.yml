@@ -1,6 +1,8 @@
 nl:
   filters:
+    days_short: '%{count}d'
     categories: Categoriën
+    order_open_until: Open tot %{ends}
     orders: Leveranciers
   order_articles:
     name: Naam

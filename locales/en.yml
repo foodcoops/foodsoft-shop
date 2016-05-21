@@ -1,6 +1,8 @@
 en:
   filters:
+    days_short: '%{count}d'
     categories: Categories
+    order_open_until: Open until %{ends}
     orders: Suppliers
   order_articles:
     name: Name
