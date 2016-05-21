@@ -11,7 +11,7 @@ en:
     sum: Sum
     everyone: Everyone
     everyone_short: All
-  orders_messages:
+  orders_boxfill_notice:
     boxfill1:
       one: The order for '%{order}' is currently in the reduce shortages phase.
       some: The orders for some suppliers are currently in the reduce shortages phase.

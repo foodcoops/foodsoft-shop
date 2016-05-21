@@ -4,7 +4,7 @@ import {Alert} from 'react-bootstrap'
 import {connect} from 'react-redux';
 
 import i18n, {t} from 'i18n';
-const T = (s, opts) => t('orders_messages.'+s, opts);
+const T = (s, opts) => t('orders_boxfill_notice.'+s, opts);
 
 const OrdersBoxfillNotice = ({orders}) => {
   if (!orders.data.data) { return null; }
