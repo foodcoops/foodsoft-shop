@@ -17,6 +17,7 @@ en:
       since: 'closed since %{date}'
       expect_since: 'was expected to close %{date}'
       partly: 'partly closed, last closing %{date}'
+      partly_expect_since: 'was expected to be partly closed, last closing %{date}'
     title: My current order
   totals_box:
     total: Total

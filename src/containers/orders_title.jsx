@@ -25,6 +25,7 @@ const closingDesc = (orders) => {
   // @todo move to separate file, and test properly
   if (!orders.sync) { return; }
   const hasOpen = !!orders.data.data.find((o) => o.is_open);
+  const hasClosed = !!orders.data.data.find((o) => !o.is_open);
   const dates = uniq(orders.data.data.map((o) => moment(o.ends).second(0)).filter((o) => o.isValid()).sort());
   const T = (s, opts) => t('orders_title.sub.'+s, opts);
 
@@ -49,8 +50,13 @@ const closingDesc = (orders) => {
     return T('closing', {date: from.toNow()});
   }
   if (from < moment() && to > moment()) {
-    // some orders have closed, others haven't yet
-    return T('partly', {date: to.fromNow()});
+    if (hasClosed) {
+      // some orders have closed, others haven't yet
+      return T('partly', {date: to.fromNow()});
+    } else {
+      // some orders would have expected to be closed, others not yet
+      return T('partly_expect_since', {date: to.fromNow()});
+    }
   }
 
   // all orders are currently open and there is a date range
