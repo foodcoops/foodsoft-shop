@@ -6,6 +6,9 @@ import rest from '../store/rest';
 import filter from '../store/filter';
 import SearchBox from '../components/search_box';
 
+import {t} from 'i18n';
+const T = (s, opts) => t('filters.'+s, opts);
+
 class Filters extends React.Component {
 
   componentDidMount() {
@@ -23,9 +26,9 @@ class Filters extends React.Component {
         <Accordion defaultActiveKey={1}>
           {this.hasCategories() ?
               // @todo move knowledge of search param key to rest.js
-              this._renderPanel('article_article_category_id', i += 1, "Categories", this.props.categories.data.data) : null}
+              this._renderPanel('article_article_category_id', i += 1, T('categories'), this.props.categories.data.data) : null}
           {this.hasOrders() ?
-              this._renderPanel('order_id', i += 1, "Suppliers", this.props.orders.data.data) : null}
+              this._renderPanel('order_id', i += 1, T('orders'), this.props.orders.data.data) : null}
         </Accordion>
       </div>
     );

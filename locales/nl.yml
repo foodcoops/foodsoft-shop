@@ -1,0 +1,22 @@
+nl:
+  filters:
+    categories: Categoriën
+    orders: Leveranciers
+  order_articles:
+    name: Naam
+    unit: Eenheid
+    price: Prijs
+    amount: Aantal
+    extra: Extra
+    sum: Som
+    everyone: Iedereen
+    everyone_short: Allen
+  orders_title:
+    sub:
+      closing: 'sluit %{date}'
+      since: 'gesloten sinds %{date}'
+      expect_since: 'zou %{date} sluiten'
+      partly: 'deels gesloten, deels open tot %{date}'
+    title: Mijn huidige bestelling
+  totals_box:
+    total: Totaal

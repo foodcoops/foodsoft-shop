@@ -1,3 +1,4 @@
+import {t} from 'i18n';
 import React, {PropTypes} from 'react';
 import {Pagination, Table} from 'react-bootstrap';
 
@@ -27,16 +28,16 @@ class OrderArticles extends React.Component {
         <Table hover>
           <thead>
             <tr>
-              <th style={styles.name}>Name</th>
+              <th style={styles.name}>{t('order_articles.name')}</th>
               <th style={styles.country} />
-              <th style={styles.unit}>Unit</th>
-              <th style={styles.priceWithSep}>Price</th>
-              <th style={styles.amount}>Amount</th>
-              {anyTolerance ? <th style={styles.amount}>Extra</th> : null}
-              <th style={styles.priceWithSep}>Total</th>
+              <th style={styles.unit}>{t('order_articles.unit')}</th>
+              <th style={styles.priceWithSep}>{t('order_articles.price')}</th>
+              <th style={styles.amount}>{t('order_articles.amount')}</th>
+              {anyTolerance ? <th style={styles.amount}>{t('order_articles.extra')}</th> : null}
+              <th style={styles.priceWithSep}>{t('order_articles.sum')}</th>
               {anyTolerance ?
-                <th style={styles.boxesHeading} colSpan={2}>Everyone</th> :
-                <th style={styles.boxesHeading}>All</th>}
+                <th style={styles.boxesHeading} colSpan={2}>{t('order_articles.everyone')}</th> :
+                <th style={styles.boxesHeading}>{t('order_articles.everyone_short')}</th>}
             </tr>
           </thead>
           <tbody>

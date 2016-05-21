@@ -78,3 +78,8 @@ Though this software is not fully finished, you could try running it if you're i
 
    and open http://localhost:8080/
 
+
+## Notes
+
+* To change the language, modify it `index.html`'s `<html lang="en">` tag ([webpack plugin](https://github.com/chrome/webpack-rails-i18n-js-plugin)).
+

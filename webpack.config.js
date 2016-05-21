@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var I18nPlugin = require('webpack-rails-i18n-js-plugin');
 var pkg = require('./package.json');
 
 module.exports = {
@@ -30,6 +31,9 @@ module.exports = {
         'APP_VERSION': JSON.stringify(pkg.version),
         'APP_NAME': JSON.stringify(pkg.name),
       }
+    }),
+    new I18nPlugin({
+      localesPath: `${__dirname}/locales`
     }),
     // save space by removing locales that Foodsoft doesn't support anyway - http://stackoverflow.com/a/25426019/2866660
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(en|de|nl|de|fr|es|hu)\./)

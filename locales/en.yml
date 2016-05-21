@@ -1,0 +1,22 @@
+en:
+  filters:
+    categories: Categories
+    orders: Suppliers
+  order_articles:
+    name: Name
+    unit: Unit
+    price: Price
+    amount: Amount
+    extra: Extra
+    sum: Sum
+    everyone: Everyone
+    everyone_short: All
+  orders_title:
+    sub:
+      closing: 'closing %{date}'
+      since: 'closed since %{date}'
+      expect_since: 'was expected to close %{date}'
+      partly: 'partly closed, last closing %{date}'
+    title: My current order
+  totals_box:
+    total: Total

@@ -6,13 +6,16 @@ import twix from 'twix';
 import {uniq} from 'lodash';
 import {connect} from 'react-redux';
 
+import i18n, {t} from 'i18n';
+const T = (s, opts) => t('orders_title.'+s, opts);
+
 const OrdersTitle = ({orders, filter}) => {
   // @todo update filters only after store was updated to avoid title update before articles update
   if (filter.ordered != 'member') { return null; }
   return (
     <h2 style={styles.container}>
       <Glyphicon glyph='shopping-cart' style={styles.icon} />
-      My current order
+      {T('title')}
       <small style={styles.closingDesc}>{closingDesc(orders)}</small>
     </h2>
   );
@@ -23,6 +26,7 @@ const closingDesc = (orders) => {
   if (!orders.sync) { return; }
   const hasOpen = !!orders.data.data.find((o) => o.is_open);
   const dates = uniq(orders.data.data.map((o) => moment(o.ends).second(0)).filter((o) => o.isValid()).sort());
+  const T = (s, opts) => t('orders_title.sub.'+s, opts);
 
   // @todo get timezone from settings
   if (dates.length === 0) {
@@ -34,24 +38,24 @@ const closingDesc = (orders) => {
   if (to <= moment()) {
     if (!hasOpen) {
       // all orders were closed in the past
-      return `closed since ${to.fromNow(true)}`;
+      return T('since', {date: to.fromNow(true)});
     } else {
       // all orders were supposed to have closed in the past
-      return `was expected to close ${to.fromNow()}`;
+      return T('expect_since', {date: to.fromNow()});
     }
   }
   if (from === to || from.toNow() === to.fromNow()) {
     // same (fuzzy) representation
-    return `closing ${from.toNow()}`;
+    return T('closing', {date: from.toNow()});
   }
   if (from > moment() && to < moment()) {
     // some orders have closed, others haven't yet
-    return `partly closed, last closing ${to.fromNow()}`;
+    return T('partly', {date: to.fromNow()});
   }
 
   // all orders are currently open and there is a date range
   const twx = moment.twix(from, to);
-  return `closing ${twx.format()}`;
+  return T('closing', {date: twx.format()});
 }
 
 OrdersTitle.propTypes = {

@@ -6,6 +6,9 @@ import filter from '../store/filter';
 
 import Price from '../components/price';
 
+import {t} from 'i18n';
+const T = (s, opts) => t('totals_box.'+s, opts);
+
 const TotalsBox = ({group_order_articles, dispatch}) => {
   const goas = group_order_articles.data.data || [];
   const total = goas.reduce((sum, goa) => sum + goa.total_price, 0);
@@ -13,7 +16,7 @@ const TotalsBox = ({group_order_articles, dispatch}) => {
     <a href='#' onClick={onClick.bind(this, dispatch)}>
       <Well bsSize='sm' style={styles.container}>
         <Glyphicon glyph='shopping-cart' />
-        {' '}Total
+        {' '}{T('total')}
         <Price value={total} style={styles.amount} />
       </Well>
     </a>
