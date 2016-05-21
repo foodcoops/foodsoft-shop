@@ -11,16 +11,18 @@ function onDelta(value, min, max, onChange, event) {
 }
 
 function DeltaInput({value, min, max, delta, color, onChange}) {
+  const valueNext = (value || 0) + delta;
+  const valuePrev = (value || 0) - delta;
   return (
     <InputGroup>
       <InputGroup.Button>
-        <Button onClick={(e) => onDelta((value||0)+delta, min, max, onChange, e)} disabled={max !== null && value >= max} style={styles.button}>
+        <Button onClick={(e) => onDelta(valueNext, min, max, onChange, e)} disabled={max !== null && valueNext > max} style={styles.button}>
           <Glyphicon glyph='plus' style={styles.icon} />
         </Button>
       </InputGroup.Button>
       <FormControl type='text' value={value} onChange={(e) => onDelta(e.target.value, min, max, onChange, e)} style={{color: color || 'black', ...styles.input}} />
       <InputGroup.Button>
-        <Button onClick={(e) => onDelta((value||0)-delta, min, max, onChange, e)} disabled={min !== null && value <= min} style={styles.button}>
+        <Button onClick={(e) => onDelta(valuePrev, min, max, onChange, e)} disabled={min !== null && valuePrev < min} style={styles.button}>
           <Glyphicon glyph='minus' style={styles.icon} />
         </Button>
       </InputGroup.Button>

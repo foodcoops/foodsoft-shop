@@ -2,6 +2,7 @@ import {t} from 'i18n';
 import React, {PropTypes} from 'react';
 import {Pagination, Table} from 'react-bootstrap';
 
+import {compact, min} from 'lodash';
 import {connect} from 'react-redux';
 import rest from '../store/rest';
 import filter from '../store/filter';
@@ -17,11 +18,14 @@ class OrderArticles extends React.Component {
 
   componentDidMount() {
     this.props.dispatch(filter.actions.update());
+    this.props.dispatch(rest.actions.orders.sync()); // @todo make sure we have all
     this.props.dispatch(rest.actions.group_order_articles.sync({per_page: -1})); // get all
   }
 
   render() {
-    if (!this.props.order_articles.data.data) { return <div />; }
+    if (!this.props.order_articles.data.data || !this.props.orders.data.data) { return <div />; }
+    const orders = this.props.orders.data.data;
+    const oas = this.props.order_articles.data.data;
     const goas = this.props.group_order_articles.data.data || [];
     const anyTolerance = !!this.props.order_articles.data.data.find((oa) => oa.article.unit_quantity > 1);
     return (
@@ -42,9 +46,13 @@ class OrderArticles extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.order_articles.data.data.map((oa) => {
+            {oas.map((oa) => {
               const hasTolerance = oa.article.unit_quantity > 1;
-              const goa = goas.find((goa) => goa.order_article_id == oa.id);
+              const order = orders.find((o) => o.id === oa.order_id);
+              const goa = goas.find((goa) => goa.order_article_id === oa.id);
+              const goaQ = goa ? goa.quantity : 0;
+              const goaT = goa ? goa.tolerance : 0;
+              const missingUnits = oa.quantity > 0 ? Math.max(0, oa.article.unit_quantity - oa.tolerance - (oa.quantity  % oa.article.unit_quantity)) : 0;
               return (
                 <tr key={oa.id}>
                   <td style={styles.name}>{oa.article.name}</td>
@@ -52,13 +60,17 @@ class OrderArticles extends React.Component {
                   <td style={styles.unit}>{oa.article.unit}</td>
                   <td style={styles.priceWithSep}><Price value={oa.price} /></td>
                   <td style={styles.amount}>
-                    <DeltaInput value={goa ? goa.quantity : 0} min={0} max={oa.article.quantity_available}
+                    <DeltaInput value={goaQ}
+                                min={order.is_boxfill ? goaQ : 0}
+                                max={order.is_boxfill ? (goaQ + missingUnits) : oa.article.quantity_available}
                                 color={this._colorQuantity(goa)}
                                 onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
                   </td>
                   {anyTolerance ?
                     <td style={styles.amount}>{hasTolerance ?
-                        <DeltaInput value={goa ? goa.tolerance : 0} min={0} max={oa.article.unit_quantity}
+                        <DeltaInput value={goaT}
+                                    min={order.is_boxfill ? goaT : 0}
+                                    max={order.is_boxfill ? (goaT + missingUnits) : (oa.article.unit_quantity - 1)}
                                     color={this._colorTolerance(goa)}
                                     onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
                     </td> : null }
@@ -189,11 +201,12 @@ const styles = {
 };
 
 OrderArticles.propTypes = {
+  orders: PropTypes.object.isRequired,
   order_articles: PropTypes.object.isRequired,
   group_order_articles: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
 export default connect((state) => {
-  return {filter: state.filter, order_articles: state.order_articles, group_order_articles: state.group_order_articles}
+  return {filter: state.filter, orders: state.orders, order_articles: state.order_articles, group_order_articles: state.group_order_articles}
 })(OrderArticles);
