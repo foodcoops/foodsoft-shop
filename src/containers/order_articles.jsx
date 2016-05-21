@@ -10,6 +10,7 @@ import CountryIcon from '../components/country_icon';
 import Price from '../components/price';
 import DeltaInput from '../components/delta_input';
 import UnitBar from '../components/unit_bar';
+import UnitsBox from '../components/units_box';
 
 // @todo get currency from api
 class OrderArticles extends React.Component {
@@ -70,7 +71,7 @@ class OrderArticles extends React.Component {
                     </td> : null }
                   <td style={Object.assign({}, styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
                     {hasTolerance ? <span>+ </span> : null}
-                    <span>{oa.units_to_order}</span>
+                    <UnitsBox boxes={oa.units_to_order} />
                   </td>
                 </tr>
               );

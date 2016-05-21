@@ -14,7 +14,8 @@ module.exports = {
           plugins: ['transform-object-rest-spread'],
           presets: ['es2015', 'react']
         }
-      }
+      },
+      {test: /\.(png|jpg|svg)$/, loader: 'url-loader?limit=8192'}
     ],
   },
   output: {
