@@ -36,8 +36,8 @@ class OrderArticles extends React.Component {
               {anyTolerance ? <th style={styles.amount}>{t('order_articles.extra')}</th> : null}
               <th style={styles.priceWithSep}>{t('order_articles.sum')}</th>
               {anyTolerance ?
-                <th style={styles.boxesHeading} colSpan={2}>{t('order_articles.everyone')}</th> :
-                <th style={styles.boxesHeading}>{t('order_articles.everyone_short')}</th>}
+                <th style={styles.boxesHeadingWide} colSpan={2}>{t('order_articles.everyone')}</th> :
+                <th style={styles.boxesHeadingNarrow}>{t('order_articles.everyone_short')}</th>}
             </tr>
           </thead>
           <tbody>
@@ -167,13 +167,17 @@ const styles = {
     paddingLeft: 14,
     paddingRight: 0
   },
-  boxesHeading: {
+  boxesHeadingWide: {
     verticalAlign: 'middle',
     textAlign: 'center'
   },
+  boxesHeadingNarrow: {
+    verticalAlign: 'middle',
+    textAlign: 'center',
+    width: '4em'
+  },
   boxes: {
     verticalAlign: 'middle',
-    paddingLeft: 0,
     fontSize: '90%',
     color: '#7a7a7a',
     whiteSpace: 'nowrap'
