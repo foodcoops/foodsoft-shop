@@ -82,4 +82,5 @@ Though this software is not fully finished, you could try running it if you're i
 ## Notes
 
 * To change the language, modify it in `index.html`'s `<html lang="en">` tag ([webpack plugin](https://github.com/chrome/webpack-rails-i18n-js-plugin)).
+* To change the currency, set `window.foodsoftCurrency` to `local.js` (including trailing space if you want it).
 
