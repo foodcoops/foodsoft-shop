@@ -11,6 +11,12 @@ nl:
     sum: Som
     everyone: Iedereen
     everyone_short: Allen
+  orders_messages:
+    boxfill1:
+      one: Voor leverancier '%{order}' kunnen alleen nog tekorten verminderd worden.
+      some: Voor sommige leveranciers kunnen alleen nog tekorten verminderd worden.
+      all: Er kunnen alleen nog tekorten verminderd worden.
+    boxfill2: 'Help mee de dozen te vullen!'
   orders_title:
     sub:
       closing: 'sluit %{date}'

@@ -5,6 +5,7 @@ import filter from '../store/filter';
 
 import Filters from './filters';
 import OrdersTitle from './orders_title';
+import OrdersBoxfillNotice from './orders_boxfill_notice';
 import OrderArticles from './order_articles';
 import TotalsBox from './totals_box';
 
@@ -19,6 +20,7 @@ class Orders extends React.Component {
         </Col>
         <Col md={9}>
           <OrdersTitle />
+          <OrdersBoxfillNotice />
           <OrderArticles />
         </Col>
       </Row>
