@@ -118,7 +118,6 @@ class OrderArticles extends React.Component {
   }
 
   _colorQuantity(goa) {
-    if (goa && goa.order_article_id === 58) { console.log(goa); }
     if (!goa || goa.quantity <= 0)  { return '#555'; }
     if (goa.result === 0)           { return '#d50'; }
     if (goa.result < goa.quantity)  { return '#933'; }
