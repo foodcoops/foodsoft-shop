@@ -27,8 +27,8 @@ oauth.respond();
 store.getState().user.accessToken = oauth.getAccessToken();
 // @todo set initial route/state from window.location.hash
 
-// setup l10n
-moment.locale(currentLocale(), require(`moment/locale/${currentLocale()}.js`));
+// setup l10n, ok if it fails
+try { moment.locale(currentLocale(), require(`moment/locale/${currentLocale()}.js`)); } catch(e) { }
 
 // render app
 ReactDOM.render(<App store={store} />, document.getElementById('app'));
