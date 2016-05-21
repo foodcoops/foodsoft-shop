@@ -48,7 +48,7 @@ const closingDesc = (orders) => {
     // same (fuzzy) representation
     return T('closing', {date: from.toNow()});
   }
-  if (from > moment() && to < moment()) {
+  if (from < moment() && to > moment()) {
     // some orders have closed, others haven't yet
     return T('partly', {date: to.fromNow()});
   }
