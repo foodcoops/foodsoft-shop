@@ -149,8 +149,8 @@ const styles = {
   },
   country: {
     verticalAlign: 'middle',
-    width: 18,
-    opacity: 0.5
+    paddingLeft: 4,
+    opacity: 0.4
   },
   unit: {
     verticalAlign: 'middle',
