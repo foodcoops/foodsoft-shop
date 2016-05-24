@@ -114,14 +114,14 @@ class OrderArticles extends React.Component {
         }));
       } else {
         // update existing group_order_article
-        this.props.dispatch(rest.actions.group_order_articles.update(goa.id, {[what]: value}, () => {
-          this.props.dispatch(rest.actions.order_articles.get(goa.order_article_id));
+        this.props.dispatch(rest.actions.group_order_articles.update(goa.id, {[what]: value}, (error) => {
+          error || this.props.dispatch(rest.actions.order_articles.get(goa.order_article_id));
         }));
       }
     } else if (value && value !== 0) {
       // no existing group_order_article, create one
-      this.props.dispatch(rest.actions.group_order_articles.create({order_article_id: oa.id, [what]: value}, () => {
-        this.props.dispatch(rest.actions.order_articles.get(oa.id));
+      this.props.dispatch(rest.actions.group_order_articles.create({order_article_id: oa.id, [what]: value}, (error) => {
+        error || this.props.dispatch(rest.actions.order_articles.get(oa.id));
       }));
     }
   }

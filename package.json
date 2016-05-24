@@ -16,6 +16,7 @@
     "moment": "^2.13.0",
     "oauth2-client-js": "0.0.15",
     "qs": "^6.1.0",
+    "re-notif": "^1.0.2",
     "react": "^15.0.1",
     "react-bootstrap": "^0.29.3",
     "react-dom": "^15.0.1",
@@ -23,6 +24,7 @@
     "redux": "^3.4.0",
     "redux-api": "^0.9.7",
     "redux-thunk": "^2.0.1",
+    "simple-css-loader": "^0.1.0",
     "twix": "^1.0.0"
   },
   "devDependencies": {

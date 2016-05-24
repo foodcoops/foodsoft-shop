@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import rest from '../store/rest';
 import {Navbar, NavbarBrand, Nav, NavItem} from 'react-bootstrap';
+import Notifs from '../components/notifs';
 
 class Layout extends React.Component {
   componentDidMount() {
@@ -11,6 +12,7 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
+        <Notifs />
         <Navbar>
           <NavbarBrand>Foodsoft shop</NavbarBrand>
           <Nav pullRight>
@@ -25,6 +27,7 @@ class Layout extends React.Component {
       </div>
     );
   }
+
 };
 
 Layout.propTypes = {

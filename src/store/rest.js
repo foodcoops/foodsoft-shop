@@ -1,6 +1,7 @@
-import reduxApi, {transformers} from 'redux-api';
+import reduxApi, {async, transformers} from 'redux-api';
 import OAuth from '../oauth';
 import {appName, appVersion, foodsoftUrl} from '../config';
+import {actions as notifs} from 're-notif';
 
 // @see https://github.com/lexich/redux-api/issues/25
 function options(url, params, getState) {
@@ -29,7 +30,7 @@ function restFetch(fetch) {
         new OAuth().request();
         // unreachable code
       } else {
-        // @todo handle errors
+        throw new Error(`Error: ${resp.statusText} (status ${resp.status})`);
       }
     });
   }
@@ -67,7 +68,7 @@ const crudHelpers = {
   }
 };
 
-export default reduxApi({
+const rest = reduxApi({
   user: {
     url: '/api/v1/user'
   },
@@ -92,3 +93,27 @@ export default reduxApi({
 }).use('fetch', restFetch(fetch))
   .use('options', options)
   .use('rootUrl', foodsoftUrl);
+
+
+// add error handling to each action
+// we need to detect the callback (last argument) and hook that
+// @todo discuss at redux-api how to make this cleaner
+
+function withErrorHandler(actionCreator, key) {
+  return function() {
+    const callback = typeof(arguments[arguments.length-1]) === 'function' ? arguments[arguments.length-1] : undefined;
+    const creatorArgs = callback ? [...arguments].slice(0, -1) : arguments;
+    return (dispatch) => {
+      dispatch(actionCreator(...creatorArgs, (error, data) => {
+        error && dispatch(notifs.notifSend({message: error.message, kind: 'danger', dismissAfter: 3000}));
+        callback && callback(error, data);
+      }));
+    };
+  };
+}
+
+export default {...rest, actions: Object.keys(rest.actions).reduce(
+  (memo1, key1) => { return {...memo1, [key1]: Object.keys(rest.actions[key1]).reduce(
+    (memo2, key2) => { return {...memo2, [key2]: withErrorHandler(rest.actions[key1][key2], key1+'.'+key2) }; }, {}
+  )}}, {}
+)};
