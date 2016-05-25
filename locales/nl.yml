@@ -1,4 +1,7 @@
 nl:
+  errors:
+    authentication_required: Inloggen vereist
+    general: 'Error: %{text} (status %{code})'
   filters:
     days_short: '%{count}d'
     categories: Categoriën

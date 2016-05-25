@@ -1,6 +1,6 @@
 import reduxApi, {transformers} from 'redux-api';
-import OAuth from '../oauth';
 import {appName, appVersion, foodsoftUrl} from '../config';
+import restFetch from './rest_fetch';
 
 // @see https://github.com/lexich/redux-api/issues/25
 function options(url, params, getState) {
@@ -16,27 +16,9 @@ function options(url, params, getState) {
   return {headers: headers};
 };
 
-function restFetch(fetch) {
-  return function(url, options) {
-    return fetch(url, options).then((resp) => {
-      if (resp.status >= 200 && resp.status < 300) {
-        if (resp.status !== 204 /* no content */) {
-          return resp.json();
-        }
-      } else if (resp.status === 401) {
-        // need (re-)authentication
-        new OAuth().request();
-        // unreachable code
-      } else {
-        throw new Error(`Error: ${resp.statusText} (status ${resp.status})`);
-      }
-    });
-  }
-}
-
 // assumes response object has +data+ root key
 function icrudTransformer(data, prevData, action) {
-  if (/* @todo check success && */ action && action.request) {
+  if (action && action.request) {
     const method = action.request.params && action.request.params.method;
     const id = action.request.pathvars && action.request.pathvars.id;
     if (method === 'POST') {

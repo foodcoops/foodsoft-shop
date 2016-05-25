@@ -1,4 +1,7 @@
 en:
+  errors:
+    authentication_required: Authentication required
+    general: 'Error: %{text} (status %{code})'
   filters:
     days_short: '%{count}d'
     categories: Categories
