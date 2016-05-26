@@ -73,8 +73,8 @@ class Filters extends React.Component {
     this.props.dispatch(filter.actions.replace({[`${key}_eq`]: value}));
   }
 
-  _onSearch(term) {
-    this.props.dispatch(filter.actions.replace({article_name_or_article_note_or_article_manufacturer_cont: term}));
+  _onSearch(e) {
+    this.props.dispatch(filter.actions.replace({article_name_or_article_note_or_article_manufacturer_cont: e.target.value}));
   }
 }
 

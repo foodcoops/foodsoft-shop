@@ -1,53 +1,22 @@
 import React, {PropTypes} from 'react';
-import {Button, FormGroup, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
+import {Button, FormControl, FormGroup, Glyphicon, InputGroup} from 'react-bootstrap';
+import InputField from './input_field';
 
-import {debounce} from 'lodash';
-
-class SearchBox extends React.Component {
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      value: null,
-      typing: false,
-    };
-
-    this._onChangeDebounced = debounce(this._onChangeDebouncedHandler, 350);
-  }
-
-  render() {
-    const active = this.props.active === true;
-    const value = this.state.typing ? this.state.value : this.props.value
-    return (
-      <FormGroup onChange={this._onChange.bind(this)} className={this.props.className} style={this.props.style}>
-        <FormControl value={value || ''} placeholder='Search ...'/>
-        <FormControl.Feedback>
-          <Glyphicon glyph='search' className={active ? 'text-primary' : null} style={active ? styles.iconActive : styles.iconNormal}/>
-        </FormControl.Feedback>
-      </FormGroup>
-    );
-  }
-
-  _onChange(e) {
-    const term = e.target.value;
-    this.setState({value: term, typing: true});
-    this._onChangeDebounced(term);
-  }
-
-  _onChangeDebouncedHandler(term) {
-    if (this.props.onChange) { this.props.onChange(term); }
-    this.setState({typing: false});
-  }
-
-}
+const SearchBox = ({active, value, onChange, ...props}) => {
+  return (
+    <FormGroup {...props}>
+      <InputField value={value || ''} placeholder='Search ...' onChange={onChange}/>
+      <FormControl.Feedback>
+        <Glyphicon glyph='search' className={active ? 'text-primary' : null} style={active ? styles.iconActive : styles.iconNormal}/>
+      </FormControl.Feedback>
+    </FormGroup>
+  );
+};
 
 SearchBox.propTypes = {
   onChange: PropTypes.func.isRequired,
   active: PropTypes.bool,
   value: PropTypes.string,
-  className: PropTypes.string,
-  style: PropTypes.object
 };
 
 const styles = {

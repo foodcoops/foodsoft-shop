@@ -4,7 +4,7 @@ import {Button, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
 function onDelta(value, min, max, onChange, event) {
   if (onChange !== null) {
     if ((min === null || value >= min) && (max === null || value <= max)) {
-      onChange(value, event);
+      onChange(event, value);
     }
   }
   return true;

@@ -64,7 +64,7 @@ class OrderArticles extends React.Component {
                                 min={order.is_boxfill ? goaQ : 0}
                                 max={order.is_boxfill ? (goaQ + missingUnits) : oa.article.quantity_available}
                                 color={this._colorQuantity(goa)}
-                                onChange={(val) => this._onChangeAmount(oa, goa, 'quantity', val)} />
+                                onChange={(e,value) => this._onChangeAmount(oa, goa, 'quantity', value)} />
                   </td>
                   {anyTolerance ?
                     <td style={styles.amount}>{hasTolerance ?
@@ -72,7 +72,7 @@ class OrderArticles extends React.Component {
                                     min={order.is_boxfill ? goaT : 0}
                                     max={order.is_boxfill ? (goaT + missingUnits) : (oa.article.unit_quantity - 1)}
                                     color={this._colorTolerance(goa)}
-                                    onChange={(val) => this._onChangeAmount(oa, goa, 'tolerance', val)} /> : null }
+                                    onChange={(e,value) => this._onChangeAmount(oa, goa, 'tolerance', value)} /> : null }
                     </td> : null }
                   <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
                   {anyTolerance ?
