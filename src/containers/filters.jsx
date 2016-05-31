@@ -33,11 +33,11 @@ class Filters extends React.Component {
 
   render() {
     let i = 0;
-    const search_term = this.props.filter.article_name_or_article_note_or_article_manufacturer_cont;
+    const {search} = this.props.filter;
     return (
       <div>
         <SearchBox style={styles.searchBox} className='panel panel-default'
-          value={search_term} active={!!search_term} onChange={this._onSearch.bind(this)} />
+          value={search} active={!!search} onChange={this._onSearch.bind(this)} />
         <Accordion defaultActiveKey={1}>
           {this.hasCategories() ?
               // @todo move knowledge of search param key to rest.js
@@ -74,7 +74,7 @@ class Filters extends React.Component {
   }
 
   _onSearch(e) {
-    this.props.dispatch(filter.actions.replace({article_name_or_article_note_or_article_manufacturer_cont: e.target.value}));
+    this.props.dispatch(filter.actions.replace({search: e.target.value}));
   }
 }
 
