@@ -8,8 +8,8 @@ import rest from '../store/rest';
 import filter from '../store/filter';
 
 import CountryIcon from '../components/country_icon';
-import Price from '../components/price';
 import DeltaInput from '../components/delta_input';
+import Price from '../components/price';
 import UnitBar from '../components/unit_bar';
 import UnitsBox from '../components/units_box';
 
@@ -23,11 +23,12 @@ class OrderArticles extends React.Component {
   }
 
   render() {
-    if (!this.props.order_articles.data.data || !this.props.orders.data.data) { return <div />; }
-    const orders = this.props.orders.data.data;
-    const oas = this.props.order_articles.data.data;
-    const goas = this.props.group_order_articles.data.data || [];
-    const anyTolerance = !!this.props.order_articles.data.data.find((oa) => oa.article.unit_quantity > 1);
+    const _orders = this.props.orders, _oas = this.props.order_articles, _goas = this.props.group_order_articles;
+    if (!_oas.data.data || !_orders.data.data) { return <div />; }
+    const orders = _orders.data.data;
+    const oas = _oas.data.data;
+    const goas = _goas.data.data || [];
+    const anyTolerance = !!_oas.data.data.find((oa) => oa.article.unit_quantity > 1);
     return (
       <div style={styles.container}>
         <Table hover>
@@ -90,9 +91,9 @@ class OrderArticles extends React.Component {
             })}
           </tbody>
         </Table>
-        {this.props.order_articles.data.meta && this.props.order_articles.data.meta.total_pages > 1 ?
+        {_oas.data.meta && _oas.data.meta.total_pages > 1 ?
           <div style={styles.pagination}>
-            <Pagination items={this.props.order_articles.data.meta.total_pages} maxButtons={10} boundaryLinks
+            <Pagination items={_oas.data.meta.total_pages} maxButtons={10} boundaryLinks
                         prev={true} next={true}
                         activePage={this.props.filter.page || 1} onSelect={(page) => this._onChangePage(page)} />
           </div> : null }
