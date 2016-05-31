@@ -9,19 +9,21 @@ const syncOrderArticles = (dispatch, getState) => {
   const params = page ? {q: filter, page} : {q: filter};
   // @todo something like window.location.hash = '?' + stringify(filter);
   dispatch(rest.actions.order_articles.reset('sync'));
-  dispatch(rest.actions.order_articles.sync(params));
+  return dispatch(rest.actions.order_articles.sync(params));
 };
 
 const clear = () => replace({});
 
 const replace = (filter) => (dispatch, getState) => {
-  dispatch({type: 'REPLACE_FILTER', data: filter});
-  syncOrderArticles(dispatch, getState);
+  syncOrderArticles(dispatch, getState).then(() => {
+    dispatch({type: 'REPLACE_FILTER', data: filter});
+  });
 };
 
 const update = (filter = {}) => (dispatch, getState) => {
-  dispatch({type: 'UPDATE_FILTER', data: filter});
-  syncOrderArticles(dispatch, getState);
+  syncOrderArticles(dispatch, getState).then(() => {
+    dispatch({type: 'UPDATE_FILTER', data: filter});
+  });
 };
 
 export const actions = {clear, replace, update};
