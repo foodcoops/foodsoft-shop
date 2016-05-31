@@ -36,6 +36,7 @@ class Filters extends React.Component {
     const {search} = this.props.filter;
     return (
       <div>
+        {/* We want to be able to reset the searchbox,  */}
         <SearchBox style={styles.searchBox} className='panel panel-default'
           value={search} active={!!search} onChange={this._onSearch.bind(this)} />
         <Accordion defaultActiveKey={1}>

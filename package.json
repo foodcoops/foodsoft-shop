@@ -18,6 +18,7 @@
     "re-notif": "^1.0.2",
     "react": "^15.0.1",
     "react-bootstrap": "^0.29.3",
+    "react-debounce-input": "^2.3.2",
     "react-dom": "^15.0.1",
     "react-redux": "^4.4.2",
     "redux": "^3.4.0",

@@ -4,29 +4,29 @@ import rest from './rest';
 
 /** Actions **/
 
-const syncOrderArticles = (dispatch, getState) => {
-  const {page, search, ...otherFilter} = getState().filter;
+const syncOrderArticles = (dispatch, state, action) => {
+  // get filter after action (but don't update it yet)
+  const {page, search, ...otherFilter} = reducer(state, action);
   const searchFilter = search ? {article_name_or_article_note_or_article_manufacturer_cont: search} : {};
   const filter = {...searchFilter, ...otherFilter};
   const params = page ? {q: filter, page} : {q: filter};
 
   // @todo something like window.location.hash = '?' + stringify(filter);
   dispatch(rest.actions.order_articles.reset('sync'));
-  return dispatch(rest.actions.order_articles.sync(params));
+  dispatch(rest.actions.order_articles.sync(params)).then(() => {
+    // on success, update filter
+    dispatch(action);
+  });
 };
 
 const clear = () => replace({});
 
 const replace = (filter) => (dispatch, getState) => {
-  syncOrderArticles(dispatch, getState).then(() => {
-    dispatch({type: 'REPLACE_FILTER', data: filter});
-  });
+  syncOrderArticles(dispatch, getState(), {type: 'REPLACE_FILTER', data: filter});
 };
 
 const update = (filter = {}) => (dispatch, getState) => {
-  syncOrderArticles(dispatch, getState).then(() => {
-    dispatch({type: 'UPDATE_FILTER', data: filter});
-  });
+  syncOrderArticles(dispatch, getState(), {type: 'UPDATE_FILTER', data: filter});
 };
 
 export const actions = {clear, replace, update};
