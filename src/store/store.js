@@ -1,6 +1,7 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import thunk from 'redux-thunk';
 import rest from './rest';
+import {reducer as loading, getListener as getLoadingListener} from './loading';
 import {reducer as filter} from './filter';
 import {reducer as notifs, actions as notifActions} from 're-notif';
 
@@ -14,7 +15,8 @@ const errorNotif = store => next => action => {
 };
 
 const createStoreWithMiddleware = applyMiddleware(errorNotif, thunk)(createStore);
-const reducer = combineReducers({...rest.reducers, filter, notifs});
+const reducer = combineReducers({...rest.reducers, filter, notifs, loading});
 const store = createStoreWithMiddleware(reducer);
+store.subscribe(getLoadingListener(store));
 
 export default store;

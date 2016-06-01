@@ -10,13 +10,16 @@ import OAuth from './oauth';
 import store from './store/store';
 
 import Layout from './containers/layout';
+import Loading from './containers/loading';
 import Orders from './containers/orders';
 
 const App = ({store}) => (
   <Provider store={store}>
-    <Layout>
-      <Orders />
-    </Layout>
+    <Loading>
+      <Layout>
+        <Orders />
+      </Layout>
+    </Loading>
   </Provider>
 );
 
