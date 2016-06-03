@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var I18nPlugin = require('webpack-rails-i18n-js-plugin');
 var pkg = require('./package.json');
+var config = require('./src/config');
 
 module.exports = {
   entry: './src/index.jsx',
@@ -15,6 +16,7 @@ module.exports = {
           presets: ['es2015', 'react']
         }
       },
+      {test: /\.json$/, loader: 'json-loader'},
       {test: /\.(png|jpg|svg)$/, loader: 'url-loader?limit=8192'},
       {test: /\.(css)$/, loader: 'simple-css-loader'},
     ],
@@ -38,6 +40,6 @@ module.exports = {
       localesPath: `${__dirname}/locales`
     }),
     // save space by removing locales that Foodsoft doesn't support anyway - http://stackoverflow.com/a/25426019/2866660
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(en|de|nl|de|fr|es|hu)\./)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, new RegExp('/(' + config.locales.join('|') + ')\\./')),
   ]
 };

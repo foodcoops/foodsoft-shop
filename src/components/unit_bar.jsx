@@ -1,34 +1,31 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {ProgressBar} from 'react-bootstrap'
+import lastBox from '../lib/last_box';
 
-function UnitBar({unit_quantity, quantity, tolerance, result}) {
+function UnitBar({order_article}) {
+  const box = lastBox(order_article);
+  const {unit_quantity} = order_article.article;
+
   // amounts in the last remaining (not filled) box
-  const rQuantity = Math.max(0, quantity - result);
-  const rTolerance = tolerance - Math.max(0, result - quantity);
-  const rMissing = Math.max(0, unit_quantity - rQuantity - rTolerance);
-
-  const reverse = rQuantity == 0;
+  const reverse = box.quantity === 0;
   const pf = 100 / unit_quantity; // amount to percentage
 
-  const rToleranceClip = Math.min(unit_quantity, rTolerance);
-  const rToleranceLabel = rTolerance > rToleranceClip ? `${rToleranceClip}+` : rTolerance;
+  const boxToleranceClip = Math.min(unit_quantity, box.tolerance);
+  const boxToleranceLabel = box.tolerance > boxToleranceClip ? `${boxToleranceClip}+` : box.tolerance;
 
   return (
     <div>
       <ProgressBar style={styles.container}>
-        <ProgressBar key={1} now={rQuantity * pf} label={rQuantity> 0 ? rQuantity : null} style={styles.normal} />
-        <ProgressBar key={2} now={rToleranceClip * pf} label={rToleranceLabel} style={reverse ? styles.lightReverse : styles.light} />
-        <ProgressBar key={3} now={rMissing * pf} label={rMissing > 0 ? rMissing : null} style={styles.text} />
+        <ProgressBar key={1} now={box.quantity * pf} label={box.quantity> 0 ? box.quantity : null} style={styles.normal} />
+        <ProgressBar key={2} now={boxToleranceClip * pf} label={boxToleranceLabel} style={reverse ? styles.lightReverse : styles.light} />
+        <ProgressBar key={3} now={box.missing * pf} label={box.missing > 0 ? box.missing : null} style={styles.text} />
       </ProgressBar>
     </div>
   );
 }
 
 UnitBar.propTypes = {
-  result: React.PropTypes.number.isRequired,
-  quantity: React.PropTypes.number.isRequired,
-  tolerance: React.PropTypes.number.isRequired,
-  unit_quantity: React.PropTypes.number.isRequired
+  order_article: PropTypes.object.isRequired,
 };
 
 const styles = {

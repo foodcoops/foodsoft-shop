@@ -1,4 +1,33 @@
 en:
+  article_description:
+    supplier: from %{supplier}
+    manufacturer: by %{manufacturer}
+    manufacturer_with_origin: by %{manufacturer} in %{origin}
+    origin: made in %{origin}
+    quantities:
+      amount: '%{count} × %{unit}'
+      extra: '(+%{count} extra)'
+      need_full:
+        one: '%{amount} is needed for a complete box'
+        other: '%{amount} are needed for a complete box'
+      need_still:
+        one: just one is still needed to complete a box
+        other: '%{amount} are still needed to complete a box'
+      quantity:
+        zero: no-one ordered this yet
+        other: '%{amount} ordered by all members'
+      requested: '%{amount}%{extra} requested by all members'
+      units_to_order:
+        zero: there no full boxes yet
+        one: one box of %{box_amount} is ordered by all members
+        other: '%{count} boxes of %{box_amount} are ordered by all members'
+      with_remaining_box:
+        zero: all boxes are filled%{extra}
+        other: with %{amount} in the remaining box%{extra}
+      with_remaining_box_fill: '%{amount} would be needed for a next box'
+      with_remaining_fill:
+        one: 'just one is needed to completion'
+        other: '%{count} are needed to completion'
   errors:
     authentication_required: Authentication required
     general: 'Error: %{text} (status %{code})'

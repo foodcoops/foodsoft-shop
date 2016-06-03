@@ -1,4 +1,33 @@
 nl:
+  article_description:
+    supplier: van %{supplier}
+    manufacturer: door %{manufacturer}
+    manufacturer_with_origin: door %{manufacturer} uit %{origin}
+    origin: uit %{origin}
+    quantities:
+      amount: '%{count} × %{unit}'
+      extra: '(+%{count} extra)'
+      need_full:
+        one: '%{amount} is er nodig voor een hele doos'
+        other: '%{amount} zijn nodig voor een hele doos'
+      need_still:
+        one: nog maar één nodig om een doos vol te maken'
+        other: '%{amount} zijn nog nodig om een doos vol te maken'
+      quantity:
+        zero: door nog niemand besteld
+        other: 'samen %{amount} te bestellen'
+      requested: 'samen %{amount}%{extra} gewild'
+      units_to_order:
+        zero: nog geen dozen gevuld
+        one: samen één doos van %{box_amount} te bestellen
+        other: samen %{count} dozen van %{box_amount} te bestellen
+      with_remaining_box:
+        zero: alle dozen zijn gevuld%{extra}
+        other: in de laatste doos zit nu %{amount}%{extra}
+      with_remaining_box_fill: '%{amount} zou nodig zijn voor een volgende doos'
+      with_remaining_fill:
+        one: 'er is nog maar éń nodig om een doos vol te maken'
+        other: 'er is nog %{count} nodig om een doos vol te maken'
   errors:
     authentication_required: Inloggen vereist
     general: 'Error: %{text} (status %{code})'

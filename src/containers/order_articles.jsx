@@ -1,17 +1,28 @@
 import {t} from 'i18n';
 import React, {PropTypes} from 'react';
-import {Pagination, Table} from 'react-bootstrap';
+import {OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
 
 import {compact, min} from 'lodash';
 import {connect} from 'react-redux';
 import rest from '../store/rest';
 import filter from '../store/filter';
+import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';
 import DeltaInput from '../components/delta_input';
 import Price from '../components/price';
 import UnitBar from '../components/unit_bar';
 import UnitsBox from '../components/units_box';
+import {FromByIn} from '../components/article_description';
+import {UnitsToOrderDesc, LastBoxDesc} from '../components/article_quantities_description';
+
+// tooltip shorthand
+let i = 0;
+const Tip = ({text, children}) => (
+  <OverlayTrigger placement='bottom' overlay={<Popover id={`tooltip-${i++}`} style={styles.tooltip}>{text}</Popover>}>
+    <span>{children}</span>
+  </OverlayTrigger>
+);
 
 // @todo get currency from api
 class OrderArticles extends React.Component {
@@ -53,11 +64,13 @@ class OrderArticles extends React.Component {
               const goa = goas.find((goa) => goa.order_article_id === oa.id);
               const goaQ = goa ? goa.quantity : 0;
               const goaT = goa ? goa.tolerance : 0;
-              const missingUnits = oa.quantity > 0 ? Math.max(0, oa.article.unit_quantity - oa.tolerance - (oa.quantity  % oa.article.unit_quantity)) : 0;
+              const {missing} = lastBox(oa);
               return (
                 <tr key={oa.id}>
                   <td style={styles.name}>{oa.article.name}</td>
-                  <td style={styles.country}><CountryIcon code={oa.article.origin} /></td>
+                  <td style={styles.country}>
+                    <Tip text={<FromByIn article={oa.article} />}><CountryIcon code={oa.article.origin} /></Tip>
+                  </td>
                   <td style={styles.unit}>{oa.article.unit}</td>
                   <td style={styles.priceWithSep}><Price value={oa.price} /></td>
                   <td style={styles.amount}>
@@ -78,13 +91,15 @@ class OrderArticles extends React.Component {
                   <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
                   {anyTolerance ?
                     <td style={styles.unitBar}>{hasTolerance ?
-                        <UnitBar unit_quantity={oa.article.unit_quantity}
-                                 result={oa.units_to_order * oa.article.unit_quantity}
-                                 quantity={oa.quantity} tolerance={oa.tolerance} /> : null }
+                      <Tip text={<LastBoxDesc order_article={oa} />}>
+                        <UnitBar order_article={oa} />
+                      </Tip> : null }
                     </td> : null }
                   <td style={Object.assign({}, styles.boxes, {textAlign: anyTolerance ? 'right' : 'center'})}>
                     {hasTolerance ? <span>+ </span> : null}
-                    <UnitsBox boxes={oa.units_to_order} />
+                    <Tip text={<UnitsToOrderDesc order_article={oa} />}>
+                      <UnitsBox boxes={oa.units_to_order} />
+                    </Tip>
                   </td>
                 </tr>
               );
@@ -198,7 +213,13 @@ const styles = {
   pagination: {
     width: '100%',
     textAlign: 'center'
-  }
+  },
+  tooltip: {
+    fontSize: '80%',
+    backgroundColor: '#f7f7f7',
+    boxShadow: 'none',
+    textAlign: 'center',
+  },
 };
 
 OrderArticles.propTypes = {
