@@ -1,6 +1,6 @@
 import {t} from 'i18n';
 import React, {PropTypes} from 'react';
-import {OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
+import {Glyphicon, OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
 
 import {compact, min} from 'lodash';
 import {connect} from 'react-redux';
@@ -10,6 +10,7 @@ import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';
 import DeltaInput from '../components/delta_input';
+import InfoIcon from '../components/info_icon';
 import Price from '../components/price';
 import UnitBar from '../components/unit_bar';
 import UnitsBox from '../components/units_box';
@@ -67,7 +68,15 @@ class OrderArticles extends React.Component {
               const {missing} = lastBox(oa);
               return (
                 <tr key={oa.id}>
-                  <td style={styles.name}>{oa.article.name}</td>
+                  <td style={styles.name}>
+                    {oa.article.name}
+                    {oa.article.note || oa.article.url ?
+                      <span style={styles.icon}>
+                        {oa.article.note ?
+                          <Tip text={oa.article.note}><InfoIcon url={oa.article.url} hasInfo={true} /></Tip> :
+                          <InfoIcon url={oa.article.url} />}
+                      </span> : null}
+                  </td>
                   <td style={styles.country}>
                     <Tip text={<FromByIn article={oa.article} />}><CountryIcon code={oa.article.origin} /></Tip>
                   </td>
@@ -163,9 +172,13 @@ const styles = {
   name: {
     verticalAlign: 'middle'
   },
+  icon: {
+    marginLeft: '0.3em',
+    fontSize: '90%',
+  },
   country: {
     verticalAlign: 'middle',
-    paddingLeft: 4,
+    paddingLeft: 3,
     opacity: 0.4
   },
   unit: {
