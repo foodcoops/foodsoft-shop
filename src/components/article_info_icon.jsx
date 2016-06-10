@@ -16,7 +16,7 @@ function ArticleInfoIcon({article, highlight}) {
   const style = url ? styles.linkHighlight : (highlight ? styles.infoHighlight : styles.info);
 
   const g = glyph({glyph: icon, style});
-  const o = <OriginIcon article={article} style={styles.flag}/>;
+  const o = <span style={styles.flag}><OriginIcon article={article} /></span>;
 
   return url ?
     <a href={url} target='_blank' style={styles.container}>{g}{o}</a> :
@@ -55,7 +55,7 @@ const styles = {
   flag: {
     display: 'inline-block',
     position: 'relative',
-    left: -4,
+    left: -3.5,
     top: -0.5,
     zIndex: -1,
   },
