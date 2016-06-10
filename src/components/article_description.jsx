@@ -3,8 +3,14 @@ import React, {PropTypes} from 'react';
 import {flatMap} from 'lodash';
 import {name as countryName} from '../lib/countries';
 
+import CountryIcon from './country_icon';
+
 import {t} from 'i18n';
 const T = (s, opts) => t('article_description.'+s, opts);
+
+////
+//// Helpers
+////
 
 // join Array<String, React.Component> as separate non-wrapping elements, returning array of elements
 export function asLines(ary, sep=', ') {
@@ -12,54 +18,89 @@ export function asLines(ary, sep=', ') {
   return flatMap(aryf.map( (s,i) => (
     typeof(s) === 'string' ? <span key={i} style={styles.default}>{s}</span> : s
   )).map( (s,i) => (
-    i < (aryf.length-1) ? [s, sep] : s
+    (i < (aryf.length-1) && (typeof(s) === 'string' || s.type !== 'br')) ? [s, sep] : s
   )));
 }
 
-// convert origin starting with country code to full name (or origin if not found)
-function country(origin) {
-  if (origin) {
-    const cc = origin.split(/(,|\s+)/, 1)[0];
-    return countryName(cc) || origin;
-  }
+// convert origin starting with country code to country code
+function originCountryCode(origin) {
+  const cc = origin ? origin.split(/(,|\s+)/, 1)[0] : null;
+  return countryName(cc) ? cc : null;
 }
 
-// from <supplier>
-export const Supplier = ({article}) => (
-  article.supplier_name ? asLines([T('supplier', {supplier: article.supplier_name})])[0] : null
+// convert origin starting with country code to full name (or origin if not found)
+function originCountryName(origin) {
+  const cc = origin ? origin.split(/(,|\s+)/, 1)[0] : null;
+  return countryName(cc) || origin;
+}
+
+////
+//// Texts
+////
+
+const supplier     = ({article}) => article.supplier_name ? T('supplier', {supplier: article.supplier_name}) : null;
+const origin       = ({article}) => article.origin ? T('origin', {origin: originCountryName(article.origin)}) : null;
+const manufacturer = ({article}) => article.manufacturer ? T('manufacturer', {manufacturer: article.manufacturer}) : null;
+const note         = ({article}) => article.note;
+const byIn         = ({article}) => (
+  article.origin ? (
+    article.manufacturer ?
+      T('manufacturer_with_origin', {manufacturer: article.manufacturer, origin: originCountryName(article.origin)}) :
+      origin({article})
+    ) :
+    manufacturer({article})
 );
+
+
+////
+//// Components
+////
+
+// from <supplier>
+export const Supplier = ({article}) => (asLines([supplier({article})])[0] : null);
 Supplier.propTypes = {article: PropTypes.object.isRequired};
 
 // in <origin>
-export const Origin = ({article}) => (
-  article.origin ? asLines([T('origin', {origin: country(article.origin)})])[0] : null
-);
+export const Origin = ({article}) => (asLines([origin({article})])[0] : null);
 Origin.propTypes = {article: PropTypes.object.isRequired};
 
+// <icon>
+export const OriginIcon = ({article, ...props}) => {
+  const code = article.origin ? originCountryCode(article.origin) : null;
+  return code ? <CountryIcon code={code} {...props} /> : null;
+};
+OriginIcon.propTypes = {article: PropTypes.object.isRequired};
+
 // by <manufacturer>
-export const Manufacturer = ({article}) => (
-  article.manufacturer ? asLines([T('manufacturer', {manufacturer: article.manufacturer})])[0] : null
-);
+export const Manufacturer = ({article}) => (asLines([manufacturer({article})])[0] : null);
 Manufacturer.propTypes = {article: PropTypes.object.isRequired};
 
+// _<note>_
+export const Note = ({article}) => (article.note ? <i style={styles.default}>{article.note}</i> : null);
+Note.propTypes = {article: PropTypes.object.isRequired};
+
 // by <manufacturer> in <origin>
-export const ByIn = ({article}) => (
-  article.origin ?
-    article.manufacturer ?
-      <span style={styles.default}>{T('manufacturer_with_origin', {manufacturer: article.manufacturer, origin: country(article.origin)})}</span>
-      : <Origin article={article} />
-    : <Manufacturer article={article} />
-);
+export const ByIn = ({article}) => (asLines([byIn({article})])[0] : null);
 ByIn.propTypes = {article: PropTypes.object.isRequired};
 
 // from <supplier> by <manufacturer> in <origin>
 export const FromByIn = ({article}) => (
   <span>{asLines([
-    <Supplier key={1} article={article} />,
-    <ByIn     key={2} article={article} />,
+    supplier({article}),
+    byIn({article}),
   ])}</span>
 );
 FromByIn.propTypes = {article: PropTypes.object.isRequired};
+
+// from <supplier> by <manufacturer> in <origin> / _<note>_
+export const FromByInNote = ({article}) => (
+  <span>{asLines([
+    supplier({article}),
+    byIn({article}),
+    article.note ? <br key='br' /> : null,
+    article.note ? <Note key='note' article={article} /> : null,
+  ])}</span>
+)
 
 const styles = {
   default: {

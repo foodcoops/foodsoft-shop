@@ -1,6 +1,6 @@
 import {t} from 'i18n';
 import React, {PropTypes} from 'react';
-import {Glyphicon, OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
+import {Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
 
 import {compact, min} from 'lodash';
 import {connect} from 'react-redux';
@@ -10,11 +10,11 @@ import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';
 import DeltaInput from '../components/delta_input';
-import InfoIcon from '../components/info_icon';
 import Price from '../components/price';
 import UnitBar from '../components/unit_bar';
 import UnitsBox from '../components/units_box';
-import {FromByIn} from '../components/article_description';
+import {FromByInNote} from '../components/article_description';
+import ArticleInfoIcon from '../components/article_info_icon';
 import {UnitsToOrderDesc, LastBoxDesc} from '../components/article_quantities_description';
 
 // tooltip shorthand
@@ -68,17 +68,11 @@ class OrderArticles extends React.Component {
               const {missing} = lastBox(oa);
               return (
                 <tr key={oa.id}>
-                  <td style={styles.name}>
-                    {oa.article.name}
-                    {oa.article.note || oa.article.url ?
-                      <span style={styles.icon}>
-                        {oa.article.note ?
-                          <Tip text={oa.article.note}><InfoIcon url={oa.article.url} hasInfo={true} /></Tip> :
-                          <InfoIcon url={oa.article.url} />}
-                      </span> : null}
-                  </td>
+                  <td style={styles.name}>{oa.article.name}</td>
                   <td style={styles.country}>
-                    <Tip text={<FromByIn article={oa.article} />}><CountryIcon code={oa.article.origin} /></Tip>
+                    <Tip text={<FromByInNote article={oa.article} />}>
+                      <ArticleInfoIcon article={oa.article} highlight={!!oa.article.note} />
+                    </Tip>
                   </td>
                   <td style={styles.unit}>{oa.article.unit}</td>
                   <td style={styles.priceWithSep}><Price value={oa.price} /></td>
