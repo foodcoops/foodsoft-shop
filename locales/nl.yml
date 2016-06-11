@@ -32,8 +32,9 @@ nl:
     authentication_required: Inloggen vereist
     general: 'Error: %{text} (status %{code})'
   filters:
-    days_short: '%{count}d'
     categories: Categoriën
+    days_short: '%{count}d'
+    everyone: Besteld door iedereen
     order_open_until: Open tot %{ends}
     orders: Leveranciers
   order_articles:
@@ -58,6 +59,8 @@ nl:
       expect_since: 'zou %{date} sluiten'
       partly: 'deels gesloten, deels open tot %{date}'
       partly_expect_since: 'zou deels gesloten zijn, deels open tot %{date}'
-    title: Mijn huidige bestelling
+    title:
+      all: Bestelling van iedereen
+      member: Mijn huidige bestelling
   totals_box:
     total: Totaal

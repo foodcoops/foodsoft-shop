@@ -32,8 +32,9 @@ en:
     authentication_required: Authentication required
     general: 'Error: %{text} (status %{code})'
   filters:
-    days_short: '%{count}d'
     categories: Categories
+    days_short: '%{count}d'
+    everyone: Ordered by everyone
     order_open_until: Open until %{ends}
     orders: Suppliers
   order_articles:
@@ -58,6 +59,8 @@ en:
       expect_since: 'was expected to close %{date}'
       partly: 'partly closed, last closing %{date}'
       partly_expect_since: 'was expected to be partly closed, last closing %{date}'
-    title: My current order
+    title:
+      all: Everyone's order
+      member: My current order
   totals_box:
     total: Total

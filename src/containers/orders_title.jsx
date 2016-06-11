@@ -9,16 +9,31 @@ import {connect} from 'react-redux';
 import i18n, {t} from 'i18n';
 const T = (s, opts) => t('orders_title.'+s, opts);
 
+const OrdersTitleMember = ({orders}) => (
+  <h2 style={styles.container}>
+    <Glyphicon glyph='shopping-cart' style={styles.icon} />
+    {T('title.member')}
+    <small style={styles.closingDesc}>{closingDesc(orders)}</small>
+  </h2>
+);
+
+const OrdersTitleEveryone = ({orders}) => (
+  <h2 style={styles.container}>
+    <Glyphicon glyph='th-large' style={styles.icon} />
+    {T('title.all')}
+    <small style={styles.closingDesc}>{closingDesc(orders)}</small>
+  </h2>
+);
+
 const OrdersTitle = ({orders, filter}) => {
   // @todo update filters only after store was updated to avoid title update before articles update
-  if (filter.ordered != 'member') { return null; }
-  return (
-    <h2 style={styles.container}>
-      <Glyphicon glyph='shopping-cart' style={styles.icon} />
-      {T('title')}
-      <small style={styles.closingDesc}>{closingDesc(orders)}</small>
-    </h2>
-  );
+  if (filter.ordered === 'member') {
+    return <OrdersTitleMember orders={orders} />;
+  } else if (filter.ordered === 'all') {
+    return <OrdersTitleEveryone orders={orders} />;
+  } else {
+    return null;
+  }
 };
 
 const closingDesc = (orders) => {

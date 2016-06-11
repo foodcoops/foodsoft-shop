@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Accordion, Badge, Glyphicon, ListGroup, ListGroupItem, OverlayTrigger, Panel, Tooltip} from 'react-bootstrap';
+import {Accordion, Badge, Glyphicon, ListGroup, ListGroupItem, OverlayTrigger, Panel, Tooltip, Well} from 'react-bootstrap';
 
 import moment from 'moment';
 import {connect} from 'react-redux';
@@ -33,12 +33,21 @@ class Filters extends React.Component {
 
   render() {
     let i = 0;
-    const {search} = this.props.filter;
+    const {search, ordered} = this.props.filter;
     return (
       <div>
         {/* We want to be able to reset the searchbox,  */}
         <SearchBox style={styles.searchBox} className='panel panel-default'
           value={search} active={!!search} onChange={this._onSearch.bind(this)} />
+        {/* Ordered by everyone */}
+        <Panel style={styles.everyoneBox}>
+          <ListGroup fill>
+            <ListGroupItem href='#' active={ordered === 'all'} onClick={this._onClickEveryone.bind(this)}>
+              <Glyphicon glyph='th-large' style={styles.listGroupIcon} />{' '}{T('everyone')}
+            </ListGroupItem>
+          </ListGroup>
+        </Panel>
+        {/* Selectors */}
         <Accordion defaultActiveKey={1}>
           {this.hasCategories() ?
               // @todo move knowledge of search param key to rest.js
@@ -74,6 +83,10 @@ class Filters extends React.Component {
     this.props.dispatch(filter.actions.replace({[`${key}_eq`]: value}));
   }
 
+  _onClickEveryone() {
+    this.props.dispatch(filter.actions.replace({ordered: 'all'}));
+  }
+
   _onSearch(e) {
     this.props.dispatch(filter.actions.replace({search: e.target.value}));
   }
@@ -94,8 +107,16 @@ const styles = {
     marginBottom: 5,
     border: 'none', // for panel-like appearence, input already has border
   },
+  everyoneBox: {
+    marginBottom: 5,
+  },
   ends: {
     marginLeft: '0.5em',
     opacity: 0.75,
+  },
+  listGroupIcon: {
+    float: 'right',
+    color: '#aaa',
+    lineHeight: 1.42, // @todo get from bootstrap
   }
 };
