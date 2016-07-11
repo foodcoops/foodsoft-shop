@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import rest from './rest';
 import {reducer as loading, getListener as getLoadingListener} from './loading';
 import {reducer as filter} from './filter';
-import {reducer as notifs, actions as notifActions} from 're-notif';
+import {reducer as notifs, actions as notifActions} from 'redux-notifications';
 
 // show notification on redux-api errors
 const errorNotif = store => next => action => {

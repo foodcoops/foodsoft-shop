@@ -230,6 +230,7 @@ const styles = {
 };
 
 OrderArticles.propTypes = {
+  filter: PropTypes.object.isRequired,
   orders: PropTypes.object.isRequired,
   order_articles: PropTypes.object.isRequired,
   group_order_articles: PropTypes.object.isRequired,
