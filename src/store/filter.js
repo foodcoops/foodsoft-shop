@@ -6,7 +6,9 @@ import rest from './rest';
 
 const syncOrderArticles = (dispatch, state, action) => {
   // get filter after action (but don't update it yet)
-  const {page, search, ...otherFilter} = reducer(state, action);
+  //   we use +state.filter+ here because state is the _full_ state (not just the filter)
+  //   this makes it required to mount this store on +filter+.
+  const {page, search, ...otherFilter} = reducer(state.filter || {}, action);
   const searchFilter = search ? {article_name_or_article_note_or_article_manufacturer_cont: search} : {};
   const filter = {...searchFilter, ...otherFilter};
   const params = page ? {q: filter, page} : {q: filter};
@@ -46,4 +48,5 @@ export const reducer = (state = initialState, action) => {
   }
 }
 
+// need to expose this store as +filter+ (see above)
 export default {actions, reducer};
