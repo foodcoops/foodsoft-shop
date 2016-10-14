@@ -1,5 +1,5 @@
 import {Provider, Request} from 'oauth2-client-js';
-import {foodsoftUrl, foodsoftClientId} from './config';
+import {foodsoftUrl, foodsoftClientId, foodsoftAccessToken} from './config';
 
 export default class OAuthProvider {
 
@@ -34,7 +34,7 @@ export default class OAuthProvider {
   }
 
   getAccessToken() {
-    return this._provider.getAccessToken();
+    return foodsoftAccessToken || this._provider.getAccessToken();
   }
 
 }
