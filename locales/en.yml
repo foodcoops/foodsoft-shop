@@ -15,6 +15,7 @@ en:
         other: '%{amount} are still needed to complete a box'
       quantity:
         zero: no-one ordered this yet
+        one: one ordered by all members
         other: '%{amount} ordered by all members'
       requested: '%{amount}%{extra} requested by all members'
       units_to_order:
