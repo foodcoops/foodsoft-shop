@@ -1,33 +1,56 @@
+import {debounce} from 'lodash';
 import React from 'react';
 import {Button, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
 
-function onDelta(value, min, max, onChange, event) {
-  if (onChange !== null) {
-    if ((min === null || value >= min) && (max === null || value <= max)) {
-      onChange(event, value);
-    }
+class DeltaInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: props.value};
+    this.onChangeDebounced = debounce(this.onChange, 500);
   }
-  return true;
-}
 
-function DeltaInput({value, min, max, delta, color, onChange}) {
-  const valueNext = (value || 0) + delta;
-  const valuePrev = (value || 0) - delta;
-  return (
-    <InputGroup>
-      <InputGroup.Button>
-        <Button onClick={(e) => onDelta(valueNext, min, max, onChange, e)} disabled={max !== null && valueNext > max} style={styles.button}>
-          <Glyphicon glyph='plus' style={styles.icon} />
-        </Button>
-      </InputGroup.Button>
-      <FormControl type='text' value={value} onChange={(e) => onDelta(e.target.value, min, max, onChange, e)} style={{color: color || 'black', ...styles.input}} />
-      <InputGroup.Button>
-        <Button onClick={(e) => onDelta(valuePrev, min, max, onChange, e)} disabled={min !== null && valuePrev < min} style={styles.button}>
-          <Glyphicon glyph='minus' style={styles.icon} />
-        </Button>
-      </InputGroup.Button>
-    </InputGroup>
-  );
+  componentWillReceiveProps(nextProps) {
+    // @todo find out if this is ok
+    this.setState({value: nextProps.value});
+  }
+
+  render() {
+    const value = this.state.value;
+    const onDelta = this.onDelta.bind(this);
+    const {min, max, delta, color} = this.props;
+    const valueNext = (value || 0) + delta;
+    const valuePrev = (value || 0) - delta;
+    return (
+      <InputGroup>
+        <InputGroup.Button>
+          <Button onClick={(e) => onDelta(e, valueNext)} disabled={max !== null && valueNext > max} style={styles.button}>
+            <Glyphicon glyph='plus' style={styles.icon} />
+          </Button>
+        </InputGroup.Button>
+        <FormControl type='text' value={value} onChange={(e) => onDelta(e, e.target.value)} style={{color: color || 'black', ...styles.input}} />
+        <InputGroup.Button>
+          <Button onClick={(e) => onDelta(e, valuePrev)} disabled={min !== null && valuePrev < min} style={styles.button}>
+            <Glyphicon glyph='minus' style={styles.icon} />
+          </Button>
+        </InputGroup.Button>
+      </InputGroup>
+    );
+  }
+
+  onChange(event, value) {
+    this.props.onChange(event, value);
+  }
+
+  onDelta(event, value) {
+    const {min, max} = this.props;
+    if (this.props.onChange !== null) {
+      if ((min === null || value >= min) && (max === null || value <= max)) {
+        this.setState({value: value});
+        this.onChangeDebounced.bind(this)(event, value);
+      }
+    }
+    return true;
+  }
 }
 
 DeltaInput.propTypes = {

@@ -34,6 +34,14 @@ class OrderArticles extends React.Component {
     this.props.dispatch(rest.actions.group_order_articles.sync({per_page: -1})); // get all
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // goa updates are debounced, and we only want to update these _after_ response from
+    // the server (not when it is sent). Therefore, skip updating this component when goas
+    // are being loaded. We do want to revert to the old value in case of error, though.
+    const goas = nextProps.group_order_articles;
+    return (goas.sync && !goas.loading) || goas.error;
+  }
+
   render() {
     const _orders = this.props.orders, _oas = this.props.order_articles, _goas = this.props.group_order_articles;
     if (!_oas.data.data || !_orders.data.data) { return <div />; }
