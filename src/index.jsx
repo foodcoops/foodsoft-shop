@@ -27,11 +27,20 @@ const App = ({store}) => (
 const oauth = new OAuth();
 oauth.respond();
 // @todo use action here, this is terrible
-store.getState().user.accessToken = oauth.getAccessToken();
-// @todo set initial route/state from window.location.hash
+const accessToken = oauth.getAccessToken();
 
-// setup l10n, ok if it fails
-try { moment.locale(currentLocale(), require(`moment/locale/${currentLocale()}.js`)); } catch(e) { }
+if (!accessToken) {
+  // no token, redirect without rendering app
+  oauth.request();
 
-// render app
-ReactDOM.render(<App store={store} />, document.getElementById('app'));
+} else {
+  // store access token and setup app
+  store.getState().user.accessToken = accessToken;
+  // @todo set initial route/state from window.location.hash
+
+  // setup l10n, ok if it fails
+  try { moment.locale(currentLocale(), require(`moment/locale/${currentLocale()}.js`)); } catch(e) { }
+
+  // render app
+  ReactDOM.render(<App store={store} />, document.getElementById('app'));
+}
