@@ -9,7 +9,9 @@ import {reducer as notifs, actions as notifActions} from 'redux-notifications';
 const errorNotif = store => next => action => {
   if (/^@@redux-api@.*_fail/.test(action.type)) {
      const { error } = action;
-     error && next(notifActions.notifSend({message: error.message, kind: 'danger', dismissAfter: 3000}));
+     if (error && error.message !== 'Application abort request') { // avoid redux-api error that isn't a problem
+       next(notifActions.notifSend({message: error.message, kind: 'danger', dismissAfter: 3000}));
+     }
   }
   return next(action);
 };
