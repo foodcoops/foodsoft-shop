@@ -13,7 +13,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          plugins: ['transform-object-rest-spread'],
+          plugins: ['transform-object-rest-spread', 'transform-runtime'],
           presets: ['es2015', 'react']
         }
       },

@@ -4,7 +4,8 @@ import {Accordion, Badge, Glyphicon, ListGroup, ListGroupItem, OverlayTrigger, P
 
 import moment from 'moment';
 import {connect} from 'react-redux';
-import rest from '../store/rest';
+import {fetchOrders} from '../actions/orders';
+import {fetchCategories} from '../actions/categories';
 import filter from '../store/filter';
 import SearchBox from '../components/search_box';
 
@@ -28,8 +29,8 @@ function getOrderName(order) {
 class Filters extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(rest.actions.categories.sync({q: {orders_state_eq: 'open'}}));
-    this.props.dispatch(rest.actions.orders.sync());
+    this.props.dispatch(fetchCategories());
+    this.props.dispatch(fetchOrders());
   }
 
   render() {
@@ -52,9 +53,9 @@ class Filters extends React.Component {
         <Accordion defaultActiveKey={1}>
           {this.hasCategories() ?
               // @todo move knowledge of search param key to rest.js
-              this._renderPanel('article_article_category_id', i += 1, T('categories'), this.props.categories.data.data) : null}
+              this._renderPanel('article_article_category_id', i += 1, T('categories'), this.props.categories.data) : null}
           {this.hasOrders() ?
-              this._renderPanel('order_id', i += 1, T('orders'), this.props.orders.data.data, getOrderName) : null}
+              this._renderPanel('order_id', i += 1, T('orders'), this.props.orders.data, getOrderName) : null}
         </Accordion>
       </div>
     );
@@ -74,7 +75,7 @@ class Filters extends React.Component {
   }
 
   hasCategories() {
-    return this.props.categories.data.data && this.props.categories.data.data.length > 1;
+    return this.props.categories.data && this.props.categories.data.length > 1;
   }
   hasOrders() {
     return this.props.orders.data.data && this.props.orders.data.data.length > 1;
@@ -99,9 +100,11 @@ Filters.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export default connect((state) => {
+function select(state, props) {
   return {filter: state.filter, orders: state.orders, categories: state.categories};
-})(Filters);
+}
+
+export default connect(select)(Filters);
 
 const styles = {
   searchBox: {

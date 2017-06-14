@@ -10,8 +10,8 @@ import Price from '../components/price';
 import {t} from 'i18n';
 const T = (s, opts) => t('totals_box.'+s, opts);
 
-const TotalsBox = ({group_order_articles, dispatch}) => {
-  const goas = group_order_articles.data.data || [];
+const TotalsBox = ({ group_order_articles, dispatch }) => {
+  const goas = group_order_articles.data || [];
   const total = goas.reduce((sum, goa) => sum + goa.total_price, 0);
   return (
     <a href='#' onClick={onClick.bind(this, dispatch)}>
@@ -25,7 +25,7 @@ const TotalsBox = ({group_order_articles, dispatch}) => {
 }
 
 function onClick(dispatch, e) {
-  dispatch(filter.actions.replace({ordered: 'member'}));
+  dispatch(filter.actions.replace({ ordered: 'member' }));
 }
 
 TotalsBox.propTypes = {
@@ -33,9 +33,11 @@ TotalsBox.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect((state) => {
-  return {group_order_articles: state.group_order_articles}
-})(TotalsBox);
+function select(state, props) {
+  return { group_order_articles: state.group_order_articles };
+}
+
+export default connect(select)(TotalsBox);
 
 const styles = {
   container: {

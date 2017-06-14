@@ -8,11 +8,15 @@ import { currentLocale } from 'i18n';
 import moment from 'moment';
 
 import OAuth from './oauth';
-import store from './store/store';
+import store from './store';
+import rootSaga from './sagas';
+import { setAccessToken } from './actions/user';
 
 import Layout from './containers/layout';
 import Loading from './containers/loading';
 import Orders from './containers/orders';
+
+store.runSaga(rootSaga);
 
 const App = ({store}) => (
   <Provider store={store}>
@@ -40,7 +44,7 @@ if (!accessToken) {
 
 } else {
   // store access token and setup app
-  store.getState().user.accessToken = accessToken;
+  store.dispatch(setAccessToken(accessToken));
   // @todo set initial route/state from window.location.hash
 
   // setup l10n, ok if it fails

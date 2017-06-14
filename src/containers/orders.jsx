@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Col, Row, Well} from 'react-bootstrap';
 
-import filter from '../store/filter';
-
 import Filters from './filters';
 import OrdersTitle from './orders_title';
 import OrdersBoxfillNotice from './orders_boxfill_notice';

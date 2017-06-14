@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Notifs as ReNotifs} from 'redux-notifications';
-import css from 'redux-notifications/src/styles.css';
+import { Notifs as ReNotifs } from 'redux-notifications';
+import css from 'redux-notifications/lib/styles.css';
 
 // bootstrap theme (omitting action)
 const Notif = ({kind, componentClassName, message}) => (

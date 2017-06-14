@@ -26,6 +26,8 @@ OrdersBoxfillNotice.propTypes = {
   orders: PropTypes.object.isRequired
 };
 
-export default connect((state) => {
+function select(state, props) {
   return {orders: state.orders}
-})(OrdersBoxfillNotice);
+}
+
+export default connect(select)(OrdersBoxfillNotice);

@@ -85,9 +85,11 @@ OrdersTitle.propTypes = {
   filter: PropTypes.object.isRequired
 };
 
-export default connect((state) => {
+function select(state, props) {
   return {orders: state.orders, filter: state.filter}
-})(OrdersTitle);
+}
+
+export default connect(select)(OrdersTitle);
 
 const styles = {
   container: {

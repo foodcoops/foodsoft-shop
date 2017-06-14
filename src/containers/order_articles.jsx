@@ -5,7 +5,9 @@ import {Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover} from 'rea
 
 import {compact, min} from 'lodash';
 import {connect} from 'react-redux';
-import rest from '../store/rest';
+import {fetchOrders} from '../actions/orders';
+import {fetchOrderArticles} from '../actions/order_articles';
+import {fetchGroupOrderArticles, updateGroupOrderArticle} from '../actions/group_order_articles';
 import filter from '../store/filter';
 import lastBox from '../lib/last_box';
 
@@ -30,26 +32,19 @@ const Tip = ({text, children}) => (
 class OrderArticles extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(filter.actions.update());
-    this.props.dispatch(rest.actions.orders.sync()); // @todo make sure we have all
-    this.props.dispatch(rest.actions.group_order_articles.sync({per_page: -1})); // get all
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // goa updates are debounced, and we only want to update these _after_ response from
-    // the server (not when it is sent). Therefore, skip updating this component when goas
-    // are being loaded. We do want to revert to the old value in case of error, though.
-    const goas = nextProps.group_order_articles;
-    return (goas.sync && !goas.loading) || goas.error;
+    // this.props.dispatch(filter.actions.update());
+    this.props.dispatch(fetchOrders()); // @todo make sure we have all
+    this.props.dispatch(fetchOrderArticles());
+    this.props.dispatch(fetchGroupOrderArticles());
   }
 
   render() {
     const _orders = this.props.orders, _oas = this.props.order_articles, _goas = this.props.group_order_articles;
-    if (!_oas.data.data || !_orders.data.data) { return <div />; }
-    const orders = _orders.data.data;
-    const oas = _oas.data.data;
-    const goas = _goas.data.data || [];
-    const anyTolerance = !!_oas.data.data.find((oa) => oa.article.unit_quantity > 1);
+    if (!_oas.data || !_orders.data) { return <div />; }
+    const orders = _orders.data;
+    const oas = _oas.data;
+    const goas = _goas.data || [];
+    const anyTolerance = !!_oas.data.find((oa) => oa.article.unit_quantity > 1);
     return (
       <div style={styles.container}>
         <Table hover>
@@ -118,9 +113,9 @@ class OrderArticles extends React.Component {
             })}
           </tbody>
         </Table>
-        {_oas.data.meta && _oas.data.meta.total_pages > 1 ?
+        {_oas.pages > 1 ?
           <div style={styles.pagination}>
-            <Pagination items={_oas.data.meta.total_pages} maxButtons={10} boundaryLinks
+            <Pagination items={_oas.pages} maxButtons={10} boundaryLinks
                         prev={true} next={true}
                         activePage={this.props.filter.page || 1} onSelect={(page) => this._onChangePage(page)} />
           </div> : null }
@@ -129,7 +124,7 @@ class OrderArticles extends React.Component {
   }
 
   _onChangeAmount(oa, goa, what, value) {
-    this.props.dispatch(rest.actions.group_order_articles.change(oa, goa, {[what]: Number(value)}));
+    this.props.dispatch(updateGroupOrderArticle(goa.id, {[what]: Number(value)}));
   }
 
   _onChangePage(page) {
@@ -224,6 +219,8 @@ OrderArticles.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect((state) => {
-  return {filter: state.filter, orders: state.orders, order_articles: state.order_articles, group_order_articles: state.group_order_articles}
-})(OrderArticles);
+function select(state, props) {
+  return {filter: state.filter, orders: state.orders, order_articles: state.order_articles, group_order_articles: state.group_order_articles};
+}
+
+export default connect(select)(OrderArticles);
