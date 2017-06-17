@@ -1,24 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {debounce} from 'lodash';
-import {Button, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
+import { Button, FormControl, Glyphicon, InputGroup } from 'react-bootstrap';
 
 class DeltaInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: props.value};
-    this.onChangeDebounced = debounce(this.onChange, 500);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // @todo find out if this is ok
-    this.setState({value: nextProps.value});
   }
 
   render() {
-    const value = this.state.value;
     const onDelta = this.onDelta.bind(this);
-    const {min, max, delta, color} = this.props;
+    const { min, max, delta, color, value } = this.props;
     const valueNext = (value || 0) + delta;
     const valuePrev = (value || 0) - delta;
     return (
@@ -46,8 +37,7 @@ class DeltaInput extends React.Component {
     const {min, max} = this.props;
     if (this.props.onChange !== null) {
       if ((min === null || value >= min) && (max === null || value <= max)) {
-        this.setState({value: value});
-        this.onChangeDebounced.bind(this)(event, value);
+        this.onChange(event, value);
       }
     }
     return true;
