@@ -1,14 +1,14 @@
-import {t} from 'i18n';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
+import { t } from 'i18n';
+import { Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover } from 'react-bootstrap';
 
-import {compact, min} from 'lodash';
-import {connect} from 'react-redux';
-import {fetchOrders} from '../actions/orders';
-import {fetchOrderArticles} from '../actions/order_articles';
-import {fetchGroupOrderArticles, updateGroupOrderArticle} from '../actions/group_order_articles';
-import filter from '../store/filter';
+import { compact, min } from 'lodash';
+import { connect } from 'react-redux';
+import { fetchOrders } from '../actions/orders';
+import { fetchOrderArticles } from '../actions/order_articles';
+import { fetchGroupOrderArticles, updateGroupOrderArticle } from '../actions/group_order_articles';
+import { updateFilter } from '../actions/filter';
 import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';
@@ -16,13 +16,13 @@ import DeltaInput from '../components/delta_input';
 import Price from '../components/price';
 import UnitBar from '../components/unit_bar';
 import UnitsBox from '../components/units_box';
-import {FromByInNote} from '../components/article_description';
+import { FromByInNote } from '../components/article_description';
 import ArticleInfoIcon from '../components/article_info_icon';
-import {UnitsToOrderDesc, LastBoxDesc} from '../components/article_quantities_description';
+import { UnitsToOrderDesc, LastBoxDesc } from '../components/article_quantities_description';
 
 // tooltip shorthand
 let i = 0;
-const Tip = ({text, children}) => (
+const Tip = ({ text, children }) => (
   <OverlayTrigger placement='bottom' overlay={<Popover id={`tooltip-${i++}`} style={styles.tooltip}>{text}</Popover>}>
     <span>{children}</span>
   </OverlayTrigger>
@@ -32,7 +32,6 @@ const Tip = ({text, children}) => (
 class OrderArticles extends React.Component {
 
   componentDidMount() {
-    // this.props.dispatch(filter.actions.update());
     this.props.dispatch(fetchOrders()); // @todo make sure we have all
     this.props.dispatch(fetchOrderArticles());
     this.props.dispatch(fetchGroupOrderArticles());
@@ -128,7 +127,7 @@ class OrderArticles extends React.Component {
   }
 
   _onChangePage(page) {
-    this.props.dispatch(filter.actions.update({page: page}));
+    this.props.dispatch(updateFilter({page: page}));
   }
 
   _colorQuantity(goa) {
@@ -220,7 +219,7 @@ OrderArticles.propTypes = {
 };
 
 function select(state, props) {
-  return {filter: state.filter, orders: state.orders, order_articles: state.order_articles, group_order_articles: state.group_order_articles};
+  return { filter: state.filter, orders: state.orders, order_articles: state.order_articles, group_order_articles: state.group_order_articles };
 }
 
 export default connect(select)(OrderArticles);

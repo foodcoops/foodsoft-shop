@@ -1,3 +1,4 @@
+import { stringify } from 'qs';
 import { call, put, fork, takeEvery, takeLatest } from 'redux-saga/effects';
 import { get } from '../lib/api';
 
@@ -12,9 +13,10 @@ import {
   FETCH_ORDER_ARTICLE_FAILURE
 } from '../actions/order_articles';
 
-function* fetchOrderArticles() {
-  yield put({ type: FETCH_ORDER_ARTICLES_REQUEST });
-  const r = yield call(get, `/api/v1/order_articles`);
+function* fetchOrderArticles({ payload }) {
+  yield put({ type: FETCH_ORDER_ARTICLES_REQUEST, payload });
+  const query = payload ? ('?' + stringify(payload)) : '';
+  const r = yield call(get, `/api/v1/order_articles${query}`);
 
   if (r.data) {
     yield put({ type: FETCH_ORDER_ARTICLES_SUCCESS, payload: r });

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Accordion, Badge, Glyphicon, ListGroup, ListGroupItem, OverlayTrigger, Panel, Tooltip, Well} from 'react-bootstrap';
+import { Accordion, Badge, Glyphicon, ListGroup, ListGroupItem, OverlayTrigger, Panel, Tooltip, Well } from 'react-bootstrap';
 
 import moment from 'moment';
-import {connect} from 'react-redux';
-import {fetchOrders} from '../actions/orders';
-import {fetchCategories} from '../actions/categories';
-import filter from '../store/filter';
+import { connect } from 'react-redux';
+import { fetchOrders } from '../actions/orders';
+import { fetchCategories } from '../actions/categories';
+import { replaceFilter } from '../actions/filter';
 import SearchBox from '../components/search_box';
 
 import {t, l} from 'i18n';
@@ -78,19 +78,19 @@ class Filters extends React.Component {
     return this.props.categories.data && this.props.categories.data.length > 1;
   }
   hasOrders() {
-    return this.props.orders.data.data && this.props.orders.data.data.length > 1;
+    return this.props.orders.data && this.props.orders.data.length > 1;
   }
 
   _onClick(key, value) {
-    this.props.dispatch(filter.actions.replace({[`${key}_eq`]: value}));
+    this.props.dispatch(replaceFilter({ [`${key}_eq`]: value }));
   }
 
   _onClickEveryone() {
-    this.props.dispatch(filter.actions.replace({ordered: 'all'}));
+    this.props.dispatch(replaceFilter({ ordered: 'all' }));
   }
 
   _onSearch(e) {
-    this.props.dispatch(filter.actions.replace({search: e.target.value}));
+    this.props.dispatch(replaceFilter({ search: e.target.value }));
   }
 }
 
@@ -101,7 +101,7 @@ Filters.propTypes = {
 };
 
 function select(state, props) {
-  return {filter: state.filter, orders: state.orders, categories: state.categories};
+  return { filter: state.filter, orders: state.orders, categories: state.categories };
 }
 
 export default connect(select)(Filters);
