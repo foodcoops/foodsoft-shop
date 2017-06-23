@@ -17,7 +17,7 @@ const initialState = {
 export default function order_articles(state = initialState, action) {
   switch(action.type) {
     case FETCH_ORDER_ARTICLES_REQUEST:
-      return { ...state, data: [], total: 0, loading: true };
+      return { ...state, loading: true };
     case FETCH_ORDER_ARTICLES_SUCCESS:
       return {
         ...state,
