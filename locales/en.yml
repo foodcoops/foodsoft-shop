@@ -24,6 +24,7 @@ en:
         other: '%{count} boxes of %{box_amount} are ordered by all members'
       with_remaining_box:
         zero: all boxes are filled%{extra}
+        one: with one in the remaining box%{extra}
         other: with %{amount} in the remaining box%{extra}
       with_remaining_box_fill: '%{amount} would be needed for a next box'
       with_remaining_fill:
@@ -61,7 +62,7 @@ en:
       partly: 'partly closed, last closing %{date}'
       partly_expect_since: 'was expected to be partly closed, last closing %{date}'
     title:
-      all: Everyone's order
+      all: Ordered by everyone
       member: My current order
   totals_box:
     total: Total

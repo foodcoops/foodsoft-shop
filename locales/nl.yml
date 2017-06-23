@@ -24,10 +24,11 @@ nl:
         other: samen %{count} dozen van %{box_amount} te bestellen
       with_remaining_box:
         zero: alle dozen zijn gevuld%{extra}
+        one: er zit nu één in de laatste doos%{extra}
         other: in de laatste doos zit nu %{amount}%{extra}
       with_remaining_box_fill: '%{amount} zou nodig zijn voor een volgende doos'
       with_remaining_fill:
-        one: 'er is nog maar éń nodig om een doos vol te maken'
+        one: 'er is nog maar één nodig om een doos vol te maken'
         other: 'er is nog %{count} nodig om een doos vol te maken'
   errors:
     authentication_required: Inloggen vereist
@@ -61,7 +62,7 @@ nl:
       partly: 'deels gesloten, deels open tot %{date}'
       partly_expect_since: 'zou deels gesloten zijn, deels open tot %{date}'
     title:
-      all: Bestelling van iedereen
+      all: Besteld door iedereen
       member: Mijn huidige bestelling
   totals_box:
     total: Totaal
