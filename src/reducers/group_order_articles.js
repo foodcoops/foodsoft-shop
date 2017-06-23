@@ -30,20 +30,16 @@ export default function group_order_articles(state = initialState, action) {
       return { ...state, loading: false };
 
     case UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST: {
-      // @todo include result update
-      // @todo include order_article optimistic update
-      const newItem = action.payload;
-      const oldItem = state.data.find(o => action.id === newItem.id);
-      // @todo store old item state, revert on failure, nuke on success
-      const data = state.data.map(o => o.id === action.id ? { ...o, ...newItem } : o);
+      const data = state.data.map(o => o.id === action.id ? { ...o, ...action.payload } : o);
       return { ...state, data, loading: true };
     }
     case UPDATE_GROUP_ORDER_ARTICLE_REQUEST:
       return { ...state, loading: true };
-    case UPDATE_GROUP_ORDER_ARTICLE_SUCCESS:
+    case UPDATE_GROUP_ORDER_ARTICLE_SUCCESS: {
       const newItem = action.payload.data;
       const data = state.data.map((o) => o.id === newItem.id ? newItem : o);
       return { ...state, data, loading: false };
+    }
     case UPDATE_GROUP_ORDER_ARTICLE_FAILURE:
       return { ...state, loading: false };
 

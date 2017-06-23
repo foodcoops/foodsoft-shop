@@ -40,5 +40,5 @@ function* fetchOrderArticle({ id }) {
 
 export default function* orderArticlesSaga() {
   yield takeEvery(FETCH_ORDER_ARTICLES, fetchOrderArticles);
-  yield takeEvery(FETCH_ORDER_ARTICLE, fetchOrderArticle);
+  yield takeLatest(FETCH_ORDER_ARTICLE, fetchOrderArticle);
 }

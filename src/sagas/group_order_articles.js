@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { get, patch } from '../lib/api';
 
@@ -13,7 +13,10 @@ import {
   UPDATE_GROUP_ORDER_ARTICLE_SUCCESS,
   UPDATE_GROUP_ORDER_ARTICLE_FAILURE
 } from '../actions/group_order_articles';
-import { FETCH_ORDER_ARTICLE } from '../actions/order_articles';
+import {
+  FETCH_ORDER_ARTICLE,
+  INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST
+} from '../actions/order_articles';
 
 function* fetchGroupOrderArticles() {
   yield put({ type: FETCH_GROUP_ORDER_ARTICLES_REQUEST });
@@ -27,8 +30,18 @@ function* fetchGroupOrderArticles() {
 }
 
 function* updateGroupOrderArticle({ id, payload }) {
-  // first do optimistic update, both here and on order_article
+  // first do optimistic update
+  const goaOld = yield select(state => state.group_order_articles.data.find(o => o.id === id));
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST, id, payload });
+  const goaNew = yield select(state => state.group_order_articles.data.find(o => o.id === id));
+  // also update order_article totals
+  // @todo do not use delta, as repetition can cause an optimistic update to be lost
+  yield put({ type: INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST, id: goaNew.order_article_id, payload: {
+    delta: {
+      quantity: goaNew.quantity - goaOld.quantity,
+      tolerance: goaNew.tolerance - goaOld.tolerance
+    }
+  }});
 
   // then perform _debounced_ update at remote end
   yield call(delay, 500);
@@ -37,7 +50,9 @@ function* updateGroupOrderArticle({ id, payload }) {
 
   if (r.data) {
     yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r });
-    yield put({ type: FETCH_ORDER_ARTICLE, id: r.data.order_article_id })
+    // also fetch order_article, just to be sure
+    // (algorithm on server may be slightly different than optimistic update here)
+    yield put({ type: FETCH_ORDER_ARTICLE, id: r.data.order_article_id });
   } else {
     yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE });
   }
