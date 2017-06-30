@@ -1,7 +1,8 @@
-import {createStore, applyMiddleware} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware, { END } from 'redux-saga';
 import rootReducer from '../reducers';
-import {isDev} from '../config';
+import getLoadingListener from './loading';
+import { isDev } from '../config';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware];
@@ -17,5 +18,7 @@ const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
 store.runSaga = sagaMiddleware.run;
 store.close = () => store.dispatch(END);
+
+store.subscribe(getLoadingListener(store));
 
 export default store;

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as notifs } from 'redux-notifications';
 
+import loading from './loading';
 import user from './user';
 import filter from './filter';
 import categories from './categories';
@@ -10,6 +11,7 @@ import group_order_articles from './group_order_articles';
 
 export default combineReducers({
   notifs,
+  loading,
   user,
   filter,
   categories,
