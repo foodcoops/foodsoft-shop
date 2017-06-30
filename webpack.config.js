@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var I18nPlugin = require('webpack-rails-i18n-js-plugin');
+var VirtualModulePlugin = require('virtual-module-webpack-plugin');
 var pkg = require('./package.json');
 var config = require('./src/config');
 
@@ -41,5 +42,10 @@ module.exports = {
     }),
     // save space by removing locales that Foodsoft doesn't support anyway - http://stackoverflow.com/a/25426019/2866660
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, new RegExp('/(' + config.locales.join('|') + ')\\./')),
+    // pick only certain parts of country data to reduce filesize
+    new VirtualModulePlugin({
+      moduleName: 'src/lib/countries_data.json',
+      contents: require('./src/lib/countries_data.js')
+    }),
   ]
 };
