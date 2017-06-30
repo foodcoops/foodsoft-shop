@@ -32,19 +32,26 @@ function* fetchGroupOrderArticles() {
 function* updateGroupOrderArticle({ id, payload }) {
   // first do optimistic update
   const goaOld = yield select(state => state.group_order_articles.data.find(o => o.id === id));
+  const order_article_id = goaOld.order_article_id;
+  const oaOld  = yield select(state => state.order_articles.data.find(o => o.id === order_article_id));
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST, id, payload });
   const goaNew = yield select(state => state.group_order_articles.data.find(o => o.id === id));
   // also update order_article totals
   // @todo do not use delta, as repetition can cause an optimistic update to be lost
-  yield put({ type: INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST, id: goaNew.order_article_id, payload: {
+  yield put({ type: INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST, id: order_article_id, payload: {
     delta: {
       quantity: goaNew.quantity - goaOld.quantity,
       tolerance: goaNew.tolerance - goaOld.tolerance
     }
   }});
+  // now that order_article is updated, update group_order_article result
+  const oaNew  = yield select(state => state.order_articles.data.find(o => o.id === order_article_id))
+  const result = goaOld.result + (oaNew.units_to_order - oaOld.units_to_order) * oaNew.article.unit_quantity;
+  const total_price = goaNew.quantity * (goaOld.total_price / goaOld.quantity); // derive price from previous sum :/
+  yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST, id, payload: { result, total_price } });
 
   // then perform _debounced_ update at remote end
-  yield call(delay, 500);
+  yield call(delay, 800);
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
   const r = yield call(patch, `/api/v1/group_order_articles/${id}`, { data: payload });
 
