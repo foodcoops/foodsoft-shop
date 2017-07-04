@@ -3,12 +3,12 @@ Foodsoft Webshop
 
 This is an EXPERIMENTAL webshop component for [Foodsoft](https://github.com/foodcoops/foodsoft).
 
-Based on [React](http://facebook.github.io/react/) and [redux-api](https://github.com/lexich/redux-api),
+Based on [React](http://facebook.github.io/react/) and [redux-saga](http://redux-saga.js.org/),
 it may replace the existing [rails](http://www.rubyonrails.org/)-based webshop component at some point.
 
 It functions together with Foodsoft's future API from
-[this branch](https://github.com/wvengen/foodsoft/tree/feature/rest-for-shop), which is very much a
-work-in-progress as well.
+[this branch](https://github.com/wvengen/foodsoft/tree/feature/rest-for-shop), which is waiting for
+this webshop to be completed.
 
 
 The hope is that this brings [foodcoop-adam/foodsoft#163](https://github.com/foodcoop-adam/foodsoft/issues/163)'s
@@ -53,12 +53,13 @@ Though this software is not fully finished, you could try running it if you're i
   * Fill in any name, and put `http://localhost:8080/` in _Redirect URI_, then _Submit_.
   * Click the application name, and take note of the _Application Id_, this is the OAuth client id.
 
-2. Install this app. You'll need [node.js](https://nodejs.org/), since this is a Javascript application:
+2. Install this app. You'll need [node.js](https://nodejs.org/), since this is a Javascript application,
+   and [yarn](https://yarnpkg.com/) for installing dependencies:
 
    ```sh
    $ git clone https://github.com/foodcoops/foodsoft-shop.git
    $ cd foodsoft-shop
-   $ npm install
+   $ yarn install
    ```
 
 3. Create the file `local.js` in the foodsoft-shop directory with contents:
@@ -73,10 +74,10 @@ Though this software is not fully finished, you could try running it if you're i
 4. Start the app
 
    ```sh
-   $ npm start
+   $ yarn start
    ```
 
-   and open http://localhost:8080/
+   and open [http://localhost:8080/](http://localhost:8080/)
 
 
 ## Notes
