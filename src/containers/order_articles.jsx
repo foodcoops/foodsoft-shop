@@ -1,5 +1,6 @@
 import {t} from 'i18n';
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover} from 'react-bootstrap';
 
 import {compact, min} from 'lodash';

@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Notifs as ReNotifs} from 'redux-notifications';
-import css from 'redux-notifications/css/styles.css';
+import css from 'redux-notifications/src/styles.css';
 
 // bootstrap theme (omitting action)
 const Notif = ({kind, componentClassName, message}) => (
@@ -8,9 +9,9 @@ const Notif = ({kind, componentClassName, message}) => (
 );
 
 Notif.propTypes = {
-  message: React.PropTypes.string.isRequired,
-  kind: React.PropTypes.oneOf(['success', 'info', 'warning', 'danger']).isRequired,
-  componentClassName: React.PropTypes.string,
+  message: PropTypes.string.isRequired,
+  kind: PropTypes.oneOf(['success', 'info', 'warning', 'danger']).isRequired,
+  componentClassName: PropTypes.string,
 };
 
 const Notifs = () => <ReNotifs CustomComponent={Notif} />;

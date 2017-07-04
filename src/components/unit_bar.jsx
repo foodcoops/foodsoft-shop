@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {ProgressBar} from 'react-bootstrap'
 import lastBox from '../lib/last_box';
 

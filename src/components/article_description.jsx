@@ -1,5 +1,6 @@
 // various article description components
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {flatMap} from 'lodash';
 import {name as countryName} from '../lib/countries';
 

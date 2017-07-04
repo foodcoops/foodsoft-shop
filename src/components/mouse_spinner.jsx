@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const MouseSpinner = ({active, className, children, ...props}) => (
   <div {...props} className={active ? [className, 'cursor-loading'].join(' ') : className}>

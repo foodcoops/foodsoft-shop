@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {Button, FormControl, FormGroup, Glyphicon, InputGroup} from 'react-bootstrap';
 import InputField from 'react-debounce-input';
 

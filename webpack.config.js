@@ -7,18 +7,17 @@ var config = require('./src/config');
 module.exports = {
   entry: './src/index.jsx',
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(js|jsx)$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
           plugins: ['transform-object-rest-spread'],
           presets: ['es2015', 'react']
         }
       },
-      {test: /\.json$/, loader: 'json-loader'},
-      {test: /\.(png|jpg|svg)$/, loader: 'url-loader?limit=8192'},
+      {test: /\.(png|jpg|svg)$/, loader: 'url-loader', options: { limit: 8192 }},
       {test: /\.(css)$/, loader: 'simple-css-loader'},
     ],
   },
@@ -27,7 +26,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   plugins: [
     new webpack.DefinePlugin({

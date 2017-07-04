@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import lastBox from '../lib/last_box';
 import {asLines} from './article_description';
 

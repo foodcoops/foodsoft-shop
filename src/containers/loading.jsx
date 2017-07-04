@@ -1,5 +1,6 @@
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import MouseSpinner from '../components/mouse_spinner';
 
 const Loading = ({loading, children}) => (

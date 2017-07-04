@@ -1,7 +1,8 @@
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import rest from '../store/rest';
-import {Navbar, NavbarBrand, Nav, NavItem} from 'react-bootstrap';
+import { Navbar, NavbarBrand, Nav, NavItem } from 'react-bootstrap';
 import Notifs from '../components/notifs';
 
 class Layout extends React.Component {
@@ -12,13 +13,13 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
-        <Notifs />
+        {/* <Notifs /> */}
         <Navbar>
           <NavbarBrand>Foodsoft shop</NavbarBrand>
           <Nav pullRight>
             {this.props.user.data.data ?
-              <NavItem href="#">{this.props.user.data.data.name}</NavItem> :
-              <NavItem href="#">Login</NavItem>}
+              <NavItem>{this.props.user.data.data.name}</NavItem> :
+              <NavItem>Login</NavItem>}
           </Nav>
         </Navbar>
         <div className="container">

@@ -1,9 +1,9 @@
 import qs from 'qs';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 
-import {currentLocale} from 'i18n';
+import { currentLocale } from 'i18n';
 import moment from 'moment';
 
 import OAuth from './oauth';

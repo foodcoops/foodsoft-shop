@@ -1,5 +1,6 @@
-import {debounce} from 'lodash';
 import React from 'react';
+import PropTypes from 'prop-types';
+import {debounce} from 'lodash';
 import {Button, FormControl, Glyphicon, InputGroup} from 'react-bootstrap';
 
 class DeltaInput extends React.Component {
@@ -54,12 +55,12 @@ class DeltaInput extends React.Component {
 }
 
 DeltaInput.propTypes = {
-  value: React.PropTypes.number,
-  min: React.PropTypes.number,
-  max: React.PropTypes.number,
-  delta: React.PropTypes.number.isRequired,
-  color: React.PropTypes.string,
-  onChange: React.PropTypes.func,
+  value: PropTypes.number,
+  min: PropTypes.number,
+  max: PropTypes.number,
+  delta: PropTypes.number.isRequired,
+  color: PropTypes.string,
+  onChange: PropTypes.func,
 };
 
 DeltaInput.defaultProps = {
