@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { fetchOrders } from '../actions/orders';
 import { fetchOrderArticles } from '../actions/order_articles';
 import { fetchGroupOrderArticles, updateGroupOrderArticle } from '../actions/group_order_articles';
-import { updateFilter } from '../actions/filter';
+import { replaceFilter } from '../actions/filter';
 import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';
@@ -127,7 +127,7 @@ class OrderArticles extends React.Component {
   }
 
   _onChangePage(page) {
-    this.props.dispatch(updateFilter({page: page}));
+    this.props.dispatch(replaceFilter({ ...this.props.filter, page: page }));
   }
 
   _colorQuantity(goa) {
