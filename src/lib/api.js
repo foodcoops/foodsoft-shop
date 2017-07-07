@@ -2,6 +2,7 @@ import { merge } from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { appName, appVersion, foodsoftUrl } from '../config';
 import store from '../store';
+import OAuth from '../oauth';
 
 const defaultRequestOptions = {
   headers: {
@@ -70,14 +71,18 @@ function req(endpoint, options) {
   return fetch(url, fetchOptions)
     .then(response => {
       if (options.method === 'DELETE' && response.ok) {
-        return Promise.resolve({ json: '', response });
+        return Promise.resolve({ json: {}, response });
       }
       return response.json()
         .then(json => ({ json, response }))
-        .catch(e => ({ json: '', response }));
+        .catch(e => ({ json: {}, response }));
     })
     .then(({ json, response }) => {
+      if (response.status === 401 && json.error === 'invalid_token') {
+        new OAuth().request();
+        // (almost) unreachable code
+      }
       if (!response.ok) throw json;
       return json;
-    });
+    })
 }
