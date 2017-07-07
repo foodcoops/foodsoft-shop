@@ -2,6 +2,7 @@ import qs from 'qs';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { currentLocale } from 'i18n';
 import moment from 'moment';
@@ -16,9 +17,13 @@ import Orders from './containers/orders';
 const App = ({store}) => (
   <Provider store={store}>
     <Loading>
-      <Layout>
-        <Orders />
-      </Layout>
+      <Router>
+        <Layout>
+          <Switch>
+            <Route exact path='/' component={Orders} />
+          </Switch>
+        </Layout>
+      </Router>
     </Loading>
   </Provider>
 );

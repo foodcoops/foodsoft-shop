@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import rest from '../store/rest';
 import { Navbar, NavbarBrand, Nav, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import Notifs from '../components/notifs';
 
 class Layout extends React.Component {
@@ -15,7 +17,9 @@ class Layout extends React.Component {
       <div>
         {/* <Notifs /> */}
         <Navbar>
-          <NavbarBrand>Foodsoft shop</NavbarBrand>
+          <Navbar.Brand>
+            <LinkContainer to='/'><a>Foodsoft shop</a></LinkContainer>
+          </Navbar.Brand>
           <Nav pullRight>
             {this.props.user.data.data ?
               <NavItem>{this.props.user.data.data.name}</NavItem> :
@@ -38,6 +42,6 @@ Layout.propTypes = {
   }).isRequired,
 };
 
-export default connect((state) => {
+export default withRouter(connect((state) => {
   return {user: state.user}
-})(Layout);
+})(Layout));
