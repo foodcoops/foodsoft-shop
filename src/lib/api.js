@@ -1,3 +1,4 @@
+import { t } from 'i18n';
 import { merge } from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { appName, appVersion, foodsoftUrl } from '../config';
@@ -81,8 +82,14 @@ function req(endpoint, options) {
       if (response.status === 401 && json.error === 'invalid_token') {
         new OAuth().request();
         // (almost) unreachable code
+        throw new Error(t('errors.authentication_required'));
+      } else if (!response.ok) {
+        // throw error with message from json when available
+        throw new Error(
+          json.error_description ||
+          t('errors.general', { text: response.statusText, code: response.status })
+        );
       }
-      if (!response.ok) throw json;
       return json;
     })
 }

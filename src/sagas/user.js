@@ -10,12 +10,11 @@ import {
 
 function* fetchCurrentUser() {
   yield put({ type: FETCH_CURRENT_USER_REQUEST });
-  const r = yield call(get, `/api/v1/user`);
-
-  if (r.data && r.data.id) {
+  try {
+    const r = yield call(get, `/api/v1/user`);
     yield put({ type: FETCH_CURRENT_USER_SUCCESS, payload: r });
-  } else {
-    yield put({ type: FETCH_CURRENT_USER_FAILURE });
+  } catch(e) {
+    yield put({ type: FETCH_CURRENT_USER_FAILURE, payload: e });
   }
 }
 

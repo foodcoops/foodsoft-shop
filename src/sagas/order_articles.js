@@ -16,12 +16,11 @@ import {
 function* fetchOrderArticles({ payload }) {
   yield put({ type: FETCH_ORDER_ARTICLES_REQUEST, payload });
   const query = payload ? ('?' + stringify(payload)) : '';
-  const r = yield call(get, `/api/v1/order_articles${query}`);
-
-  if (r.data) {
+  try {
+    const r = yield call(get, `/api/v1/order_articles${query}`);
     yield put({ type: FETCH_ORDER_ARTICLES_SUCCESS, payload: r });
-  } else {
-    yield put({ type: FETCH_ORDER_ARTICLES_FAILURE });
+  } catch(e) {
+    yield put({ type: FETCH_ORDER_ARTICLES_FAILURE, payload: e });
   }
 }
 
@@ -29,12 +28,11 @@ function* fetchOrderArticles({ payload }) {
 // not for fetching one from scratch, just for updating it
 function* fetchOrderArticle({ id }) {
   yield put({ type: FETCH_ORDER_ARTICLE_REQUEST });
-  const r = yield call(get, `/api/v1/order_articles/${id}`);
-
-  if (r.data) {
+  try {
+    const r = yield call(get, `/api/v1/order_articles/${id}`);
     yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
-  } else {
-    yield put({ type: FETCH_ORDER_ARTICLE_FAILURE });
+  } catch(e) {
+    yield put({ type: FETCH_ORDER_ARTICLE_FAILURE, payload: e });
   }
 }
 

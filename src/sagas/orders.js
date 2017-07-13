@@ -5,12 +5,11 @@ import { FETCH_ORDERS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_
 
 function* fetchOrders() {
   yield put({ type: FETCH_ORDERS_REQUEST });
-  const r = yield call(get, `/api/v1/orders`);
-
-  if (r.data) {
+  try {
+    const r = yield call(get, `/api/v1/orders`);
     yield put({ type: FETCH_ORDERS_SUCCESS, payload: r });
-  } else {
-    yield put({ type: FETCH_ORDERS_FAILURE });
+  } catch(e) {
+    yield put({ type: FETCH_ORDERS_FAILURE, payload: e });
   }
 }
 

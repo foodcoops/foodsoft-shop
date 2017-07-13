@@ -2,10 +2,11 @@ import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware, { END } from 'redux-saga';
 import rootReducer from '../reducers';
 import getLoadingListener from './loading';
+import notificationsMiddleware from './notifications';
 import { isDev } from '../config';
 
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [sagaMiddleware];
+const middlewares = [notificationsMiddleware, sagaMiddleware];
 
 if (isDev) {
   // require inside conditional to allow file-size reduction in production

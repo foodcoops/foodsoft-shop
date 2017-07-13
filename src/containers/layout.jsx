@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Navbar, NavbarBrand, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { fetchCurrentUser } from '../actions/user';
-import Notifs from '../components/notifs';
+import Notifications from '../containers/notifications';
 
 class Layout extends React.Component {
   componentDidMount() {
@@ -15,7 +15,7 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
-        <Notifs />
+        <Notifications />
         <Navbar>
           <Navbar.Brand>
             <LinkContainer to='/'><a>Foodsoft shop</a></LinkContainer>

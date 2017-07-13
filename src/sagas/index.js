@@ -1,5 +1,6 @@
 import { all, fork } from 'redux-saga/effects';
 
+import notifications from './notifications';
 import user from './user';
 import filter from './filter';
 import categories from './categories';
@@ -11,6 +12,7 @@ export default function* rootSaga() {
   // @see https://github.com/redux-saga/redux-saga/issues/178
   // @todo all are cancelled right now if there is an error :/ - maybe use spawn()?
   yield all([
+    fork(notifications),
     fork(user),
     fork(filter),
     fork(categories),

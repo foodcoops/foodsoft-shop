@@ -20,12 +20,11 @@ import {
 
 function* fetchGroupOrderArticles() {
   yield put({ type: FETCH_GROUP_ORDER_ARTICLES_REQUEST });
-  const r = yield call(get, '/api/v1/group_order_articles?per_page=-1'); // get all items
-
-  if (r.data) {
+  try {
+    const r = yield call(get, '/api/v1/group_order_articles?per_page=-1'); // get all items
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_SUCCESS, payload: r });
-  } else {
-    yield put({ type: FETCH_GROUP_ORDER_ARTICLES_FAILURE });
+  } catch(e) {
+    yield put({ type: FETCH_GROUP_ORDER_ARTICLES_FAILURE, payload: e });
   }
 }
 
@@ -55,13 +54,13 @@ function* updateGroupOrderArticle({ id, payload }) {
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
   const r = yield call(patch, `/api/v1/group_order_articles/${id}`, { data: payload });
 
-  if (r.data) {
+  try {
     yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r });
     // also fetch order_article, just to be sure
     // (algorithm on server may be slightly different than optimistic update here)
     yield put({ type: FETCH_ORDER_ARTICLE, id: r.data.order_article_id });
-  } else {
-    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE });
+  } catch(e) {
+    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e });
   }
 }
 

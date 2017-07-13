@@ -1,0 +1,25 @@
+.notifications {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  z-index: 1000;
+  margin: auto;
+}
+
+.notifications-transition-enter {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.notifications-transition-enter-active {
+  opacity: 1;
+}
+
+.notifications-transition-leave {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}
+
+.notifications-transition-leave-active {
+  opacity: 0.01;
+}

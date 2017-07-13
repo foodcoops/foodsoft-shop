@@ -5,12 +5,11 @@ import { FETCH_CATEGORIES, FETCH_CATEGORIES_REQUEST, FETCH_CATEGORIES_SUCCESS, F
 
 function* fetchCategories(params) {
   yield put({ type: FETCH_CATEGORIES_REQUEST });
-  const r = yield call(get, `/api/v1/article_categories?q[orders_state_eq]=open`);
-
-  if (r.data) {
+  try {
+    const r = yield call(get, `/api/v1/article_categories?q[orders_state_eq]=open`);
     yield put({ type: FETCH_CATEGORIES_SUCCESS, payload: r });
-  } else {
-    yield put({ type: FETCH_CATEGORIES_FAILURE });
+  } catch(e) {
+    yield put({ type: FETCH_CATEGORIES_FAILURE, payload: e });
   }
 }
 
