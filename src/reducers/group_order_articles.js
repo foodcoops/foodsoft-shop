@@ -2,6 +2,10 @@ import {
   FETCH_GROUP_ORDER_ARTICLES_REQUEST,
   FETCH_GROUP_ORDER_ARTICLES_SUCCESS,
   FETCH_GROUP_ORDER_ARTICLES_FAILURE,
+  CREATE_GROUP_ORDER_ARTICLE_OPTIMIST,
+  CREATE_GROUP_ORDER_ARTICLE_REQUEST,
+  CREATE_GROUP_ORDER_ARTICLE_SUCCESS,
+  CREATE_GROUP_ORDER_ARTICLE_FAILURE,
   UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST,
   UPDATE_GROUP_ORDER_ARTICLE_REQUEST,
   UPDATE_GROUP_ORDER_ARTICLE_SUCCESS,
@@ -28,6 +32,29 @@ export default function group_order_articles(state = initialState, action) {
       };
     case FETCH_GROUP_ORDER_ARTICLES_FAILURE:
       return { ...state, loading: false };
+
+    case CREATE_GROUP_ORDER_ARTICLE_OPTIMIST: {
+      const data = state.data.concat(action.payload);
+      return { ...state, data, loading: true };
+    }
+    case CREATE_GROUP_ORDER_ARTICLE_REQUEST:
+      return { ...state, loading: true };
+    case CREATE_GROUP_ORDER_ARTICLE_SUCCESS: {
+      const newItem = action.payload.data;
+      const oldItem = action.id && state.data.find(o => o.id === action.id);
+      if (oldItem) {
+        // there is an optimistic update already, replace it
+        const data = state.data.map(o => o.id === action.id ? newItem : o);
+        return { ...state, data, loading: false };
+      } else {
+        const data = state.data.concat(newItem);
+        return { ...state, data, loading: false };
+      }
+    }
+    case CREATE_GROUP_ORDER_ARTICLE_FAILURE: {
+      const data = state.date.filter(o => o.id !== action.id);
+      return { ...state, data, loading: false };
+    }
 
     case UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST: {
       const data = state.data.map(o => o.id === action.id ? { ...o, ...action.payload } : o);

@@ -7,7 +7,11 @@ import { compact, min } from 'lodash';
 import { connect } from 'react-redux';
 import { fetchOrders } from '../actions/orders';
 import { fetchOrderArticles } from '../actions/order_articles';
-import { fetchGroupOrderArticles, updateGroupOrderArticle } from '../actions/group_order_articles';
+import {
+  fetchGroupOrderArticles,
+  createGroupOrderArticle,
+  updateGroupOrderArticle
+} from '../actions/group_order_articles';
 import { replaceFilter } from '../actions/filter';
 import lastBox from '../lib/last_box';
 
@@ -69,6 +73,7 @@ class OrderArticles extends React.Component {
               const goaQ = goa ? goa.quantity : 0;
               const goaT = goa ? goa.tolerance : 0;
               const {missing} = lastBox(oa);
+              const disabled = goa && String(goa.id).startsWith('optimist:'); // workaround for optimistic create
               return (
                 <tr key={oa.id}>
                   <td style={styles.name}>{oa.article.name}</td>
@@ -83,6 +88,7 @@ class OrderArticles extends React.Component {
                     <DeltaInput value={goaQ}
                                 min={order.is_boxfill ? goaQ : 0}
                                 max={order.is_boxfill ? (goaQ + missingUnits) : oa.article.quantity_available}
+                                disabled={disabled}
                                 color={this._colorQuantity(goa)}
                                 onChange={(e,value) => this._onChangeAmount(oa, goa, 'quantity', value)} />
                   </td>
@@ -91,6 +97,7 @@ class OrderArticles extends React.Component {
                         <DeltaInput value={goaT}
                                     min={order.is_boxfill ? goaT : 0}
                                     max={order.is_boxfill ? (goaT + missingUnits) : (oa.article.unit_quantity - 1)}
+                                    disabled={disabled}
                                     color={this._colorTolerance(goa)}
                                     onChange={(e,value) => this._onChangeAmount(oa, goa, 'tolerance', value)} /> : null }
                     </td> : null }
@@ -123,7 +130,11 @@ class OrderArticles extends React.Component {
   }
 
   _onChangeAmount(oa, goa, what, value) {
-    this.props.dispatch(updateGroupOrderArticle(goa.id, {[what]: Number(value)}));
+    if (goa) {
+      this.props.dispatch(updateGroupOrderArticle(goa.id, {[what]: Number(value)}));
+    } else {
+      this.props.dispatch(createGroupOrderArticle({ order_article_id: oa.id, [what]: Number(value) }));
+    }
   }
 
   _onChangePage(page) {

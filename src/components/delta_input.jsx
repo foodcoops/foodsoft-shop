@@ -9,19 +9,19 @@ class DeltaInput extends React.Component {
 
   render() {
     const onDelta = this.onDelta.bind(this);
-    const { min, max, delta, color, value } = this.props;
+    const { min, max, delta, disabled, color, value } = this.props;
     const valueNext = (value || 0) + delta;
     const valuePrev = (value || 0) - delta;
     return (
       <InputGroup>
         <InputGroup.Button>
-          <Button onClick={(e) => onDelta(e, valueNext)} disabled={max !== null && valueNext > max} style={styles.button}>
+          <Button onClick={(e) => onDelta(e, valueNext)} disabled={disabled || (max !== null && valueNext > max)} style={styles.button}>
             <Glyphicon glyph='plus' style={styles.icon} />
           </Button>
         </InputGroup.Button>
         <FormControl type='text' value={value} onChange={(e) => onDelta(e, e.target.value)} style={{color: color || 'black', ...styles.input}} />
         <InputGroup.Button>
-          <Button onClick={(e) => onDelta(e, valuePrev)} disabled={min !== null && valuePrev < min} style={styles.button}>
+          <Button onClick={(e) => onDelta(e, valuePrev)} disabled={disabled || (min !== null && valuePrev < min)} style={styles.button}>
             <Glyphicon glyph='minus' style={styles.icon} />
           </Button>
         </InputGroup.Button>
@@ -48,6 +48,7 @@ DeltaInput.propTypes = {
   value: PropTypes.number,
   min: PropTypes.number,
   max: PropTypes.number,
+  disabled: PropTypes.bool.isRequired,
   delta: PropTypes.number.isRequired,
   color: PropTypes.string,
   onChange: PropTypes.func,
@@ -58,6 +59,7 @@ DeltaInput.defaultProps = {
   color: null,
   min: null,
   max: null,
+  disabled: false,
   onChange: null
 };
 
