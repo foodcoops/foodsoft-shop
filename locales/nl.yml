@@ -39,6 +39,12 @@ nl:
     everyone: Besteld door iedereen
     order_open_until: Open tot %{ends}
     orders: Leveranciers
+  navigation:
+    feedback: Feedback
+    help: Help
+    logout: Uitloggen
+    ordergroup: Mijn huishouden
+    profile: Profiel aanpassen
   order_articles:
     name: Naam
     unit: Eenheid

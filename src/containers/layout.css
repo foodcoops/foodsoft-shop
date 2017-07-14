@@ -1,0 +1,11 @@
+.nav-pre-header {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.nav-pre-header .logo > a:hover { text-decoration: none; }
+.nav-pre-header .logo > a:active { text-decoration: none; }
+.nav-pre-header .logo > a:active { text-decoration: none; }
+
+.nav-pre-buttons {
+  padding-top: 2px;
+}

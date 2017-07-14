@@ -39,6 +39,12 @@ en:
     everyone: Ordered by everyone
     order_open_until: Open until %{ends}
     orders: Suppliers
+  navigation:
+    feedback: Feedback
+    help: Help
+    logout: Logout
+    ordergroup: My ordergroup
+    profile: Edit profile
   order_articles:
     name: Name
     unit: Unit
