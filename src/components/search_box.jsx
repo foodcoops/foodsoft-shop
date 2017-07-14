@@ -7,7 +7,7 @@ import InputField from 'react-debounce-input';
 const SearchBox = ({active, value, onChange, ...props}) => {
   return (
     <FormGroup {...props}>
-      <InputField initialValue={value} value={value ? undefined : ''}placeholder='Search ...'
+      <InputField value={value} placeholder='Search ...'
         onChange={onChange} debounceTimeout={350} className='form-control' />
       <FormControl.Feedback>
         <Glyphicon glyph='search' className={active ? 'text-primary' : null} style={active ? styles.iconActive : styles.iconNormal}/>
