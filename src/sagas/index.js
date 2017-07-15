@@ -2,6 +2,7 @@ import { all, fork } from 'redux-saga/effects';
 
 import notifications from './notifications';
 import user from './user';
+import config from './config';
 import filter from './filter';
 import categories from './categories';
 import orders from './orders';
@@ -14,6 +15,7 @@ export default function* rootSaga() {
   yield all([
     fork(notifications),
     fork(user),
+    fork(config),
     fork(filter),
     fork(categories),
     fork(orders),

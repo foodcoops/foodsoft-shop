@@ -6,6 +6,7 @@ import { Button, Clearfix, DropdownButton, MenuItem, Navbar, NavDropdown, Nav, N
 import { LinkContainer } from 'react-router-bootstrap';
 import { foodsoftUrl } from '../config';
 import { fetchCurrentUser } from '../actions/user';
+import { fetchConfig } from '../actions/config';
 import Notifications from '../containers/notifications';
 import Logo from '../components/logo';
 import './layout.css';
@@ -16,9 +17,11 @@ const T = (s, opts) => t('navigation.'+s, opts);
 class Layout extends React.Component {
   componentDidMount() {
     this.props.dispatch(fetchCurrentUser());
+    this.props.dispatch(fetchConfig());
   }
 
   render() {
+    const { user, config } = this.props;
     return (
       <div>
         <Notifications />
@@ -27,13 +30,13 @@ class Layout extends React.Component {
             <a href={foodsoftUrl}><Logo /></a>
           </div>
           <Nav bsStyle='pills' className='nav-pre-buttons' pullRight>
-            <NavDropdown title={this.props.user.name}>
+            <NavDropdown title={user.name}>
               <MenuItem href={`${foodsoftUrl}/home/profile`} eventKey='1'>{T('profile')}</MenuItem>
               <MenuItem href={`${foodsoftUrl}/home/ordergroup`} eventKey='2'>{T('ordergroup')}</MenuItem>
               <MenuItem href={`${foodsoftUrl}/logout`} eventKey='3'>{T('logout')}</MenuItem>
             </NavDropdown>
-            <NavItem>FC Test</NavItem>{/* @todo get foodcoop name from foodcoop config */}
-            <NavItem>{T('help')}</NavItem>
+            <NavItem href={config.homepage}>{config.name}</NavItem>
+            {config.help_url ? <NavItem href={config.help_url}>{T('help')}</NavItem> : null}
             <NavItem href={`${foodsoftUrl}/feedback/new`}>{T('feedback')}</NavItem>
           </Nav>
           <Clearfix />
@@ -51,14 +54,13 @@ class Layout extends React.Component {
 
 Layout.propTypes = {
   user: PropTypes.shape({
-    loading: PropTypes.bool.isRequired,
-    loggedIn: PropTypes.bool.isRequired,
     name: PropTypes.bool.string
   }).isRequired,
+  config: PropTypes.object.isRequired
 };
 
 function select(state, props) {
-  return { user: state.user };
+  return { user: state.user, config: state.config.data };
 }
 
 export default withRouter(connect(select)(Layout));
