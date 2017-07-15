@@ -27,6 +27,10 @@ function authOptions() {
   }
 }
 
+export function delet(endpoint) {
+  return req(endpoint, {method: 'DELETE'});
+}
+
 export function get(endpoint) {
   return req(endpoint, {});
 }
@@ -93,3 +97,5 @@ function req(endpoint, options) {
       return json;
     })
 }
+
+export default { delet, get, patch, post, put };

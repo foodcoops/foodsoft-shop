@@ -1,6 +1,6 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
-import { get, patch, post } from '../lib/api';
+import api from '../lib/api';
 
 import {
   FETCH_GROUP_ORDER_ARTICLES,
@@ -26,7 +26,7 @@ import {
 function* fetchGroupOrderArticles() {
   yield put({ type: FETCH_GROUP_ORDER_ARTICLES_REQUEST });
   try {
-    const r = yield call(get, '/api/v1/group_order_articles?per_page=-1'); // get all items
+    const r = yield call(api.get, '/api/v1/group_order_articles?per_page=-1'); // get all items
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_SUCCESS, payload: r });
   } catch(e) {
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_FAILURE, payload: e });
@@ -56,7 +56,7 @@ function* createGroupOrderArticle({ payload }) {
 
   // don't debounce since the buttons are disabled until we have an id
   yield put({ type: CREATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
-  const r = yield call(post, '/api/v1/group_order_articles', { data: payload });
+  const r = yield call(api.post, '/api/v1/group_order_articles', { data: payload });
 
   try {
     yield put({ type: CREATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, id });
@@ -91,19 +91,22 @@ function* updateGroupOrderArticle({ id, payload }) {
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST, id, payload: { result, total_price } });
 
   // then perform _debounced_ update at remote end
+  const delet = goaNew.quantity === 0 && goaNew.tolerance === 0;
   yield call(delay, 800);
-  yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
-  const r = yield call(patch, `/api/v1/group_order_articles/${id}`, { data: payload });
-
+  yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload, delet })
   try {
-    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r });
+    const r = delet
+      ? yield call(api.delet, `/api/v1/group_order_articles/${id}`)
+      : yield call(api.patch, `/api/v1/group_order_articles/${id}`, { data: payload });
+    if (!r.data) r.data = { id }; // delete method has no return value, but id is needed in reducer
+    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, delet });
   } catch(e) {
-    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e });
+    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e, delet });
     // @todo re-fetch all goas to get consistent state
   }
   // also fetch order_article, just to be sure - both on success (algorithm on server may
   // be slightly different than optimistic update here) and on failure (revert change)
-  yield put({ type: FETCH_ORDER_ARTICLE, id: r.data.order_article_id });
+  yield put({ type: FETCH_ORDER_ARTICLE, id: order_article_id });
 }
 
 export default function* groupOrderArticlesSaga() {

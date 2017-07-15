@@ -64,7 +64,9 @@ export default function group_order_articles(state = initialState, action) {
       return { ...state, loading: true };
     case UPDATE_GROUP_ORDER_ARTICLE_SUCCESS: {
       const newItem = action.payload.data;
-      const data = state.data.map((o) => o.id === newItem.id ? newItem : o);
+      const data = action.delet
+        ? state.data.filter(o => o.id !== newItem.id)
+        : state.data.map(o => o.id === newItem.id ? newItem : o);
       return { ...state, data, loading: false };
     }
     case UPDATE_GROUP_ORDER_ARTICLE_FAILURE:
