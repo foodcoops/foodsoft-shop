@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {foodsoftCurrency} from '../config';
+import { connect } from 'react-redux';
 
 // @todo use spread operator
 const Price = ({value, currency, ...props}) => value ?
@@ -12,7 +12,16 @@ Price.propTypes = {
 };
 
 Price.defaultProps = {
-  currency: foodsoftCurrency
+  currency: ''
 };
 
-export default Price;
+function select(state, props) {
+  const config = state.config.data;
+  if (config.currency_unit) {
+    return { currency: config.currency_unit + (config.currency_space ? '\u202f' : '') };
+  } else {
+    return {};
+  }
+}
+
+export default connect(select)(Price);

@@ -18,7 +18,6 @@ module.exports = {
   // configurable on global window object
   foodsoftUrl:      wnd.foodsoftUrl || (isDev() ? 'http://localhost:3000/f' : undefined),
   foodsoftClientId: wnd.foodsoftClientId || '-- please set window.foodsoftClientId --',
-  foodsoftCurrency: wnd.foodsoftCurrency || '€ ',
   // may also be used to pass access-token directly (skipping oauth)
   foodsoftAccessToken: wnd.foodsoftAccessToken,
 

@@ -17,8 +17,8 @@ const T = (s, opts) => t('navigation.'+s, opts);
 
 class Layout extends React.Component {
   componentDidMount() {
-    this.props.dispatch(fetchCurrentUser());
     this.props.dispatch(fetchConfig());
+    this.props.dispatch(fetchCurrentUser());
   }
 
   render() {
