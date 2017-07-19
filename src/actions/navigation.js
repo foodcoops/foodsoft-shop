@@ -1,0 +1,8 @@
+export const FETCH_NAVIGATION = 'FETCH_NAVIGATION';
+export const FETCH_NAVIGATION_REQUEST = `${FETCH_NAVIGATION}_REQUEST`;
+export const FETCH_NAVIGATION_SUCCESS = `${FETCH_NAVIGATION}_SUCCESS`;
+export const FETCH_NAVIGATION_FAILURE = `${FETCH_NAVIGATION}_FAILURE`;
+
+export function fetchNavigation() {
+  return { type: FETCH_NAVIGATION };
+}

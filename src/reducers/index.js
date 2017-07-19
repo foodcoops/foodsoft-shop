@@ -4,6 +4,7 @@ import loading from './loading';
 import notifications from './notifications';
 import user from './user';
 import config from './config';
+import navigation from './navigation';
 import filter from './filter';
 import categories from './categories';
 import orders from './orders';
@@ -15,6 +16,7 @@ export default combineReducers({
   notifications,
   user,
   config,
+  navigation,
   filter,
   categories,
   orders,

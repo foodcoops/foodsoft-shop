@@ -8,6 +8,7 @@ import { foodsoftUrl } from '../config';
 import { fetchCurrentUser } from '../actions/user';
 import { fetchConfig } from '../actions/config';
 import Notifications from '../containers/notifications';
+import Navigation from '../containers/navigation';
 import Logo from '../components/logo';
 import './layout.css';
 
@@ -30,7 +31,7 @@ class Layout extends React.Component {
             <a href={foodsoftUrl}><Logo /></a>
           </div>
           <Nav bsStyle='pills' className='nav-pre-buttons' pullRight>
-            <NavDropdown title={user.name}>
+            <NavDropdown title={user.name} id='user-dropdown'>
               <MenuItem href={`${foodsoftUrl}/home/profile`} eventKey='1'>{T('profile')}</MenuItem>
               <MenuItem href={`${foodsoftUrl}/home/ordergroup`} eventKey='2'>{T('ordergroup')}</MenuItem>
               <MenuItem href={`${foodsoftUrl}/logout`} eventKey='3'>{T('logout')}</MenuItem>
@@ -42,6 +43,7 @@ class Layout extends React.Component {
           <Clearfix />
         </div>
         <Navbar fluid>
+          <Navigation />
         </Navbar>
         <div className="container-fluid">
           {this.props.children}
