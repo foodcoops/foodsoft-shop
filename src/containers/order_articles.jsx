@@ -5,7 +5,6 @@ import { Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover } from 'r
 
 import { compact, min } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchOrders } from '../actions/orders';
 import { fetchOrderArticles } from '../actions/order_articles';
 import {
   fetchGroupOrderArticles,
@@ -32,11 +31,16 @@ const Tip = ({ text, children }) => (
   </OverlayTrigger>
 );
 
+const StaticInput = ({ value, color }) => (
+  <span style={{color: color}}>{value}</span>
+);
+
 // @todo get currency from api
 class OrderArticles extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(fetchOrders()); // @todo make sure we have all
+    // @todo don't assume all open orders are already loaded ...
+    //       dispatching `fetchOrders()` here resulted in the request being done twice
     this.props.dispatch(fetchOrderArticles());
     this.props.dispatch(fetchGroupOrderArticles());
   }
@@ -68,7 +72,7 @@ class OrderArticles extends React.Component {
           <tbody>
             {oas.map((oa) => {
               const hasTolerance = oa.article.unit_quantity > 1;
-              const order = orders.find((o) => o.id === oa.order_id);
+              const order = orders.find((o) => o.id === oa.order_id) || {};
               const goa = goas.find((goa) => goa.order_article_id === oa.id);
               const goaQ = goa ? goa.quantity : 0;
               const goaT = goa ? goa.tolerance : 0;
@@ -85,21 +89,27 @@ class OrderArticles extends React.Component {
                   <td style={styles.unit}>{oa.article.unit}</td>
                   <td style={styles.priceWithSep}><Price value={oa.price} /></td>
                   <td style={styles.amount}>
-                    <DeltaInput value={goaQ}
-                                min={order.is_boxfill ? goaQ : 0}
-                                max={order.is_boxfill ? (goaQ + missingUnits) : oa.article.quantity_available}
-                                disabled={disabled}
-                                color={this._colorQuantity(goa)}
-                                onChange={(e,value) => this._onChangeAmount(oa, goa, 'quantity', value)} />
+                    {order.is_open
+                      ? <DeltaInput value={goaQ}
+                                    min={order.is_boxfill ? goaQ : 0}
+                                    max={order.is_boxfill ? (goaQ + missingUnits) : oa.article.quantity_available}
+                                    disabled={disabled || !order.is_open}
+                                    color={this._colorQuantity(goa)}
+                                    onChange={(e,value) => this._onChangeAmount(oa, goa, 'quantity', value)} />
+                      : <StaticInput value={goaQ} color={this._colorQuantity(goa)} />}
                   </td>
                   {anyTolerance ?
-                    <td style={styles.amount}>{hasTolerance ?
-                        <DeltaInput value={goaT}
-                                    min={order.is_boxfill ? goaT : 0}
-                                    max={order.is_boxfill ? (goaT + missingUnits) : (oa.article.unit_quantity - 1)}
-                                    disabled={disabled}
-                                    color={this._colorTolerance(goa)}
-                                    onChange={(e,value) => this._onChangeAmount(oa, goa, 'tolerance', value)} /> : null }
+                    <td style={styles.amount}>
+                      {hasTolerance
+                        ? order.is_open
+                          ? <DeltaInput value={goaT}
+                                        min={order.is_boxfill ? goaT : 0}
+                                        max={order.is_boxfill ? (goaT + missingUnits) : (oa.article.unit_quantity - 1)}
+                                        disabled={disabled || !order.is_open}
+                                        color={this._colorTolerance(goa)}
+                                        onChange={(e,value) => this._onChangeAmount(oa, goa, 'tolerance', value)} />
+                          : <StaticInput value={goaT} color={this._colorTolerance(goa)} />
+                        : null}
                     </td> : null }
                   <td style={styles.priceWithSep}>{goa ? <Price value={goa.total_price} /> : null}</td>
                   {anyTolerance ?

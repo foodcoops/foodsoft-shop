@@ -6,7 +6,7 @@ import { FETCH_ORDERS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_SUCCESS, FETCH_ORDERS_
 function* fetchOrders() {
   yield put({ type: FETCH_ORDERS_REQUEST });
   try {
-    const r = yield call(get, `/api/v1/orders`);
+    const r = yield call(get, `/api/v1/orders?q[state_eq]=open`);
     yield put({ type: FETCH_ORDERS_SUCCESS, payload: r });
   } catch(e) {
     yield put({ type: FETCH_ORDERS_FAILURE, payload: e });
@@ -14,5 +14,5 @@ function* fetchOrders() {
 }
 
 export default function* ordersSaga() {
-  yield takeEvery(FETCH_ORDERS, fetchOrders);
+  yield takeLatest(FETCH_ORDERS, fetchOrders);
 }
