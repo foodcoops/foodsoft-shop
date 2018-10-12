@@ -18,7 +18,7 @@ function getOrderName(order) {
   return (
     <span>
       {order.name}
-      {(days && days >= 0) ?
+      {days ?
         <OverlayTrigger placement='right' overlay={tooltip}>
           <small style={styles.ends}>{days > 0 ? T('days_short', {count: days}) : <Glyphicon glyph='time' />}</small>
         </OverlayTrigger> : null}
