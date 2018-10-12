@@ -44,7 +44,7 @@
     "json-loader": "^0.5.4",
     "redux-logger": "^3.0.6",
     "url-loader": "^0.5.7",
-    "virtual-module-webpack-plugin": "^0.2.1",
+    "val-loader": "^1.1.1",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0",
     "webpack-rails-i18n-js-plugin": "chrome/webpack-rails-i18n-js-plugin#716ef9f"

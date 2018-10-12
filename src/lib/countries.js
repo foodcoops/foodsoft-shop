@@ -1,5 +1,5 @@
 // wrapper for countries-info
-import data from './countries_data.json';
+import data from './countries_data.js';
 import { currentLocale } from 'i18n';
 
 export function name(cc, locale) {
