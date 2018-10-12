@@ -13,7 +13,7 @@ module.exports = {
         exclude: /node_modules/,
         query: {
           plugins: ['transform-object-rest-spread', 'transform-runtime'],
-          presets: ['es2015', 'react']
+          presets: ['env', 'react']
         }
       },
       {test: /\.(png|jpg|svg)$/, loader: 'url-loader', options: { limit: 8192 }},
