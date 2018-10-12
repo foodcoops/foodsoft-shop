@@ -7,7 +7,7 @@ import twix from 'twix';
 import {uniq} from 'lodash';
 import {connect} from 'react-redux';
 
-import i18n, {t} from 'i18n';
+import i18n, {t} from 'i18n-js';
 const T = (s, opts) => t('orders_title.'+s, opts);
 
 const OrdersTitleMember = ({orders}) => (

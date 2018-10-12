@@ -4,7 +4,7 @@ import {Alert} from 'react-bootstrap'
 
 import {connect} from 'react-redux';
 
-import i18n, {t} from 'i18n';
+import i18n, {t} from 'i18n-js';
 const T = (s, opts) => t('orders_boxfill_notice.'+s, opts);
 
 const OrdersBoxfillNotice = ({orders}) => {

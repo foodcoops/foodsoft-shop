@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { currentLocale } from 'i18n';
 import moment from 'moment';
+import { currentLocale } from 'i18n-js';
+import i18nInit from './lib/i18n_init';
 
 import OAuth from './oauth';
 import store from './store';
@@ -16,6 +17,7 @@ import Layout from './containers/layout';
 import Loading from './containers/loading';
 import Orders from './containers/orders';
 
+i18nInit();
 store.runSaga(rootSaga);
 
 const App = ({store}) => (

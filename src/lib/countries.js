@@ -1,6 +1,6 @@
 // wrapper for countries-info
 import data from './countries_data.js';
-import { currentLocale } from 'i18n';
+import { currentLocale } from 'i18n-js';
 
 export function name(cc, locale) {
   const cdata = data[cc.toLowerCase()];

@@ -9,7 +9,7 @@ import { fetchCategories } from '../actions/categories';
 import { replaceFilter } from '../actions/filter';
 import SearchBox from '../components/search_box';
 
-import {t, l} from 'i18n';
+import {t, l} from 'i18n-js';
 const T = (s, opts) => t('filters.'+s, opts);
 
 function getOrderName(order) {

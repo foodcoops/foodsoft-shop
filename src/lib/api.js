@@ -1,4 +1,4 @@
-import { t } from 'i18n';
+import { t } from 'i18n-js';
 import { merge } from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { appName, appVersion, foodsoftUrl } from '../config';

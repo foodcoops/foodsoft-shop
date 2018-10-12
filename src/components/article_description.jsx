@@ -6,7 +6,7 @@ import {name as countryName} from '../lib/countries';
 
 import CountryIcon from './country_icon';
 
-import {t} from 'i18n';
+import {t} from 'i18n-js';
 const T = (s, opts) => t('article_description.'+s, opts);
 
 ////
@@ -58,11 +58,11 @@ const byIn         = ({article}) => (
 ////
 
 // from <supplier>
-export const Supplier = ({article}) => (asLines([supplier({article})])[0] : null);
+export const Supplier = ({article}) => (asLines([supplier({article})])[0]);
 Supplier.propTypes = {article: PropTypes.object.isRequired};
 
 // in <origin>
-export const Origin = ({article}) => (asLines([origin({article})])[0] : null);
+export const Origin = ({article}) => (asLines([origin({article})])[0]);
 Origin.propTypes = {article: PropTypes.object.isRequired};
 
 // <icon>
@@ -73,7 +73,7 @@ export const OriginIcon = ({article, ...props}) => {
 OriginIcon.propTypes = {article: PropTypes.object.isRequired};
 
 // by <manufacturer>
-export const Manufacturer = ({article}) => (asLines([manufacturer({article})])[0] : null);
+export const Manufacturer = ({article}) => (asLines([manufacturer({article})])[0]);
 Manufacturer.propTypes = {article: PropTypes.object.isRequired};
 
 // _<note>_
@@ -81,7 +81,7 @@ export const Note = ({article}) => (article.note ? <i style={styles.default}>{ar
 Note.propTypes = {article: PropTypes.object.isRequired};
 
 // by <manufacturer> in <origin>
-export const ByIn = ({article}) => (asLines([byIn({article})])[0] : null);
+export const ByIn = ({article}) => (asLines([byIn({article})])[0]);
 ByIn.propTypes = {article: PropTypes.object.isRequired};
 
 // from <supplier> by <manufacturer> in <origin>

@@ -12,7 +12,7 @@ import Navigation from '../containers/navigation';
 import Logo from '../components/logo';
 import './layout.css';
 
-import { t } from 'i18n';
+import { t } from 'i18n-js';
 const T = (s, opts) => t('navigation.'+s, opts);
 
 class Layout extends React.Component {

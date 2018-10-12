@@ -7,7 +7,7 @@ import { replaceFilter } from '../actions/filter';
 
 import Price from '../components/price';
 
-import { t } from 'i18n';
+import { t } from 'i18n-js';
 const T = (s, opts) => t('totals_box.'+s, opts);
 
 const TotalsBox = ({ group_order_articles, dispatch }) => {

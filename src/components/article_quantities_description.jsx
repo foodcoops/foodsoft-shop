@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import lastBox from '../lib/last_box';
 import {asLines} from './article_description';
 
-import {t} from 'i18n';
+import {t} from 'i18n-js';
 const T = (s, opts) => t('article_description.quantities.'+s, opts);
 
 // no-one ordered this yet
