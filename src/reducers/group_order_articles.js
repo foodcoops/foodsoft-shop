@@ -52,7 +52,7 @@ export default function group_order_articles(state = initialState, action) {
       }
     }
     case CREATE_GROUP_ORDER_ARTICLE_FAILURE: {
-      const data = state.date.filter(o => o.id !== action.id);
+      const data = state.data.filter(o => o.id !== action.id);
       return { ...state, data, loading: false };
     }
 

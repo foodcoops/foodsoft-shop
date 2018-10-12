@@ -57,9 +57,9 @@ function* createGroupOrderArticle({ payload }) {
 
   // don't debounce since the buttons are disabled until we have an id
   yield put({ type: CREATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
-  const r = yield call(api.post, '/api/v1/group_order_articles', { group_order_article: payload });
-
   try {
+    const r = yield call(api.post, '/api/v1/group_order_articles', { group_order_article: payload });
+
     yield put({ type: CREATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, id });
     // also update order_article that is received along with the group_order_article
     yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
