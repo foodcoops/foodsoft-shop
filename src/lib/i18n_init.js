@@ -4,6 +4,9 @@ import locales from '../../locales';
 // Initialize i18n
 export default function i18nInit() {
   i18n.reset();
+  // Fallback locale, all strings are present in this language.
+  i18n.defaultLocale = 'en';
+  // Make translations known.
   i18n.translations = locales;
 
   // Somehow this is necessary.

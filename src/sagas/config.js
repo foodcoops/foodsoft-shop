@@ -1,3 +1,4 @@
+import i18n from 'i18n-js';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import api from '../lib/api';
 

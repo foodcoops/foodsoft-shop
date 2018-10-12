@@ -1,3 +1,4 @@
+import i18n from 'i18n-js';
 import { call, put, fork, takeEvery, takeLatest } from 'redux-saga/effects';
 import { get } from '../lib/api';
 
@@ -13,6 +14,7 @@ function* fetchCurrentUser() {
   try {
     const r = yield call(get, `/api/v1/user`);
     yield put({ type: FETCH_CURRENT_USER_SUCCESS, payload: r });
+    if (r.user.locale) i18n.locale = r.user.locale;
   } catch(e) {
     yield put({ type: FETCH_CURRENT_USER_FAILURE, payload: e });
   }
