@@ -63,7 +63,8 @@ class Filters extends React.Component {
 
   _renderPanel(id, key, title, items, getName = (i) => i.name) {
     return (
-      <Panel eventKey={key} header={title}>
+      <Panel eventKey={key}>
+        <Panel.Heading>{title}</Panel.Heading>
         <ListGroup fill>
           {items.map((item) => (
             <ListGroupItem key={item.id} href='#' active={this.props.filter[`${id}_eq`] === item.id}

@@ -15,11 +15,11 @@
   opacity: 1;
 }
 
-.notifications-transition-leave {
+.notifications-transition-exit {
   opacity: 1;
   transition: opacity 0.5s ease-in;
 }
 
-.notifications-transition-leave-active {
+.notifications-transition-exit-active {
   opacity: 0.01;
 }
