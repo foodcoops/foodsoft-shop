@@ -14,7 +14,7 @@ export default function config(state = initialState, action) {
     case FETCH_CONFIG_REQUEST:
       return { ...state, data: {}, loading: true };
     case FETCH_CONFIG_SUCCESS:
-      return { ...state, data: action.payload.data, loading: false };
+      return { ...state, data: action.payload.config, loading: false };
     case FETCH_CONFIG_FAILURE:
       return { ...state, loading: false };
     default:

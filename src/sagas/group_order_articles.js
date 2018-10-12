@@ -56,7 +56,7 @@ function* createGroupOrderArticle({ payload }) {
 
   // don't debounce since the buttons are disabled until we have an id
   yield put({ type: CREATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
-  const r = yield call(api.post, '/api/v1/group_order_articles', { data: payload });
+  const r = yield call(api.post, '/api/v1/group_order_articles', { group_order_article: payload });
 
   try {
     yield put({ type: CREATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, id });
@@ -66,7 +66,7 @@ function* createGroupOrderArticle({ payload }) {
   }
   // also fetch order_article, just to be sure - both on success (algorithm on server may
   // be slightly different than optimistic update here) and on failure (revert change)
-  yield put({ type: FETCH_ORDER_ARTICLE, id: r.data.order_article_id });
+  yield put({ type: FETCH_ORDER_ARTICLE, id: r.group_order_article.order_article_id });
 }
 
 function* updateGroupOrderArticle({ id, payload }) {
@@ -97,8 +97,8 @@ function* updateGroupOrderArticle({ id, payload }) {
   try {
     const r = delet
       ? yield call(api.delet, `/api/v1/group_order_articles/${id}`)
-      : yield call(api.patch, `/api/v1/group_order_articles/${id}`, { data: payload });
-    if (!r.data) r.data = { id }; // delete method has no return value, but id is needed in reducer
+      : yield call(api.patch, `/api/v1/group_order_articles/${id}`, { group_order_article: payload });
+    if (!r.group_order_article) r.group_order_article = { id }; // delete method has no return value, but id is needed in reducer
     yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, delet });
   } catch(e) {
     yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e, delet });

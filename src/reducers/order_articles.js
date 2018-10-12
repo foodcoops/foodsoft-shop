@@ -21,7 +21,7 @@ export default function order_articles(state = initialState, action) {
     case FETCH_ORDER_ARTICLES_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
+        data: action.payload.order_articles,
         total: action.payload.meta.total_count,
         pages: action.payload.meta.total_pages,
         loading: false
@@ -32,7 +32,7 @@ export default function order_articles(state = initialState, action) {
     case FETCH_ORDER_ARTICLES_REQUEST:
       return { ...state, loading: true };
     case FETCH_ORDER_ARTICLE_SUCCESS: {
-      const newItem = action.payload.data;
+      const newItem = action.payload.order_article;
       const data = state.data.map(o => o.id === newItem.id ? newItem : o);
       return { ...state, data, loading: false };
     }

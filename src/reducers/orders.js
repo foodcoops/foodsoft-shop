@@ -17,7 +17,7 @@ export default function orders(state = initialState, action) {
     case FETCH_ORDERS_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
+        data: action.payload.orders,
         total: action.payload.meta.total_count,
         pages: action.payload.meta.total_pages,
         loading: false

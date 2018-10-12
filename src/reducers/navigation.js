@@ -14,7 +14,7 @@ export default function config(state = initialState, action) {
     case FETCH_NAVIGATION_REQUEST:
       return { ...state, data: [], loading: true };
     case FETCH_NAVIGATION_SUCCESS:
-      return { ...state, data: action.payload.data, loading: false };
+      return { ...state, data: action.payload.navigation, loading: false };
     case FETCH_NAVIGATION_FAILURE:
       return { ...state, loading: false };
     default:

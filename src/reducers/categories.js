@@ -17,8 +17,8 @@ export default function orders(state = initialState, action) {
     case FETCH_CATEGORIES_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
-        total: action.payload.data.length, // server supplies all items
+        data: action.payload.article_categories,
+        total: action.payload.article_categories.length, // server supplies all items
         loading: false
       };
     case FETCH_CATEGORIES_FAILURE:

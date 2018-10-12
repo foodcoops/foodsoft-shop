@@ -28,9 +28,9 @@ export default function user(state = initialState, action) {
     case LOGIN_REQUEST:
       return { ...state, loading: true };
     case LOGIN_SUCCESS:
-      return { ...action.payload.data, loading: false, loggedIn: true };
+      return { ...action.payload.user, loading: false, loggedIn: true };
     case FETCH_CURRENT_USER_SUCCESS:
-      return { ...state, ...action.payload.data, loading: false, loggedIn: true };
+      return { ...state, ...action.payload.user, loading: false, loggedIn: true };
     case FETCH_CURRENT_USER_FAILURE:
     case LOGIN_FAILURE:
       return { ...initialState, loading: false };

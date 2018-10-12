@@ -26,8 +26,8 @@ export default function group_order_articles(state = initialState, action) {
     case FETCH_GROUP_ORDER_ARTICLES_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
-        total: action.payload.data.length, // no meta because per_page=-1
+        data: action.payload.group_order_articles,
+        total: action.payload.group_order_articles.length, // no meta because per_page=-1
         loading: false
       };
     case FETCH_GROUP_ORDER_ARTICLES_FAILURE:
@@ -40,7 +40,7 @@ export default function group_order_articles(state = initialState, action) {
     case CREATE_GROUP_ORDER_ARTICLE_REQUEST:
       return { ...state, loading: true };
     case CREATE_GROUP_ORDER_ARTICLE_SUCCESS: {
-      const newItem = action.payload.data;
+      const newItem = action.payload.group_order_article;
       const oldItem = action.id && state.data.find(o => o.id === action.id);
       if (oldItem) {
         // there is an optimistic update already, replace it
@@ -63,7 +63,7 @@ export default function group_order_articles(state = initialState, action) {
     case UPDATE_GROUP_ORDER_ARTICLE_REQUEST:
       return { ...state, loading: true };
     case UPDATE_GROUP_ORDER_ARTICLE_SUCCESS: {
-      const newItem = action.payload.data;
+      const newItem = action.payload.group_order_article;
       const data = action.delet
         ? state.data.filter(o => o.id !== newItem.id)
         : state.data.map(o => o.id === newItem.id ? newItem : o);
