@@ -20,6 +20,7 @@ import {
 } from '../actions/group_order_articles';
 import {
   FETCH_ORDER_ARTICLE,
+  FETCH_ORDER_ARTICLE_SUCCESS,
   INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST
 } from '../actions/order_articles';
 
@@ -60,13 +61,12 @@ function* createGroupOrderArticle({ payload }) {
 
   try {
     yield put({ type: CREATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, id });
-    // @todo re-fetch all goas to get consistent state
+    // also update order_article that is received along with the group_order_article
+    yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
   } catch(e) {
     yield put({ type: CREATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e, id });
+    // @todo re-fetch (all?) goas to get consistent state
   }
-  // also fetch order_article, just to be sure - both on success (algorithm on server may
-  // be slightly different than optimistic update here) and on failure (revert change)
-  yield put({ type: FETCH_ORDER_ARTICLE, id: r.group_order_article.order_article_id });
 }
 
 function* updateGroupOrderArticle({ id, payload }) {
@@ -91,22 +91,23 @@ function* updateGroupOrderArticle({ id, payload }) {
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_OPTIMIST, id, payload: { result, total_price } });
 
   // then perform _debounced_ update at remote end
-  const delet = goaNew.quantity === 0 && goaNew.tolerance === 0;
+  const del = goaNew.quantity === 0 && goaNew.tolerance === 0;
   yield call(delay, 800);
-  yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload, delet })
+  yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload, del })
   try {
-    const r = delet
-      ? yield call(api.delet, `/api/v1/group_order_articles/${id}`)
-      : yield call(api.patch, `/api/v1/group_order_articles/${id}`, { group_order_article: payload });
-    if (!r.group_order_article) r.group_order_article = { id }; // delete method has no return value, but id is needed in reducer
-    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, delet });
+    if (del) {
+      const r = yield call(api.del, `/api/v1/group_order_articles/${id}`);
+      yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
+      yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: { group_order_article: { id } }, del });
+    } else {
+      const r = yield call(api.patch, `/api/v1/group_order_articles/${id}`, { group_order_article: payload });
+      yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
+      yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, del });
+    }
   } catch(e) {
-    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e, delet });
-    // @todo re-fetch all goas to get consistent state
+    yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_FAILURE, payload: e, del });
+    // @todo re-fetch (all?) goas to get consistent state
   }
-  // also fetch order_article, just to be sure - both on success (algorithm on server may
-  // be slightly different than optimistic update here) and on failure (revert change)
-  yield put({ type: FETCH_ORDER_ARTICLE, id: order_article_id });
 }
 
 export default function* groupOrderArticlesSaga() {

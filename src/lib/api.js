@@ -27,10 +27,6 @@ function authOptions() {
   }
 }
 
-export function delet(endpoint) {
-  return req(endpoint, {method: 'DELETE'});
-}
-
 export function get(endpoint) {
   return req(endpoint, {});
 }
@@ -75,9 +71,6 @@ function req(endpoint, options) {
   );
   return fetch(url, fetchOptions)
     .then(response => {
-      if (options.method === 'DELETE' && response.ok) {
-        return Promise.resolve({ json: {}, response });
-      }
       return response.json()
         .then(json => ({ json, response }))
         .catch(e => ({ json: {}, response }));
@@ -98,4 +91,4 @@ function req(endpoint, options) {
     })
 }
 
-export default { delet, get, patch, post, put };
+export default { get, patch, post, put, del };

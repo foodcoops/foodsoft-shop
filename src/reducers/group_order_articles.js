@@ -64,7 +64,7 @@ export default function group_order_articles(state = initialState, action) {
       return { ...state, loading: true };
     case UPDATE_GROUP_ORDER_ARTICLE_SUCCESS: {
       const newItem = action.payload.group_order_article;
-      const data = action.delet
+      const data = action.del
         ? state.data.filter(o => o.id !== newItem.id)
         : state.data.map(o => o.id === newItem.id ? newItem : o);
       return { ...state, data, loading: false };
