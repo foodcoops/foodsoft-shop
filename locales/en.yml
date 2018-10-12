@@ -39,6 +39,9 @@ en:
     everyone: Ordered by everyone
     order_open_until: Open until %{ends}
     orders: Suppliers
+  layout:
+    foodsoft: Foodsoft
+    foodsoft_shop_short: shop
   navigation:
     feedback: Feedback
     help: Help

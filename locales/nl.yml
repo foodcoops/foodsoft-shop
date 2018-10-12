@@ -39,6 +39,9 @@ nl:
     everyone: Besteld door iedereen
     order_open_until: Open tot %{ends}
     orders: Leveranciers
+  layout:
+    foodsoft: Foodsoft
+    foodsoft_shop_short: shop
   navigation:
     feedback: Feedback
     help: Help
