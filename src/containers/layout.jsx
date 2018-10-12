@@ -58,6 +58,7 @@ class Layout extends React.Component {
           </div>
           {config.page_footer_html && <div dangerouslySetInnerHTML={{ __html: config.page_footer_html }} />}
         </footer>
+        {config.webstats_tracking_code_html && <div dangerouslySetInnerHTML={{ __html: config.webstats_tracking_code_html }} />}
       </div>
     );
   }
