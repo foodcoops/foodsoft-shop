@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { t } from 'i18n-js';
-import { Button, Glyphicon, OverlayTrigger, Table, Pagination, Popover } from 'react-bootstrap';
+import { Button, Glyphicon, OverlayTrigger, Table, Popover } from 'react-bootstrap';
 
 import { compact, min } from 'lodash';
 import { connect } from 'react-redux';
@@ -22,6 +22,7 @@ import UnitsBox from '../components/units_box';
 import { FromByInNote } from '../components/article_description';
 import ArticleInfoIcon from '../components/article_info_icon';
 import { UnitsToOrderDesc, LastBoxDesc } from '../components/article_quantities_description';
+import Pagination from '../components/pagination';
 
 // tooltip shorthand
 let i = 0;
@@ -131,9 +132,9 @@ class OrderArticles extends React.Component {
         </Table>
         {_oas.pages > 1 ?
           <div style={styles.pagination}>
-            <Pagination items={_oas.pages} maxButtons={10} boundaryLinks
-                        prev={true} next={true}
-                        activePage={this.props.filter.page || 1} onSelect={(page) => this._onChangePage(page)} />
+            <Pagination totalPages={_oas.pages} currentPage={this.props.filter.page || 1}
+                        hideFirstAndLastPageLinks={_oas.pages <= 6}
+                        onChange={(page) => this._onChangePage(page)} />
           </div> : null }
       </div>
     );
