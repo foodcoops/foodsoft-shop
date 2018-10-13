@@ -28,7 +28,7 @@ import Pagination from '../components/pagination';
 let i = 0;
 const Tip = ({ text, children }) => (
   <OverlayTrigger placement='bottom' overlay={<Popover id={`tooltip-${i++}`} style={styles.tooltip}>{text}</Popover>}>
-    <span>{children}</span>
+    <div style={styles.tooltipInner}>{children}</div>
   </OverlayTrigger>
 );
 
@@ -176,7 +176,8 @@ const styles = {
   country: {
     verticalAlign: 'middle',
     paddingLeft: 3,
-    opacity: 0.4
+    opacity: 0.4,
+    width: 42
   },
   unit: {
     verticalAlign: 'middle',
@@ -203,7 +204,8 @@ const styles = {
   unitBar: {
     verticalAlign: 'middle',
     paddingLeft: 14,
-    paddingRight: 0
+    paddingRight: 0,
+    width: 85
   },
   boxesHeadingWide: {
     verticalAlign: 'middle',
@@ -218,7 +220,8 @@ const styles = {
     verticalAlign: 'middle',
     fontSize: '90%',
     color: '#7a7a7a',
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    width: '4em'
   },
   pagination: {
     width: '100%',
@@ -230,6 +233,9 @@ const styles = {
     boxShadow: 'none',
     textAlign: 'center',
   },
+  tooltipInner: {
+    display: 'inline-block'
+  }
 };
 
 OrderArticles.propTypes = {
