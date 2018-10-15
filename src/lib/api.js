@@ -19,8 +19,7 @@ function authOptions() {
     return {
       headers: {
         'Authorization': `Bearer ${accessToken}`
-      },
-      credentials: 'include'
+      }
     };
   } else {
     return {};
