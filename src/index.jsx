@@ -2,7 +2,7 @@ import qs from 'qs';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
 import moment from 'moment';
 import { currentLocale } from 'i18n-js';
@@ -15,7 +15,7 @@ import { setAccessToken } from './actions/user';
 
 import Layout from './containers/layout';
 import Loading from './containers/loading';
-import Orders from './containers/orders';
+import OrdersOpen from './containers/orders_open';
 
 i18nInit();
 store.runSaga(rootSaga);
@@ -26,7 +26,11 @@ const App = ({store}) => (
       <Router>
         <Layout>
           <Switch>
-            <Route exact path='/' component={Orders} />
+            <Redirect path='/' exact to='/open' />
+            <Route exact path='/open' component={OrdersOpen} />
+            <Route exact path='/open/by/:ordered(all|member)' component={OrdersOpen} />
+            <Route exact path='/open/article_categories/:article_category_id' component={OrdersOpen} />
+            <Route exact path='/open/orders/:order_id' component={OrdersOpen} />
           </Switch>
         </Layout>
       </Router>

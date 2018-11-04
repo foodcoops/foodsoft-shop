@@ -9,6 +9,7 @@ import {
   createGroupOrderArticle,
   updateGroupOrderArticle
 } from '../actions/group_order_articles';
+import { replaceFilter } from '../actions/filter';
 import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';

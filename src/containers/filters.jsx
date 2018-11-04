@@ -38,7 +38,7 @@ class Filters extends React.Component {
         {/* Ordered by everyone */}
         <Panel style={styles.everyoneBox}>
           <ListGroup fill>
-            <ListGroupItem href='#' active={ordered === 'all'} onClick={this._onClickEveryone.bind(this)}>
+            <ListGroupItem href='#/open/by/all' active={ordered === 'all'}>
               <Glyphicon glyph='th-large' style={styles.listGroupIcon} />{' '}{T('everyone')}
             </ListGroupItem>
           </ListGroup>
@@ -47,22 +47,25 @@ class Filters extends React.Component {
         <Accordion defaultActiveKey={1}>
           {this.hasCategories() ?
               // @todo move knowledge of search param key to rest.js
-              this._renderPanel('article_article_category_id', i += 1, T('categories'), this.props.categories.data) : null}
+              this._renderPanel('article_categories', 'article_article_category_id', i += 1,
+                                T('categories'), this.props.categories.data) : null}
           {this.hasOrders() ?
-              this._renderPanel('order_id', i += 1, T('orders'), this.props.orders.data, getOrderName) : null}
+              this._renderPanel('orders', 'order_id', i += 1,
+                                T('orders'), this.props.orders.data, getOrderName) : null}
         </Accordion>
       </div>
     );
   }
 
-  _renderPanel(id, key, title, items, getName = (i) => i.name) {
+  _renderPanel(route_id, query_id, key, title, items, getName = (i) => i.name) {
     return (
       <Panel eventKey={key}>
         <Panel.Heading>{title}</Panel.Heading>
         <ListGroup fill>
           {items.map((item) => (
-            <ListGroupItem key={item.id} href='#' active={this.props.filter[`${id}_eq`] === item.id}
-                           onClick={this._onClick.bind(this, id, item.id)}>{getName(item)}</ListGroupItem>
+            <ListGroupItem key={item.id} href={`#/open/${route_id}/${item.id}`} active={this.props.filter[`${query_id}_eq`] === item.id}>
+              {getName(item)}
+            </ListGroupItem>
           ))}
         </ListGroup>
       </Panel>
@@ -74,14 +77,6 @@ class Filters extends React.Component {
   }
   hasOrders() {
     return this.props.orders.data && this.props.orders.data.length > 1;
-  }
-
-  _onClick(key, value) {
-    this.props.dispatch(replaceFilter({ [`${key}_eq`]: value }));
-  }
-
-  _onClickEveryone() {
-    this.props.dispatch(replaceFilter({ ordered: 'all' }));
   }
 
   _onSearch(e) {

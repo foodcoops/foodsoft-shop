@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon, Well } from 'react-bootstrap';
-
 import { connect } from 'react-redux';
-import { replaceFilter } from '../actions/filter';
+import { Glyphicon, Well } from 'react-bootstrap';
 
 import Price from '../components/price';
 
 import { t } from 'i18n-js';
 const T = (s, opts) => t('totals_box.'+s, opts);
 
-const TotalsBox = ({ group_order_articles, dispatch }) => {
+const TotalsBox = ({ group_order_articles }) => {
   const goas = group_order_articles.data || [];
   const total = goas.reduce((sum, goa) => sum + goa.total_price, 0);
   return (
-    <a href='#' onClick={onClick.bind(this, dispatch)}>
+    <a href='#/open/by/member'>
       <Well bsSize='sm' style={styles.container}>
         <Glyphicon glyph='shopping-cart' />
         {' '}{T('total')}
@@ -24,13 +22,8 @@ const TotalsBox = ({ group_order_articles, dispatch }) => {
   );
 }
 
-function onClick(dispatch, e) {
-  dispatch(replaceFilter({ ordered: 'member' }));
-}
-
 TotalsBox.propTypes = {
   group_order_articles: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 function select(state, props) {
