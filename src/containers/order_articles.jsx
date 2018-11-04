@@ -5,13 +5,10 @@ import { Button, Glyphicon, OverlayTrigger, Table, Popover } from 'react-bootstr
 
 import { compact, min } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchOrderArticles } from '../actions/order_articles';
 import {
-  fetchGroupOrderArticles,
   createGroupOrderArticle,
   updateGroupOrderArticle
 } from '../actions/group_order_articles';
-import { replaceFilter } from '../actions/filter';
 import lastBox from '../lib/last_box';
 
 import CountryIcon from '../components/country_icon';
@@ -37,15 +34,8 @@ const StaticInput = ({ value, color }) => (
 );
 
 // @todo get currency from api
+// @note assumes relevant data is already loaded
 class OrderArticles extends React.Component {
-
-  componentDidMount() {
-    // @todo don't assume all open orders are already loaded ...
-    //       dispatching `fetchOrders()` here resulted in the request being done twice
-    this.props.dispatch(fetchOrderArticles());
-    this.props.dispatch(fetchGroupOrderArticles());
-  }
-
   render() {
     const _orders = this.props.orders, _oas = this.props.order_articles, _goas = this.props.group_order_articles;
     if (!_oas.data || !_orders.data) { return <div />; }

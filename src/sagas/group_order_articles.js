@@ -1,3 +1,5 @@
+import { merge } from 'lodash';
+import { stringify } from 'qs';
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import api from '../lib/api';
@@ -24,10 +26,12 @@ import {
   INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST
 } from '../actions/order_articles';
 
-function* fetchGroupOrderArticles() {
-  yield put({ type: FETCH_GROUP_ORDER_ARTICLES_REQUEST });
+function* fetchGroupOrderArticles({ payload }) {
+  yield put({ type: FETCH_GROUP_ORDER_ARTICLES_REQUEST, payload });
+  const fullPayload = merge({}, { per_page: -1 }, payload); // get all items
+  const query = fullPayload ? ('?' + stringify(fullPayload)) : '';
   try {
-    const r = yield call(api.get, '/api/v1/group_order_articles?per_page=-1'); // get all items
+    const r = yield call(api.get, `/api/v1/group_order_articles${query}`);
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_SUCCESS, payload: r });
   } catch(e) {
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_FAILURE, payload: e });

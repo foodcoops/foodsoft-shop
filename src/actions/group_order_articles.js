@@ -15,8 +15,8 @@ export const CREATE_GROUP_ORDER_ARTICLE_REQUEST = `${CREATE_GROUP_ORDER_ARTICLE}
 export const CREATE_GROUP_ORDER_ARTICLE_SUCCESS = `${CREATE_GROUP_ORDER_ARTICLE}_SUCCESS`;
 export const CREATE_GROUP_ORDER_ARTICLE_FAILURE = `${CREATE_GROUP_ORDER_ARTICLE}_FAILURE`;
 
-export function fetchGroupOrderArticles() {
-  return { type: FETCH_GROUP_ORDER_ARTICLES };
+export function fetchGroupOrderArticles(query) {
+  return { type: FETCH_GROUP_ORDER_ARTICLES, payload: { q: query } };
 }
 
 export function updateGroupOrderArticle(id, payload) {

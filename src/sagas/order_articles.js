@@ -1,4 +1,3 @@
-import { merge } from 'lodash';
 import { stringify } from 'qs';
 import { call, put, fork, takeEvery, takeLatest } from 'redux-saga/effects';
 import { get } from '../lib/api';
@@ -16,10 +15,9 @@ import {
 
 function* fetchOrderArticles({ payload }) {
   yield put({ type: FETCH_ORDER_ARTICLES_REQUEST, payload });
-  const fullPayload = merge({}, { q: { orders_state_eq: 'open' } }, payload);
-  const fullQuery = fullPayload ? ('?' + stringify(fullPayload)) : '';
+  const query = payload ? ('?' + stringify(payload)) : '';
   try {
-    const r = yield call(get, `/api/v1/order_articles${fullQuery}`);
+    const r = yield call(get, `/api/v1/order_articles${query}`);
     yield put({ type: FETCH_ORDER_ARTICLES_SUCCESS, payload: r });
   } catch(e) {
     yield put({ type: FETCH_ORDER_ARTICLES_FAILURE, payload: e });

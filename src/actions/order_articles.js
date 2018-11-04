@@ -11,6 +11,6 @@ export const FETCH_ORDER_ARTICLE_FAILURE = `${FETCH_ORDER_ARTICLE}_FAILURE`;
 // used by group_order_article saga
 export const INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST = `INTERNAL_UPDATE_ORDER_ARTICLE_OPTIMIST`;
 
-export function fetchOrderArticles() {
-  return { type: FETCH_ORDER_ARTICLES };
+export function fetchOrderArticles(query) {
+  return { type: FETCH_ORDER_ARTICLES, payload: { q: query } };
 }

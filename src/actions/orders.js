@@ -3,6 +3,6 @@ export const FETCH_ORDERS_REQUEST = `${FETCH_ORDERS}_REQUEST`;
 export const FETCH_ORDERS_SUCCESS = `${FETCH_ORDERS}_SUCCESS`;
 export const FETCH_ORDERS_FAILURE = `${FETCH_ORDERS}_FAILURE`;
 
-export function fetchOrders() {
-  return { type: FETCH_ORDERS };
+export function fetchOrders(query) {
+  return { type: FETCH_ORDERS, payload: { q: query } };
 }

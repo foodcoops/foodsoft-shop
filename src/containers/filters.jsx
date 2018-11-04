@@ -4,8 +4,7 @@ import { Accordion, Badge, Glyphicon, ListGroup, ListGroupItem, OverlayTrigger, 
 
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { fetchOrders } from '../actions/orders';
-import { fetchCategories } from '../actions/categories';
+
 import { replaceFilter } from '../actions/filter';
 import SearchBox from '../components/search_box';
 
@@ -26,13 +25,8 @@ function getOrderName(order) {
   );
 }
 
+// @note assumes relevant data is already loaded
 class Filters extends React.Component {
-
-  componentDidMount() {
-    this.props.dispatch(fetchCategories());
-    this.props.dispatch(fetchOrders());
-  }
-
   render() {
     let i = 0;
     const {search, ordered} = this.props.filter;
