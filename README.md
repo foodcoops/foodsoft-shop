@@ -22,12 +22,12 @@ _Revamped member ordering pages_ to the main Foodsoft repository in a clean way.
 
 Though this software is not fully finished, you could try running it if you're interested.
 
-1. Install the [API-fork](https://github.com/wvengen/foodsoft/tree/feature/rest-for-shop) of Foodsoft for development.
-   For full instructions, see [the instructions](https://github.com/wvengen/foodsoft/blob/feature/rest-for-shop/doc/SETUP_DEVELOPMENT.md),
+1. Install the [API-fork](https://github.com/wvengen/foodsoft/tree/feature/api-4-endpoints-orders) of Foodsoft for development.
+   For full instructions, see [the instructions](https://github.com/foodcoops/foodsoft/blob/master/doc/SETUP_DEVELOPMENT.md),
    but if you already have MySQL and Ruby on Rails running, this may be enough:
 
    ```sh
-   $ git clone https://github.com/wvengen/foodsoft -b feature/rest-for-shop
+   $ git clone https://github.com/wvengen/foodsoft -b feature/api-4-endpoints-orders
    $ cd foodsoft
    $ bundle install
    $ rake foodsoft:setup-development
@@ -39,7 +39,7 @@ Though this software is not fully finished, you could try running it if you're i
    ```sh
    $ git remote add wvengen https://github.com/wvengen/foodsoft.git
    $ git fetch wvengen
-   $ git checkout feature/rest-for-shop
+   $ git checkout feature/api-4-endpoints-orders
    $ bundle install
    $ rake db:migrate
    $ bundle exec rails s

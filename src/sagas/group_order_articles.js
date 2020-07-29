@@ -31,7 +31,7 @@ function* fetchGroupOrderArticles({ payload }) {
   const fullPayload = merge({}, { per_page: -1 }, payload); // get all items
   const query = fullPayload ? ('?' + stringify(fullPayload)) : '';
   try {
-    const r = yield call(api.get, `/api/v1/group_order_articles${query}`);
+    const r = yield call(api.get, `/api/v1/user/group_order_articles${query}`);
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_SUCCESS, payload: r });
   } catch(e) {
     yield put({ type: FETCH_GROUP_ORDER_ARTICLES_FAILURE, payload: e });
@@ -62,7 +62,7 @@ function* createGroupOrderArticle({ payload }) {
   // don't debounce since the buttons are disabled until we have an id
   yield put({ type: CREATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload });
   try {
-    const r = yield call(api.post, '/api/v1/group_order_articles', { group_order_article: payload });
+    const r = yield call(api.post, '/api/v1/user/group_order_articles', { group_order_article: payload });
 
     yield put({ type: CREATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, id });
     // also update order_article that is received along with the group_order_article
@@ -100,11 +100,11 @@ function* updateGroupOrderArticle({ id, payload }) {
   yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_REQUEST, id, payload, del })
   try {
     if (del) {
-      const r = yield call(api.del, `/api/v1/group_order_articles/${id}`);
+      const r = yield call(api.del, `/api/v1/user/group_order_articles/${id}`);
       yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
       yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: { group_order_article: { id } }, del });
     } else {
-      const r = yield call(api.patch, `/api/v1/group_order_articles/${id}`, { group_order_article: payload });
+      const r = yield call(api.patch, `/api/v1/user/group_order_articles/${id}`, { group_order_article: payload });
       yield put({ type: FETCH_ORDER_ARTICLE_SUCCESS, payload: r });
       yield put({ type: UPDATE_GROUP_ORDER_ARTICLE_SUCCESS, payload: r, del });
     }
