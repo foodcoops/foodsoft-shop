@@ -6,10 +6,7 @@ This is an EXPERIMENTAL webshop component for [Foodsoft](https://github.com/food
 Based on [React](http://facebook.github.io/react/) and [redux-saga](http://redux-saga.js.org/),
 it may replace the existing [rails](http://www.rubyonrails.org/)-based webshop component at some point.
 
-It functions together with Foodsoft's future API from
-[this branch](https://github.com/wvengen/foodsoft/tree/feature/rest-for-shop), which is waiting for
-this webshop to be completed.
-
+It functions together with Foodsoft API (v1), which is part of Foodsoft v4.7.2 or later (as of yet unreleased).
 
 The hope is that this brings [foodcoop-adam/foodsoft#163](https://github.com/foodcoop-adam/foodsoft/issues/163)'s
 _Revamped member ordering pages_ to the main Foodsoft repository in a clean way.
@@ -22,26 +19,15 @@ _Revamped member ordering pages_ to the main Foodsoft repository in a clean way.
 
 Though this software is not fully finished, you could try running it if you're interested.
 
-1. Install the [API-fork](https://github.com/wvengen/foodsoft/tree/feature/api-4-endpoints-orders) of Foodsoft for development.
+1. Install the latest [Foodsoft](https://github.com/foodcoops/foodsoft) for development.
    For full instructions, see [the instructions](https://github.com/foodcoops/foodsoft/blob/master/doc/SETUP_DEVELOPMENT.md),
    but if you already have MySQL and Ruby on Rails running, this may be enough:
 
    ```sh
-   $ git clone https://github.com/wvengen/foodsoft -b feature/api-4-endpoints-orders
+   $ git clone https://github.com/foodcoops/foodsoft
    $ cd foodsoft
    $ bundle install
    $ rake foodsoft:setup-development
-   $ bundle exec rails s
-   ```
-
-   In case you have an existing Foodsoft installation, the following would be more suitable:
-
-   ```sh
-   $ git remote add wvengen https://github.com/wvengen/foodsoft.git
-   $ git fetch wvengen
-   $ git checkout feature/api-4-endpoints-orders
-   $ bundle install
-   $ rake db:migrate
    $ bundle exec rails s
    ```
 
