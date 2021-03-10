@@ -6,11 +6,12 @@ This is an EXPERIMENTAL webshop component for [Foodsoft](https://github.com/food
 Based on [React](http://facebook.github.io/react/) and [redux-saga](http://redux-saga.js.org/),
 it may replace the existing [rails](http://www.rubyonrails.org/)-based webshop component at some point.
 
-It functions together with Foodsoft API (v1), which is part of Foodsoft v4.7.2 or later (as of yet unreleased).
+It functions together with Foodsoft API (v1), which is part of Foodsoft v4.7.2 / v4.8 or later (as of yet unreleased).
 
 The hope is that this brings [foodcoop-adam/foodsoft#163](https://github.com/foodcoop-adam/foodsoft/issues/163)'s
 _Revamped member ordering pages_ to the main Foodsoft repository in a clean way.
 
+As soon as app.foodcoops.net gets Foodsoft v4.8, you'll be able to [try out this demo](https://foodcoops.net/foodsoft-shop/demo/) (login with `admin` / `secret`).
 
 ![screenshot](screenshot.png)
 

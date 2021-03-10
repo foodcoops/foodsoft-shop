@@ -1,0 +1,47 @@
+name: React app deployement
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Restore node modules
+      uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{runner.os}}-modules-${{hashFiles('**/package.json', '**/yarn.lock', '**/package-lock.json')}}
+        restore-keys: ${{runner.os}}-modules-
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build
+      run: yarn build
+
+    - name: Configure demo
+      run: |
+        # Configuration for demo
+        cat >build/local.js <<EOF
+        window.foodsoftClientId = "${{ secrets.FOODSOFT_DEMO_CLIENT_ID }}";
+        window.foodsoftUrl = "https://app.foodcoops.net/demo";
+        EOF
+        # Move to subdir, so we could add other pages and instances and keep URLs
+        mv build build-demo && mkdir build && mv build-demo build/demo
+
+    - name: Deploy to GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        build_dir: build
+        jekyll: false
+      env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
