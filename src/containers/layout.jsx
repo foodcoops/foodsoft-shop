@@ -50,7 +50,7 @@ class Layout extends React.Component {
         <main className="container-fluid">
           {this.props.children}
         </main>
-        <footer class="container-fluid">
+        <footer className="container-fluid">
           <div className="pull-right">
             {(config.foodsoft && config.foodsoft.url) ? <a href={config.foodsoft.url}>{t('layout.foodsoft')}</a> : t('layout.foodsoft') }
             {(config.foodsoft && config.foodsoft.version) && ` v${config.foodsoft.version} +`}
